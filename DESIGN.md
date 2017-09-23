@@ -128,6 +128,8 @@ We can imagine a layered structure of Robocop. It listens to commit and pull req
 
 ![Robocop ZAP](architecture/Robocop_ZAP.png)
 
+OWASP ZAP is an API to test for network vulnerabilities in the code. It tests the application to identify if any element is prone to network attacks. The Robocop continuously listens to the git operations and invokes the ZAP API to test the application for network vulnerabilities. ZAP performs penetration testing on the application to identify the vulnerabilities in the application. It also identifies the network attack that a component of the application is prone to. It gives back the discovered vulnerabilities and security issues to Robocop which stores them in a MySQL database. Robocop also raises an issue for each vulnerability found and also generates a report to the owner of the repository.
+
 ![Robocop Snyk](architecture/Robocop_Snyk.png)
 
 #### Architecture Patterns
