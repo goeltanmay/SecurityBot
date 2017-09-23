@@ -154,3 +154,10 @@ Robocop uses three different types of layers.
 3. __Attack Tool Handler layer__ - This layer consists of wrappers for multiple attack tools which can be added or removed as required. It communicates with the actual tool using REST Apis or CLI interface, depending on the tool. It also stores or retrieves vulnerability information to/from the database.
 
 4. __Tool layer__ - This layer consists of the actual tools used to conduct the attacks. Tools can be added or removed in accordance with the above layer.  
+
+
+#### References
+
+* [OWASP ZAP API](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
+* [Source Code Analysis Tools](https://www.owasp.org/index.php/Source_Code_Analysis_Tools)
+* [Snyk Dependency Checker](https://snyk.io/)
