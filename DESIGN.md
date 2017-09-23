@@ -123,7 +123,11 @@ So Robocop acts as an interface between github repo, and the various security to
 
 ![Layered Architecture](architecture/LayeredArchitecture.png)
 
+We can imagine a layered structure of Robocop. It listens to commit and pull request events and then checks for security vulnerabilities by calling appropriate APIs. The APIs could attack the application in various ways. They can analyze the code, check dependencies or directly attack the application webpages and find out vulnerabilities present. There are several tools available which can serve this purpose. Code analysis tools differ with programming languages or frameworks used.
 
+![Robocop ZAP](architecture/Robocop_ZAP.png)
+
+![Robocop Snyk](architecture/Robocop_Snyk.png)
 
 #### Architecture Patterns
 
