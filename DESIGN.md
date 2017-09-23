@@ -85,6 +85,7 @@ Someone creates a pull request. This can be from the same repo of from a fork of
 
 ##### Report Email -
 ![Report Email](wireframes/mail.JPG)
+
 The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
 
 #### Storyboards
