@@ -129,4 +129,19 @@ So Robocop acts as an interface between github repo, and the various security to
 
 Design of Robocop is a hybrid of 3 designs.
 
-__Publish - Subscribe : __
+__Publish - Subscribe :__  
+The main idea is to check for new security vulnerabilities introduced with each commit or pull request. So we use publish subscribe architecture where github notifies Robocop of all commit or pull request events. Robocop then checks the commits or pull request for vulnerabilities and reports the findings by either making comments or raising issues.
+
+__Object-Oriented Pattern:__  
+We have identified three different kinds of attack tools that inherit from the same attack interface. They take the same github event as input, and dispatch the attack command to the relavant attack tool. Polymorphic design helps providing a generic attack interface while delegating the attack request to relevant module. It also enables easy addition of more module and tools in future.
+
+__Layered Pattern:__
+Robocop uses three different types of layers.  
+
+1. __Github Communication layer__ - This layer subscribes to github events and forwards the event to underlying layer. It also accepts the response from the underlying and decides how to give it to github.
+
+2. __Attack Surface layer__ - This layer is the front end for all the attack request. Business logic identifies the attack type and delegates to approrpriate attack handler, like ZapHandler. It reports the vulnerabilities found to the layer above.
+
+3. __Attack Tool Handler layer__ - This layer consists of wrappers for multiple attack tools which can be added or removed as required. It communicates with the actual tool using REST Apis or CLI interface, depending on the tool. It also stores or retrieves vulnerability information to/from the database.
+
+4. __Tool layer__ - This layer consists of the actual tools used to conduct the attacks. Tools can be added or removed in accordance with the above layer.  
