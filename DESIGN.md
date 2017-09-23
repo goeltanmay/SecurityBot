@@ -155,8 +155,13 @@ Robocop uses three different types of layers.
 
 4. __Tool layer__ - This layer consists of the actual tools used to conduct the attacks. Tools can be added or removed in accordance with the above layer.  
 
+### Additional Patterns
 
-#### References
+Some other patterns that might become useful are -
+1. __Implicit Invocation__ - As our bot receives events from github, it implicitly invokes the attack surface which will in turn call the actual attack tool.  
+2. __Pipes and Filters__ - We may come across a situation where we want to give the output of one attack tool to another attack tool. In this case, pipes and filters might come in handy.
+
+### References
 
 * [OWASP ZAP API](https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project)
 * [Source Code Analysis Tools](https://www.owasp.org/index.php/Source_Code_Analysis_Tools)
