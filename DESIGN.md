@@ -1,5 +1,5 @@
 # DESIGN
-#### Problem Statement:
+### Problem Statement:
 Data is prime commodity for any corporate. While developing an application it is responsibility of the developers to allow restricted access to data and follow proper security protocols. For example, an offshoot of Anonymous, hacktivist group Lulzsec in June 2011 hacked into Sony Pictures via SQL Injection attack and stole data that included names, passwords, e-mail and home addresses of thousands of customers. The group claimed to have compromised over one million accounts.
 
 > >“As the world is increasingly interconnected, everyone shares the responsibility of securing cyberspace.”  
@@ -11,14 +11,14 @@ The main cause of services not being secure enough is the fact that most develop
 
 There are several static analysis tools and fuzzing tools to test the security of an application, however, they require the developer to be constantly running them in his workstation and keep checking for their result. We feel that an automated bot can ease this process, so that the developers can concentrate on writing code. The bot we imagine will create ‘issues’ on github repos, comment on specific lines of code which introduce a vulnerability and assign these to the developer who wrote the code.
 
-#### Bot Description:
+### Bot Description:
 We aim at developing a drone bot that responds to different git operations when applied to a git repository. For example, when a collaborator commits to a git repo, then it will scan the code using OWASP ZAP API’s and static source analyzers to find the components of User Interface or a module that can be compromised for a security attack.
 
 ZAP API works by actually running the web application in a browser. It attempts penetration testing on different web pages and identifies the network attacks to which a page is prone to. WAP is another tool to detect and correct input validation vulnerabilities in web applications written in PHP and predicts false positives. The tool combines source code static analysis and data mining to detect vulnerabilities and predict false positives. It then corrects the source code to remove the vulnerabilities inserting fixes(small functions) in the right places of the source code.
 
 Our bot application will be using these tools to scan the changes in the code for vulnerabilities and possible network attacks to raise issues if any such vulnerability is found and can raise comments on appropriate locations, for example, on commits applied to a repository. The application can be integrated to any github repository and it can also be invoked with git pull request and commit operation.
 
-#### Use Cases:
+### Use Cases:
 
 Our bot will aid users while performing the following tasks:
 
@@ -63,7 +63,7 @@ Our bot will aid users while performing the following tasks:
       If no vulnerabilities are found, the bot sends an email that no vulnerability is detected in the code.
 
 
-#### Wireframes
+### Wireframes
 
 Robocop will work as a service in github, and have the following screens :
 
@@ -88,7 +88,7 @@ Someone creates a pull request. This can be from the same repo of from a fork of
 
 The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
 
-#### Storyboards
+### Storyboards
 
 Some storyboards describing primary tasks of our bot:
 
@@ -102,7 +102,7 @@ A developer tries to use RoboCop to test his application against any security vu
 
 Some developer wants to add a feature to an application utilizing RoboCop. He creates a pull request which triggers RoboCop to check for any security vulnerability present in the code. RoboCop comments on the pull request with list of vulnerabilities found.
 
-#### Architecture Design
+####Architecture Design
 Before looking at the architecture, we wanted to figure out the different components of Robocop.
 
 The first distinction is that the actual repository lives on github, while Robocop will run on some machine. So these two will be two separate components.  
@@ -132,7 +132,7 @@ OWASP ZAP is an API to test for network vulnerabilities in the code. It tests th
 
 ![Robocop Snyk](architecture/Robocop_Snyk.png)
 
-#### Architecture Patterns
+### Architecture Patterns
 
 Design of Robocop is a hybrid of 3 designs.
 
