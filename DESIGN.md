@@ -83,5 +83,9 @@ When a user pushes a commit, robocop will make comments if there are any new sec
 ![Pull Request](wireframes/pull_request.JPG)  
 Someone creates a pull request. This can be from the same repo of from a fork of this repo. Robocop will analyse the pull request and make comments about the security vulnerabilities introduced in this pull request.
 
+##### Report Email -
+![Report Email](wireframes/mail.jpg)
+The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
+
 #### Architecture Design
 We took a good hard look at the various architecture
