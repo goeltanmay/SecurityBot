@@ -78,3 +78,11 @@ After Robocop is added to a repo, it will raise issues for the vulnerabilities i
 
 ##### Commits pushed -
 ![Commit](wireframes/commit.JPG)  
+When a user pushes a commit, robocop will make comments if there are any new security vulnerabilities created because of that commit.
+
+##### Pull request created -
+![Pull Request](wireframes/pull_request.JPG)  
+Someone creates a pull request. This can be from the same repo of from a fork of this repo. Robocop will analyse the pull request and make comments about the security vulnerabilities introduced in this pull request.
+
+#### Architecture Design
+We took a good hard look at the various architecture 

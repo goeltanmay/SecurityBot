@@ -1,6 +1,6 @@
 # SecurityBot
 
-This is a Github bot to make security testing even more automated and easily accessible.
+This is a Github bot to make security testing even more automated and easily accessible. This project is a part of the CSC-510 Software Engineering course at NC State,
 
 ### Team Members
 * Jitin Kumar (jkumar3)
