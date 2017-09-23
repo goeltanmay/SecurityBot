@@ -62,3 +62,19 @@ Our bot will aid users while performing the following tasks:
       Bot will query the database and fetch list of vulnerabilities from past 5 commits. It sends out an email stating the vulnerabilities found.
     3. __Alternative Flows__  
       If no vulnerabilities are found, the bot sends an email that no vulnerability is detected in the code.
+
+
+#### Wireframes
+
+Robocop will work as a service in github, and have the following screens :
+
+##### Integration -
+![Integration](wireframes/integrtion.JPG)  
+The idea here is to show how a potential owner can add Robocop to his repo. He can go to settings and to services and integration tab, and search for Robocop. He just adds Robocop as a service, and Robocop starts doing its magic.
+
+##### Issues Raised -
+![Issues](wireframes/issue.jpg)  
+After Robocop is added to a repo, it will raise issues for the vulnerabilities it finds in the application.
+
+##### Commits pushed -
+![Commit](wireframes/commit.JPG)  
