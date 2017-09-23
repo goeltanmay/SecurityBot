@@ -88,4 +88,13 @@ Someone creates a pull request. This can be from the same repo of from a fork of
 The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
 
 #### Architecture Design
-We took a good hard look at the various architecture
+Before looking at the architecture, we wanted to figure out the different components of Robocop.
+
+The first distinction is that the actual repository lives on github, while Robocop will run on some machine. So these two will be two separate components.  
+
+Also, we use plan to use 3 types of security analysis tools.  
+1. Attack based tools like OWASP ZAP.
+2. Static code analysis tools like OWASP WAP and Bandit.
+3. Dependency checkers like Snyk and OWASP Dependency check.
+
+Since these tools go through either the actual code or a deployed instance of the application, Robocop will need a git clone and a deployed instance of that application. This will be another part of the application.
