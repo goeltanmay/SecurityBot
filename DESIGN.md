@@ -85,6 +85,7 @@ Someone creates a pull request. This can be from the same repo of from a fork of
 
 ##### Report Email -
 ![Report Email](wireframes/mail.JPG)
+
 The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
 
 #### Storyboards
@@ -123,7 +124,13 @@ So Robocop acts as an interface between github repo, and the various security to
 
 ![Layered Architecture](architecture/LayeredArchitecture.png)
 
+We can imagine a layered structure of Robocop. It listens to commit and pull request events and then checks for security vulnerabilities by calling appropriate APIs. The APIs could attack the application in various ways. They can analyze the code, check dependencies or directly attack the application webpages and find out vulnerabilities present. There are several tools available which can serve this purpose. Code analysis tools differ with programming languages or frameworks used.
 
+![Robocop ZAP](architecture/Robocop_ZAP.png)
+
+OWASP ZAP is an API to test for network vulnerabilities in the code. It tests the application to identify if any element is prone to network attacks. The Robocop continuously listens to the git operations and invokes the ZAP API to test the application for network vulnerabilities. ZAP performs penetration testing on the application to identify the vulnerabilities in the application. It also identifies the network attack that a component of the application is prone to. It gives back the discovered vulnerabilities and security issues to Robocop which stores them in a MySQL database. Robocop also raises an issue for each vulnerability found and also generates a report to the owner of the repository.
+
+![Robocop Snyk](architecture/Robocop_Snyk.png)
 
 #### Architecture Patterns
 
