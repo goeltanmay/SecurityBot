@@ -106,7 +106,7 @@ Before looking at the architecture, we wanted to figure out the different compon
 
 The first distinction is that the actual repository lives on github, while Robocop will run on some machine. So these two will be two separate components.  
 
-Also, we use plan to use 3 types of security analysis tools.  
+Also, we plan to use 3 types of security analysis tools.  
 1. Attack based tools like OWASP ZAP.
 2. Static code analysis tools like OWASP WAP and Bandit.
 3. Dependency checkers like Snyk and OWASP Dependency check.
@@ -122,3 +122,11 @@ With that, we made the following overall architecture.
 So Robocop acts as an interface between github repo, and the various security tools, and makes the decisions on which tools to call and what to do with the output. It checks the vulnerabilities it finds in the database, whether they have been reported before or not. If they are new vulnerabilities, they are reported to github in the appropriate format.
 
 ![Layered Architecture](architecture/LayeredArchitecture.png)
+
+
+
+#### Architecture Patterns
+
+Design of Robocop is a hybrid of 3 designs.
+
+__Publish - Subscribe : __
