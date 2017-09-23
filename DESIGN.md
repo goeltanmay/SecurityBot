@@ -112,3 +112,7 @@ Also, we use plan to use 3 types of security analysis tools.
 3. Dependency checkers like Snyk and OWASP Dependency check.
 
 Since these tools go through either the actual code or a deployed instance of the application, Robocop will need a git clone and a deployed instance of that application. This will be another part of the application.
+
+Also, Robocop will need some database to store the vulnerabilities it finds, to make sure they are not reported again.
+
+With that, we made the following overall architecture.
