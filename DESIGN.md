@@ -2,7 +2,9 @@
 #### Problem Statement:
 Data is prime commodity for any corporate. While developing an application it is responsibility of the developers to allow restricted access to data and follow proper security protocols. For example, an offshoot of Anonymous, hacktivist group Lulzsec in June 2011 hacked into Sony Pictures via SQL Injection attack and stole data that included names, passwords, e-mail and home addresses of thousands of customers. The group claimed to have compromised over one million accounts.
 
-“As the world is increasingly interconnected, everyone shares the responsibility of securing cyberspace.” - Newton Lee, Counterterrorism and Cybersecurity: Total Information Awareness
+> >“As the world is increasingly interconnected, everyone shares the responsibility of securing cyberspace.”
+
+> Newton Lee, Counterterrorism and Cybersecurity: Total Information Awareness
 
 As the world gets online, hackers have more and more incentives to breach the security of applications on the web and obtain valuable information. Recent hacking of Equifax only goes to show that not even the biggest companies are completely secure. However, it is not the companies that are the worst hit by these hacks. The users of their products, whose details are leaked, are the ones hardest hit. As more and more personal services go online, it is imperative to secure them properly. Leak of Personal Identifiable Information is the biggest threat to consumers of these applications as it can have consequences that may not be immediately visible.
 
