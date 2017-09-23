@@ -132,6 +132,8 @@ OWASP ZAP is an API to test for network vulnerabilities in the code. It tests th
 
 ![Robocop Snyk](architecture/Robocop_Snyk.png)
 
+Snyk.io is a software which checks an application for any dependency related vulnerability. Robocop receives dependency list from GitHub which it passes on to Snyk which will check the full list and provide all vulnerable dependencies present. Robocop will save the list in the database so that it can report the vulnerabilities whenever asked.
+
 ### Architecture Patterns
 
 Design of Robocop is a hybrid of 3 designs.
