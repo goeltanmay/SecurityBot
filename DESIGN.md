@@ -116,3 +116,7 @@ Since these tools go through either the actual code or a deployed instance of th
 Also, Robocop will need some database to store the vulnerabilities it finds, to make sure they are not reported again.
 
 With that, we made the following overall architecture.
+
+![Abstract Architecture](Architecture Design/abstract_architecture.png)
+
+![Layered Architecture](Architecture Design/LayeredArchitecture.png)
