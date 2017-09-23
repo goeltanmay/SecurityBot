@@ -158,7 +158,9 @@ Robocop uses three different types of layers.
 ### Additional Patterns
 
 Some other patterns that might become useful are -
-1. __Implicit Invocation__ - As our bot receives events from github, it implicitly invokes the attack surface which will in turn call the actual attack tool.  
+
+1. __Implicit Invocation__ - As our bot receives events from github, it implicitly invokes the attack surface which will in turn call the actual attack tool. Similar implicit invocation can be used for integrating multiple attack modules.
+
 2. __Pipes and Filters__ - We may come across a situation where we want to give the output of one attack tool to another attack tool. In this case, pipes and filters might come in handy.
 
 ### References
