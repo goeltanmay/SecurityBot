@@ -87,5 +87,19 @@ Someone creates a pull request. This can be from the same repo of from a fork of
 ![Report Email](wireframes/mail.jpg)
 The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
 
+#### Storyboards
+
+Some storyboards describing primary tasks of our bot:
+
+##### Scenario 1 -
+![Scenario 1](storyboards/commit.jpg)
+
+A developer tries to use RoboCop to test his application against any security vulnerability as he builds it. He adds the service to his GitHub repository and starts development and make a commit. The commit triggers RoboCop to check the code/application and report any vulnerability found in the form of comments and issues.
+
+##### Scenario 2 -
+![Scenario 2](storyboards/pull_request.jpg)
+
+Some developer wants to add a feature to an application utilizing RoboCop. He creates a pull request which triggers RoboCop to check for any security vulnerability present in the code. RoboCop comments on the pull request with list of vulnerabilities found.
+
 #### Architecture Design
 We took a good hard look at the various architecture
