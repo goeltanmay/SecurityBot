@@ -84,7 +84,7 @@ When a user pushes a commit, robocop will make comments if there are any new sec
 Someone creates a pull request. This can be from the same repo of from a fork of this repo. Robocop will analyse the pull request and make comments about the security vulnerabilities introduced in this pull request.
 
 ##### Report Email -
-![Report Email](wireframes/mail.jpg)
+![Report Email](wireframes/mail.JPG)
 The bot can also send timely vulnerability report to the owner or the security team so that they may act on these quickly.
 
 #### Storyboards
@@ -92,12 +92,12 @@ The bot can also send timely vulnerability report to the owner or the security t
 Some storyboards describing primary tasks of our bot:
 
 ##### Scenario 1 -
-![Scenario 1](storyboards/commit.jpg)
+![Scenario 1](storyboards/commit.JPG)
 
 A developer tries to use RoboCop to test his application against any security vulnerability as he builds it. He adds the service to his GitHub repository and starts development and make a commit. The commit triggers RoboCop to check the code/application and report any vulnerability found in the form of comments and issues.
 
 ##### Scenario 2 -
-![Scenario 2](storyboards/pull_request.jpg)
+![Scenario 2](storyboards/pull_request.JPG)
 
 Some developer wants to add a feature to an application utilizing RoboCop. He creates a pull request which triggers RoboCop to check for any security vulnerability present in the code. RoboCop comments on the pull request with list of vulnerabilities found.
 
@@ -117,8 +117,8 @@ Also, Robocop will need some database to store the vulnerabilities it finds, to 
 
 With that, we made the following overall architecture.
 
-![Abstract Architecture](Architecture\ Design/abstract_architecture.png)  
+![Abstract Architecture](architecture/abstract_architecture.png)  
 
 So Robocop acts as an interface between github repo, and the various security tools, and makes the decisions on which tools to call and what to do with the output. It checks the vulnerabilities it finds in the database, whether they have been reported before or not. If they are new vulnerabilities, they are reported to github in the appropriate format.
 
-![Layered Architecture](Architecture\ Design/LayeredArchitecture.png)
+![Layered Architecture](architecture/LayeredArchitecture.png)
