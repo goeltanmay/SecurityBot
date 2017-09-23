@@ -117,6 +117,8 @@ Also, Robocop will need some database to store the vulnerabilities it finds, to 
 
 With that, we made the following overall architecture.
 
-![Abstract Architecture](Architecture Design/abstract_architecture.png)
+![Abstract Architecture](Architecture Design/abstract_architecture.png)  
+
+So Robocop acts as an interface between github repo, and the various security tools, and makes the decisions on which tools to call and what to do with the output. It checks the vulnerabilities it finds in the database, whether they have been reported before or not. If they are new vulnerabilities, they are reported to github in the appropriate format.
 
 ![Layered Architecture](Architecture Design/LayeredArchitecture.png)
