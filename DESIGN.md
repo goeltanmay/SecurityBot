@@ -102,7 +102,7 @@ A developer tries to use RoboCop to test his application against any security vu
 
 Some developer wants to add a feature to an application utilizing RoboCop. He creates a pull request which triggers RoboCop to check for any security vulnerability present in the code. RoboCop comments on the pull request with list of vulnerabilities found.
 
-####Architecture Design
+#### Architecture Design
 Before looking at the architecture, we wanted to figure out the different components of Robocop.
 
 The first distinction is that the actual repository lives on github, while Robocop will run on some machine. So these two will be two separate components.  
