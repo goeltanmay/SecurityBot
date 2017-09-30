@@ -1,0 +1,27 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "An app to automate security testing of your application",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goeltanmay/SecurityBot.git"
+  },
+  "author": "Tanmay Goel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goeltanmay/SecurityBot/issues"
+  },
+  "homepage": "https://github.com/goeltanmay/SecurityBot#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "commander": "^2.11.0",
+    "content-disposition": "^0.5.2",
+    "express": "^4.16.1",
+    "parse-link-header": "^1.0.1",
+    "request": "^2.83.0"
+  }
+}
