@@ -4,6 +4,7 @@
   "description": "An app to automate security testing of your application",
   "main": "main.js",
   "scripts": {
+    "start:dev": "nodemon ./bin/www",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,10 +19,20 @@
   "homepage": "https://github.com/goeltanmay/SecurityBot#readme",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "body-parser": "^1.18.2",
     "commander": "^2.11.0",
     "content-disposition": "^0.5.2",
     "express": "^4.16.1",
+    "morgan": "^1.9.0",
+    "mysql": "^2.14.1",
+    "mysql2": "^1.4.2",
     "parse-link-header": "^1.0.1",
-    "request": "^2.83.0"
+    "request": "^2.83.0",
+    "sequelize": "^4.13.1",
+    "sequelize-cli": "^3.0.0",
+    "zaproxy": "^0.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
   }
 }
