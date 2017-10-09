@@ -8,12 +8,11 @@ const bodyParser = require('body-parser');
 var app = express()
 
 // respond with "hello world" when a GET request is made to the homepage
-app.get('/', function (req, res) {
-  res.send('hello world');
-});
+require('./server/routes')(app);
+app.get('*', (req, res) => res.status(200).send({
+  message: 'Welcome to the beginning of nothingness.',
+}));
 
-
-module.exports = app
+module.exports = app;
 var port = process.env.PORT || 3000;
 app.listen(port);
-console.log();
