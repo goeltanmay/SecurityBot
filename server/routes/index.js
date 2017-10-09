@@ -2,7 +2,7 @@ const reposController = require('../controllers').repos;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => {
-    console.log(req);
+    console.log(req.params.installation_id);
     res.status(200).send({
       message: 'Welcome to the Todos API!',
     });
