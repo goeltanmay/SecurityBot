@@ -5,6 +5,10 @@ module.exports = (app) => {
     message: 'Welcome to the Todos API!',
   }));
 
+  app.post('/api', (req, res) => res.status(200).send({
+    message: 'Welcome to the Todos API!',
+  }));
+
   app.post('/api/repos', reposController.create);
   app.get('/api/repos', reposController.list)
 };
