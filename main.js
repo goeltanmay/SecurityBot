@@ -9,9 +9,12 @@ var app = express()
 app.use(bodyParser.json());
 // respond with "hello world" when a GET request is made to the homepage
 require('./server/routes')(app);
-app.get('*', (req, res) => res.status(200).send({
+app.get('*', (req, res) => {
+  console.log(req);
+  res.status(200).send({
   message: 'Welcome to the beginning of nothingness.',
-}));
+});
+});
 
 module.exports = app;
 var port = process.env.PORT || 3000;
