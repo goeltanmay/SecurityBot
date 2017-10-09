@@ -12,10 +12,10 @@ app.use(logger('dev'));
 require('./server/routes')(app);
 app.post('*', (req, res) => {
   // console.log(req);
-  console.log(req.get('X-GitHub-Event'))
+  console.log(req.get('X-GitHub-Event'));
   res.status(200).send({
-  message: 'Welcome to the beginning of nothingness.',
-});
+    message: 'Welcome to the beginning of nothingness.',
+  });
 });
 
 module.exports = app;
