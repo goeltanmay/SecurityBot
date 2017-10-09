@@ -6,4 +6,5 @@ module.exports = (app) => {
   }));
 
   app.post('/api/repos', reposController.create);
+  app.get('/api/repos', reposController.list)
 };

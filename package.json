@@ -23,6 +23,7 @@
     "commander": "^2.11.0",
     "content-disposition": "^0.5.2",
     "express": "^4.16.1",
+    "github": "^11.0.0",
     "morgan": "^1.9.0",
     "mysql": "^2.14.1",
     "mysql2": "^1.4.2",

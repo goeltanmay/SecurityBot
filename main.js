@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 
 
 var app = express()
-
+app.use(bodyParser.json());
 // respond with "hello world" when a GET request is made to the homepage
 require('./server/routes')(app);
 app.get('*', (req, res) => res.status(200).send({
