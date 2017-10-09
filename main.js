@@ -14,5 +14,5 @@ app.get('*', (req, res) => res.status(200).send({
 }));
 
 module.exports = app;
-// var port = process.env.PORT || 3000;
-// app.listen(port);
+var port = process.env.PORT || 3000;
+app.listen(port);
