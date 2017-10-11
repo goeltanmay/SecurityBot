@@ -7,7 +7,12 @@ const bodyParser = require('body-parser');
 
 var app = express()
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+})); 
 app.use(logger('dev'));
+app.set('views', __dirname + '/server/views')
+app.set('view engine','pug')
 // respond with "hello world" when a GET request is made to the homepage
 require('./server/routes')(app);
 app.post('*', (req, res) => {

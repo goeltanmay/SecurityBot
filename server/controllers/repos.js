@@ -9,7 +9,7 @@ module.exports = {
         repo: req.body.repo,
         instance_url: req.body.instance_url,
       })
-      .then(todo => res.status(201).send(todo))
+      .then(repo => res.status(201).send(repo))
       .catch(error => res.status(400).send(error));
   },
   list(req, res) {
@@ -18,5 +18,5 @@ module.exports = {
     .then(todos => res.status(200).send(todos))
     .catch(error => res.status(400).send(error));
   },
-  
+
 };

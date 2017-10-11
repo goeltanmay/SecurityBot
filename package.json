@@ -28,6 +28,7 @@
     "mysql": "^2.14.1",
     "mysql2": "^1.4.2",
     "parse-link-header": "^1.0.1",
+    "pug": "^2.0.0-rc.4",
     "request": "^2.83.0",
     "sequelize": "^4.13.1",
     "sequelize-cli": "^3.0.0",
