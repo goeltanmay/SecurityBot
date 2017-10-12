@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
  RepoEvent.associate = (models) => {
    RepoEvent.belongsTo(models.Repo, {
-     foreignKey: ‘repo_id’,
+     foreignKey: ‘repoId’,
      onDelete: ‘CASCADE’,
    });
  };

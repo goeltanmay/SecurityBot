@@ -22,13 +22,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      repo_id: {
+      repoId: {
        type: Sequelize.INTEGER,
        onDelete: 'CASCADE',
        references: {
          model: 'Repos',
          key: 'id',
-         as: 'repo_id',
+         as: 'repoId',
        }
      }
     });
