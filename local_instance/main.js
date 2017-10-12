@@ -1,5 +1,7 @@
 const request = require("request");
 var shell = require('shelljs');
+var sys  = require('util'),
+exec = require('child_process').exec,child;
 
 var user_name="goeltanmay";
 var repo_name="hw1";
@@ -32,8 +34,15 @@ var time_interval_in_miliseconds=5000;
 						var event = JSON.parse(body);
 						console.log(event.type);
 						console.log(event.detail);
-						update_code(event.type,event.detail,function(){
-								console.log("done");
+						update_code(event.type,event.detail,function(result){
+								if(result=="good")
+								{
+									console.log("done executing relevant script");
+								}
+								else
+								{
+									console.log("problem in executing the script");	
+								}	
 								event_running=false;
 						});
 					}
@@ -45,5 +54,31 @@ var time_interval_in_miliseconds=5000;
 
 function update_code(event_type,event_detail)
 {
-	//shell.exec("")
+
+	if(event_type=='commit')
+	{
+		child = exec('sh ../repo/scripts_local_updates/commit_update.sh', function (error, stdout, stderr) 
+    	{
+        	if (error) // There was an error executing our script
+        	{
+            	return "bad";
+        	}
+
+        	return "good";
+
+    	});
+	}
+	else
+	{
+		child = exec('sh ../repo/scripts_local_updates/commit_update.sh', function (error, stdout, stderr) 
+    	{
+        	if (error) // There was an error executing our script
+        	{
+            	return "bad";
+        	}
+
+        	return "good";
+
+    	});
+	}
 }
