@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Repo.associate = (models) => {
    Repo.hasMany(models.RepoEvent, {
-     foreignKey: 'repo_id',
+     foreignKey: 'repoId',
      as: 'repoEvents',
    });
  };
