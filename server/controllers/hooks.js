@@ -3,7 +3,9 @@ const Repo = require('../models').Repo;
 
 const gitEvents = {
   'pull_request' : GitEventHandler.pull_request,
+  'installation_repositories' : GitEventHandler.installation_repositories,
 }
+
 githook = function (req, res) {
   // do your thing here.
   var git_event = req.get('X-GitHub-Event');

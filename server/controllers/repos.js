@@ -33,7 +33,10 @@ module.exports = {
         repo: req.get('repo'),
       }
     }).then( function (repo) {
-      res.send(repo.repoEvents[0])
+      if (!repo){
+        res.status(204).send();
+      }
+      res.status(200).send(repo.repoEvents[0]);
     })
     .catch(error => res.status(400).send(error))
   }
