@@ -7,12 +7,12 @@ module.exports = (sequelize, DataTypes) => {
     repo: DataTypes.STRING,
     instance_url: DataTypes.STRING
   });
-  // {
-  //   classMethods: {
-  //     associate: function(models) {
-  //       // associations can be defined here
-  //     }
-  //   }
-  // });
+
+  Repo.associate = (models) => {
+   Repo.hasMany(models.RepoEvent, {
+     foreignKey: 'repo_id',
+     as: 'repoEvents',
+   });
+ };
   return Repo;
 };

@@ -24,13 +24,13 @@ module.exports = {
       },
       repo_id: {
        type: Sequelize.INTEGER,
-       onDelete: ‘CASCADE’,
+       onDelete: 'CASCADE',
        references: {
-         model: ‘Repos’,
-         key: ‘id’,
-         as: ‘repo_id’,
-       },
-     },
+         model: 'Repos',
+         key: 'id',
+         as: 'repo_id',
+       }
+     }
     });
   },
   down: (queryInterface, Sequelize) => {
