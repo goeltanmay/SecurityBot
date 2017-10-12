@@ -9,7 +9,7 @@ block content
         // register form
         form(method='POST' action='/register')
           div.form-group
-            input#name.form-control(type='text', placeholder='first and last' name='name' value="#{integration_id}" hidden)
+            input#name.form-control(type='text', name='installation_id', value="#{installation_id}", hidden)
           div.form-group
             label(for='instance_url') Deployed Instance URL:
             input#instance_url.form-control(type='text', name='instance_url')

@@ -7,7 +7,7 @@ githook = function (req, res) {
 
 setup = function(req, res){
   console.log(req.body);
-  res.render('setup',{ integration_id : req.query.integration_id });
+  res.render('setup',{ installation_id : req.query.installation_id });
 }
 
 register = function(req,res) {

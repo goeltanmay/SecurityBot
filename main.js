@@ -9,7 +9,7 @@ var app = express()
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
-})); 
+}));
 app.use(logger('dev'));
 app.set('views', __dirname + '/server/views')
 app.set('view engine','pug')
@@ -17,7 +17,7 @@ app.set('view engine','pug')
 require('./server/routes')(app);
 app.post('*', (req, res) => {
   // console.log(req);
-  console.log(req.get('X-GitHub-Event'));
+  // console.log(req.get('X-GitHub-Event'));
   res.status(200).send({
     message: 'Welcome to the beginning of nothingness.',
   });
