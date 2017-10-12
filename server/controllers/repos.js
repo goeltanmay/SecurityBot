@@ -2,7 +2,7 @@ const Repo = require('../models').Repo;
 
 module.exports = {
   create(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     return Repo
       .create({
         username: req.body.username,

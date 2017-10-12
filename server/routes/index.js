@@ -3,7 +3,6 @@ const hooksController = require('../controllers').hooks;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => {
-    console.log(req.query.installation_id);
     res.status(200).send({
       message: 'Welcome to the Robocop API!',
     });
