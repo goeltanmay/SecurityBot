@@ -1,4 +1,5 @@
 const Repo = require('../models').Repo;
+const RepoEvent = require('../models').RepoEvent;
 
 module.exports = {
   create(req, res) {
@@ -12,11 +13,29 @@ module.exports = {
       .then(repo => res.status(201).send(repo))
       .catch(error => res.status(400).send(error));
   },
+
   list(req, res) {
   return Repo
-    .all()
-    .then(todos => res.status(200).send(todos))
-    .catch(error => res.status(400).send(error));
+  .findAll({
+    include: [{
+      model: RepoEvent,
+      as: 'repoEvents',
+    }],
+  })
+  .then(repos => res.status(200).send(repos))
+  .catch(error => res.status(400).send(error))
   },
+
+  getEvent(req, res) {
+    var events = Repo.findOne({
+      where:{
+        username: req.get('username'),
+        repo: req.get('repo'),
+      }
+    }).then( function (repo) {
+      res.send(repo.repoEvents[0])
+    })
+    .catch(error => res.status(400).send(error))
+  }
 
 };
