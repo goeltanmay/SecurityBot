@@ -1,5 +1,5 @@
-const Repo = require(‘../models’).Repo;
-const RepoEvent = require(‘../models’).RepoEvent;
+const Repo = require('../models').Repo;
+const RepoEvent = require('../models').RepoEvent;
 
 module.exports = {
  create(req, res) {
@@ -18,7 +18,7 @@ module.exports = {
      .findAll({
        include: [{
          model: RepoEvent,
-         as: ‘repoEvents’,
+         as: 'repoEvents',
        }],
      })
    .then(repos => res.status(200).send(repos))
@@ -33,7 +33,7 @@ module.exports = {
      },
      include: [{
        model: RepoEvent,
-       as: ‘repoEvents’,
+       as: 'repoEvents',
      }],
    }).then( function (repo) {
      if (!repo){
