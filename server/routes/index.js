@@ -12,8 +12,8 @@ module.exports = (app) => {
 
   app.post('/register', hooksController.register);
   app.post('/githook', hooksController.githook);
-
+  app.post('/report', hooksController.report);
   app.post('/api/repos', reposController.create);
-  app.get('/api/repos', reposController.list)
-  app.get('/api/repos/:username/:repo/event', reposController.getEvent)
+  app.get('/api/repos', reposController.list);
+  app.get('/api/repos/:username/:repo/event', reposController.getEvent);
 };
