@@ -25,13 +25,16 @@ function installation_repositories(req, res) {
       .catch(error => res.status(400).send(error));
       break;
     case 'removed':
-      Repo.destroy({
-        where: {
-          username: req.body.sender.login,
-          repo: req.body.repositories_added.name,
-        }
+      promises = []
+      req.body.repositories_added.forEach( repository => {
+        promises.push(Repo.destroy({
+          where: {
+            username: req.body.sender.login,
+            repo: req.body.repositories_added.name,
+          }
+        }))
       })
-      .then(repo => res.status(202).send(repo))
+      Promise.all(promises).then(() => res.status(202).send())
       .catch(error => res.status(400).send(error));
       break;
     default:
