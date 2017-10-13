@@ -1,23 +1,27 @@
+const Promise = require('bluebird');
 const Repo = require('../models').Repo;
 const RepoEvent = require('../models').RepoEvent;
 
 function installation_repositories(req, res) {
+
   switch(req.body.action) {
     case 'added':
-      Repo.create({
-        username: req.body.sender.login,
-        repo: req.body.repositories_added.name,
-        instance_url: 'skd',
-      })
-      .then(repo => {
-        RepoEvent.create({
-          type: 'installation_repositories',
-          detail: req.body.repo,
-          repoId: repo.id,
+      promises = []
+      req.body.repositories_added.forEach( repository => {
+        promises.push(Repo.create({
+          username: req.body.sender.login,
+          repo: repository.name,
+          instance_url: 'skd',
         })
-        .then(repoEvent => res.status(201).send(repo))
-        .catch(error => res.status(400).send(error));
+        .then(repo => {
+          RepoEvent.create({
+            type: 'installation_repositories',
+            detail: repository.name,
+            repoId: repo.id,
+          });
+        }));
       })
+      Promise.all(promises).then(() => res.status(201).send())
       .catch(error => res.status(400).send(error));
       break;
     case 'removed':
