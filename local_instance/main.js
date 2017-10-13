@@ -3,7 +3,7 @@ var sys  = require('util'),
 exec = require('child_process').exec,child;
 
 var user_name="goeltanmay";
-var repo_name="hw1";
+var repo_name="mesosphere_challenge";
 var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
 var poll_url="http://desolate-fortress-49649.herokuapp.com/api/repos/"+user_name+"/"+repo_name+"/event";
 
@@ -30,6 +30,7 @@ var time_interval_in_miliseconds=5000;
 					}
 					else
 					{
+						console.log('got an event');
 						event_running=true;
 						var event = JSON.parse(body);
 						console.log(event.type);
@@ -57,7 +58,7 @@ function update_code(event_type,event_detail)
 
 	if(event_type=='commit')
 	{
-		child = exec('sh ../repo/scripts_local_updates/commit_update.sh', function (error, stdout, stderr) 
+		child = exec('sh ../repo/scripts_local_updates/commit_update.sh '+event_detail, function (error, stdout, stderr) 
     	{
         	if (error) // There was an error executing our script
         	{
@@ -70,7 +71,7 @@ function update_code(event_type,event_detail)
 	}
 	else
 	{
-		child = exec('sh ../repo/scripts_local_updates/commit_update.sh', function (error, stdout, stderr) 
+		child = exec('sh ../repo/scripts_local_updates/commit_update.sh '+event_detail, function (error, stdout, stderr) 
     	{
         	if (error) // There was an error executing our script
         	{
