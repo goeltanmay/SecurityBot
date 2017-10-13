@@ -1,5 +1,4 @@
-const request = require("request");
-var shell = require('shelljs');
+const request = require('request');
 var sys  = require('util'),
 exec = require('child_process').exec,child;
 
@@ -16,6 +15,7 @@ var time_interval_in_miliseconds=5000;
 	var event_running=false;
 
 	setInterval(function(){
+		console.log('polling started');
 		if(!event_running){
 			request.get(poll_url,(error,response,body) => {
 				if(error)
