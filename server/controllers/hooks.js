@@ -23,8 +23,14 @@ register = function(req,res) {
 
 }
 
+report = function (req, res) {
+  res.status(200).send();
+  // forward here to github
+}
+
 module.exports = {
   githook,
   setup,
   register,
+  report,
 }
