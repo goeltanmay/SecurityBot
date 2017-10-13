@@ -26,11 +26,11 @@ function installation_repositories(req, res) {
       break;
     case 'removed':
       promises = []
-      req.body.repositories_added.forEach( repository => {
+      req.body.repositories_removed.forEach( repository => {
         promises.push(Repo.destroy({
           where: {
             username: req.body.sender.login,
-            repo: req.body.repositories_added.name,
+            repo: repository.name,
           }
         }))
       })
