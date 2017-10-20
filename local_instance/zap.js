@@ -1,22 +1,8 @@
 const request = require('request');
+var fs=require('fs');
+var data = fs.readFileSync('./conf.json'),repositoryInfo;
 
-
-/*
-var options = { proxy:'http://localhost:9000' };
-    var ZapClient = require('zaproxy');
-    console.log(ZapClient);
-
-    var key='obu7ogg851bnrel71kgr4pulca';
-    var zaproxy = new ZapClient(key,options);
-    zaproxy.core.sites(function (err, resp) {
-    	console.log(err);
-      resp.sites.forEach(function (site) {
-        	console.log(site);
-      });  
-    });
-*/
-
-var repo_url="http://localhost:8083/PatientsApp/";
+var repo_url="";
 var key='obu7ogg851bnrel71kgr4pulca';
 
 
@@ -28,6 +14,8 @@ testing_zap();
 
 function testing_zap()
 {
+	repositoryInfo = JSON.parse(data);
+	repo_url=repositoryInfo.repo;
 
 	var attack_url="http://localhost:9000/JSON/spider/action/scan/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&url="+repo_url+"&recurse=true";
 
@@ -52,20 +40,15 @@ function testing_zap()
 				console.log(progress);
 
 
+				var alert_url="http://localhost:9000/JSON/core/view/alerts/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&baseurl="+repo_url;
+
+				request.get(alert_url,(error,response,body)=>{
+
+						console.log(body);
+
+				});
+
 			});
-			
-//http://localhost:9000/JSON/core/view/alerts/?zapapiformat=JSON&apikey=obu7ogg851bnrel71kgr4pulca&formMethod=GET&baseurl=http%3A%2F%2Flocalhost%3A8083%2FPatientsApp%2F&start=&count=
-		
-		var alert_url="http://localhost:9000/JSON/core/view/alerts/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&baseurl="+repo_url;
-
-		request.get(alert_url,(error,response,body)=>{
-
-				console.log(body);
-
-		});
-
-
-
 
 	});
 }
