@@ -1,3 +1,4 @@
 {
-	"repo":"http://localhost:8083/PatientsApp/"
+	"repo":"http://localhost:8083/PatientsApp/",
+	"zap_url":"http://localhost:9000/"
 }
