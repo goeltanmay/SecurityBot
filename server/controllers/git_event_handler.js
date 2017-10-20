@@ -49,7 +49,7 @@ function pull_request(req, res) {
       Repo.findOne({
         where: {
           username: req.body.pull_request.user.login,
-          repo: req.body.repo.name
+          repo: req.body.repository.name
         }
       })
       .then(repo => {

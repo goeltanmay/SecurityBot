@@ -41,11 +41,11 @@ module.exports = {
      }
      else {
        res.status(200).send(repo.repoEvents[0]);
-       RepoEvent.destroy({
-         where: {
-           id : repo.repoEvents[0].id
-         }
-       });
+      //  RepoEvent.destroy({
+      //    where: {
+      //      id : repo.repoEvents[0].id
+      //    }
+      //  });
      }
    })
    .catch(error => res.status(400).send(error))
