@@ -24,11 +24,11 @@ function testing_zap()
 	console.log(attack_url);
 
 	request.get(attack_url,(error,response,body) => {
-
+		console.log(body);
+		console.log("inside testing_zap1");
 		var body_content = JSON.parse(body);
 		scanid=body_content.scan;
 		console.log(scanid);
-
 		var status_url=zap_url+"JSON/spider/view/status/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&scanId="+scanid;
 
 		var progress="0";
@@ -45,9 +45,13 @@ function testing_zap()
 				var alert_url=zap_url+"JSON/core/view/alerts/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&baseurl="+repo_url;
 
 				request.get(alert_url,(error,response,body)=>{
-
-						console.log(body);
-
+						// console.log(body);
+						var vuls = JSON.parse(body);
+						var alerts = vuls.alerts;
+						alerts.forEach(function processAlert(alert){
+							console.log("------------------------------------------------------");
+							console.log(alert);
+						})
 				});
 
 			});
