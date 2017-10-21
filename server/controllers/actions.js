@@ -1,4 +1,5 @@
 const JWT = require('./jwt');
+const Promise = require('bluebird');
 var request = require('request-promise');
 
 var jwtToken = JWT.generateToken('C:\\Users\\admin\\Downloads\\robocop.2017-10-19.private-key.pem', "5599");
@@ -24,29 +25,37 @@ function main() {
 				headers: {
 					"User-Agent": "EnableIssues",
 					"content-type": "application/json",
-					"Authorization": git_token,
+					"Authorization": github.git_token,
 		      "Accept": "application/vnd.github.machine-man-preview+json"
 				}
 			});
 		},
 
 		getAccessTokensUrl: function(installations, userId) {
-			installations.body.forEach(function(installation) {
-				if(installation.account.login === userId) {
-					return access_token_url;
-				}
+			return new Promise(function(resolve, reject) {
+				var counter = 0;
+				installations.forEach(function(installation) {
+					counter++;
+					if(installation.account.login === userId) {
+						resolve(installation.access_tokens_url);
+					}
+					if (counter == installation.length){
+						reject("User not found")
+					}
+				});
 			});
 		}
 	}
 
-	console.log(github);
-	//github.git_token = token;
 	var userId = "goeltanmay";
 	return github.getInstallations()
 	.then(function (installations){
 		return github.getAccessTokensUrl(installations, userId);
 	})
-	.then(console.log);
+	.then(function ( url) {
+		console.log("here");
+		console.log(url);
+	});
 }
 
 function integration()
