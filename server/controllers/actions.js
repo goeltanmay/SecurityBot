@@ -1,15 +1,54 @@
 const JWT = require('./jwt');
-var request = require('request');
+var request = require('request-promise');
 
 var jwtToken = JWT.generateToken('C:\\Users\\admin\\Downloads\\robocop.2017-10-19.private-key.pem', "5599");
 var token = "Bearer " + jwtToken;
-var finalToken = "token " + "TOKEN";
+var finalToken = "token " + "v1.3e8dc341bc77bec7efeed4b2519a77198efe13e1";
 console.log(token);
 var urlRoot = "https://api.github.com"
+main();
 //listBranches("goeltanmay", "Duke-MEM-MENG")
-postComment("goeltanmay", "Duke-MEM-MENG", 1)
+//postComment("goeltanmay", "Duke-MEM-MENG", 2)
 //integration();
 //getToken("/installations/59503/access_tokens");
+
+function main() {
+	var github = {
+		git_token: token,
+
+	  getInstallations: function() {
+			return request({
+				url: urlRoot + "/integration/installations",
+				method: 'GET',
+		    json: true,
+				headers: {
+					"User-Agent": "EnableIssues",
+					"content-type": "application/json",
+					"Authorization": git_token,
+		      "Accept": "application/vnd.github.machine-man-preview+json"
+				}
+			});
+		},
+
+		getAccessTokensUrl: function(installations, userId) {
+			installations.body.forEach(function(installation) {
+				if(installation.account.login === userId) {
+					return access_token_url;
+				}
+			});
+		}
+	}
+
+	console.log(github);
+	//github.git_token = token;
+	var userId = "goeltanmay";
+	return github.getInstallations()
+	.then(function (installations){
+		return github.getAccessTokensUrl(installations, userId);
+	})
+	.then(console.log);
+}
+
 function integration()
 {
 	var options = {
