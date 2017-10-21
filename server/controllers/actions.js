@@ -2,10 +2,9 @@ const JWT = require('./jwt');
 const Promise = require('bluebird');
 var request = require('request-promise');
 
-var jwtToken = JWT.generateToken('C:\\Users\\admin\\Downloads\\robocop.2017-10-19.private-key.pem', "5599");
+var jwtToken = JWT.generateToken("5599");
 var token = "Bearer " + jwtToken;
-var finalToken = "token " + "v1.3e8dc341bc77bec7efeed4b2519a77198efe13e1";
-console.log(token);
+var finalToken = "token " + "TOKEN";
 var urlRoot = "https://api.github.com"
 main();
 //listBranches("goeltanmay", "Duke-MEM-MENG")
@@ -102,33 +101,6 @@ function getToken(url)
 	request(options, function (error, response, body)
 	{
 		console.log(body );
-	});
-
-}
-
-function listBranches(owner, repo)
-{
-	var options = {
-		url: urlRoot + "/repos/" + owner + "/" + repo + "/branches",
-		method: 'GET',
-		headers: {
-			"User-Agent": "EnableIssues",
-			"content-type": "application/json",
-			"Authorization": finalToken,
-      "Accept": "application/vnd.github.machine-man-preview+json"
-		}
-	};
-
-	// Send a http request to url and specify a callback that will be called upon its return.
-	request(options, function (error, response, body)
-	{
-		var obj = JSON.parse(body);
-		console.log( obj );
-		for( var i = 0; i < obj.length; i++ )
-		{
-			var name = obj[i].name;
-			console.log( name );
-		}
 	});
 
 }
