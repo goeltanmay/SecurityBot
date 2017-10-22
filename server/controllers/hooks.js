@@ -30,9 +30,9 @@ report = function (req, res) {
   res.status(200).send();
   // forward here to github
   var userId = req.body.userId;
-	var repo = req.body.repoName;
-	var pullRequestNum = req.body.pullRequestNumber;
-  var message = req.body.vulnerabilities.toString();
+	var repoName = req.body.repoName;
+	var pullRequestNumber = req.body.pullRequestNumber;
+  var vulnerabilities = req.body.vulnerabilities.toString();
 	JWT.generateToken("5599")
 	.then(function (jwtToken) {
 		github.getInstallations(jwtToken)
@@ -44,7 +44,7 @@ report = function (req, res) {
 		})
 		.then(github.getToken)
 		.then(function (token) {
-			return github.postComment(token, userId, repo, pullRequestNum, message);
+			return github.postComment(token, userId, repo, pullRequestNum, vulnerabilities);
 		})
 		.then(function (res) {
 			return null;
