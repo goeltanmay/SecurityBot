@@ -69,26 +69,28 @@ function pull_request(req, res) {
       break;
     default:
       res.status(200).send();
-  },
-  function push(req, res) {
-      Repo.findOne({
-        where: {
-          username: req.body.repository.owner.name,
-          repo: req.body.repository.name
-        }
-      })
-      .then(repo => {
-        RepoEvent.create({
-          type: 'push',
-          detail: req.body.after,
-          repoId: repo.id,
-          current_commit: req.body.after,
-          previous_commit: req.body.before,
-        })
-        .then(repoEvent => res.status(201).send(repo))
-        .catch(error => res.status(400).send(error));
-      })
-      .catch(error => res.status(400).send(error));
+  }
+}
+
+function push(req, res) {
+  Repo.findOne({
+    where: {
+      username: req.body.repository.owner.name,
+      repo: req.body.repository.name
+    }
+  })
+  .then(repo => {
+    RepoEvent.create({
+      type: 'push',
+      detail: req.body.after,
+      repoId: repo.id,
+      current_commit: req.body.after,
+      previous_commit: req.body.before,
+    })
+    .then(repoEvent => res.status(201).send(repo))
+    .catch(error => res.status(400).send(error));
+  })
+  .catch(error => res.status(400).send(error));
 }
 
 module.exports = {
