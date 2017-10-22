@@ -29,9 +29,11 @@ register = function(req,res) {
 report = function (req, res) {
   res.status(200).send();
   // forward here to github
-  var userId = "goeltanmay";
-	var repo = "Duke-MEM-MENG";
-	var pullRequestNum = 2;
+  var userId = "goeltanmay"; // req.body.userId
+	var repo = "Duke-MEM-MENG"; // req.body.repo
+	var pullRequestNum = 2; // req.body.pull_request.number
+  // iterate on vulnerabilities and make the comment body
+  var message = "Hard Coded Comment";
 	JWT.generateToken("5599")
 	.then(function (jwtToken) {
 		github.getInstallations(jwtToken)
@@ -43,11 +45,10 @@ report = function (req, res) {
 		})
 		.then(github.getToken)
 		.then(function (token) {
-			return github.postComment(token, userId, repo, pullRequestNum);
+			return github.postComment(token, userId, repo, pullRequestNum, message);
 		})
 		.then(function (res) {
-			console.log("here");
-			console.log(res);
+			return null;
 		});
 	});
 }

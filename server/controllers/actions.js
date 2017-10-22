@@ -1,4 +1,3 @@
-const JWT = require('./jwt');
 const Promise = require('bluebird');
 var request = require('request-promise');
 var urlRoot = "https://api.github.com"
@@ -52,7 +51,7 @@ module.exports = {
 		return accessToken.token;
 	},
 
-	postComment: function(token, userId, repo, pullRequestNum) {
+	postComment: function(token, userId, repo, pullRequestNum, message) {
 		return request({
 			url: urlRoot + "/repos/" + userId + "/" + repo + "/issues/" + pullRequestNum + "/comments",
 			method: 'POST',
@@ -63,7 +62,7 @@ module.exports = {
 				"Accept": "application/vnd.github.machine-man-preview+json"
 			},
 			json: {
-				"body" : "My third comment"
+				"body" : message
 			}
 		});
 	}
