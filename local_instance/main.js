@@ -1,12 +1,14 @@
 var fs=require('fs');
-var data = fs.readFileSync('./server/config/config.json'),repositoryInfo;
+// var data = fs.readFileSync('./server/config/config.json'),repositoryInfo;
+// var fs=require('fs');
+var data = fs.readFileSync('./conf.json'),repositoryInfo;
 const request = require('request');
 var sys  = require('util');
 var exec = require('child_process').exec;
 
 var user_name="goeltanmay";
 var repo_name="mesosphere_challenge";
-var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
+// var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
 var poll_url="http://desolate-fortress-49649.herokuapp.com/api/repos/"+user_name+"/"+repo_name+"/event";
 
 //var poll_url ="https://maps.googleapis.com/maps/api/geocode/json?address=Florence";
@@ -44,8 +46,8 @@ var time_interval_in_miliseconds=5000;
 								}
 								else
 								{
-									console.log("problem in executing the script");	
-								}	
+									console.log("problem in executing the script");
+								}
 								event_running=false;
 						});
 					}
@@ -56,44 +58,4 @@ var time_interval_in_miliseconds=5000;
 
 */
 
-update_code("commit","7361a36883b69696b4389fa3740430163d28ba64");
-
-function update_code(event_type,event_detail)
-{
-	console.log('entered update_code');
-	repositoryInfo = JSON.parse(data);
-    console.log(repositoryInfo);
-    var directory=repositoryInfo[1].repo.repo_directory;
-    var path=repositoryInfo[1].repo.repo_path;
-	if(event_type=='commit')
-	{
-		//console.log('"commit_update.sh" '+event_detail+' '+directory+' '+path);
-		exec('‪commit_update.sh '+event_detail+' '+directory+' '+path, function (error, stdout, stderr) 
-    	{
-        	if (error!==null) // There was an error executing our script
-        	{
-        		console.log(error);
-            	return "bad";
-        	}
-        	console.log("I am here");
-        	console.log(stdout);
-        	return "good";
-
-    	});
-    	
-	}
-	else
-	{
-		child = exec('sh ../repo/scripts_local_updates/commit_update.sh '+event_detail, function (error, stdout, stderr) 
-    	{
-        	if (error) // There was an error executing our script
-        	{
-            	return "bad";
-        	}
-
-        	return "good";
-
-    	});
-	}
-	
-}
+update_code("commit","beafb5d30989f2edbe1fde03669eeca08a6444e3");

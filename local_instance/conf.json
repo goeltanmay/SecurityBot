@@ -1,4 +1,7 @@
 {
 	"repo":"http://localhost:8083/PatientsApp/",
-	"zap_url":"http://localhost:9000/"
+	"zap_url":"http://localhost:9000/",
+	"repo_path": "/Users/jitinnagpal/Documents/workspace/PatientsApp",
+	"jenkins_path":"/Users/Shared/Jenkins/Home/war/WEB-INF/jenkins-cli.jar",
+	"zap_key":"obu7ogg851bnrel71kgr4pulca"
 }
