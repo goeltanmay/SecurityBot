@@ -30,9 +30,10 @@ register = function(req,res) {
 report = function (req, res) {
   res.status(200).send();
   // forward here to github
+  var eventType = req.body.eventType;
   var userId = req.body.userId;
 	var repoName = req.body.repoName;
-	var pullRequestNumber = req.body.pullRequestNumber;
+	var detail = req.body.detail;
   var vulnerabilities = req.body.vulnerabilities.toString();
 	JWT.generateToken("5599")
 	.then(function (jwtToken) {
@@ -45,7 +46,12 @@ report = function (req, res) {
 		})
 		.then(github.getToken)
 		.then(function (token) {
-			return github.postComment(token, userId, repoName, pullRequestNumber, vulnerabilities);
+      if (eventType === "pull_request") {
+        return github.postCommentPullRequest(token, userId, repoName, detail, vulnerabilities);
+      }
+      else if (eventType === "push") {
+        return github.postCommentPush(token, userId, repoName, detail, vulnerabilities);
+      }
 		})
 		.then(function (res) {
 			return null;

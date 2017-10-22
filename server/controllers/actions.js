@@ -51,9 +51,25 @@ module.exports = {
 		return accessToken.token;
 	},
 
-	postComment: function(token, userId, repo, pullRequestNum, message) {
+	postCommentPullRequest: function(token, userId, repo, pullRequestNum, message) {
 		return request({
 			url: urlRoot + "/repos/" + userId + "/" + repo + "/issues/" + pullRequestNum + "/comments",
+			method: 'POST',
+			headers: {
+				"User-Agent": "EnableIssues",
+				"content-type": "application/json",
+				"Authorization": "token " + token,
+				"Accept": "application/vnd.github.machine-man-preview+json"
+			},
+			json: {
+				"body" : message
+			}
+		});
+	},
+
+	postCommentPush: function(token, userId, repo, sha, message) {
+		return request({
+			url: urlRoot + "/repos/" + userId + "/" + repo + "/commits/" + sha + "/comments",
 			method: 'POST',
 			headers: {
 				"User-Agent": "EnableIssues",
