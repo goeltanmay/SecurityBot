@@ -44,7 +44,7 @@ report = function (req, res) {
 		})
 		.then(github.getToken)
 		.then(function (token) {
-			return github.postComment(token, userId, repo, pullRequestNum, vulnerabilities);
+			return github.postComment(token, userId, repoName, pullRequestNumber, vulnerabilities);
 		})
 		.then(function (res) {
 			return null;
