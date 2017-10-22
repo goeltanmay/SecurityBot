@@ -2,11 +2,9 @@ var fs = require('fs');
 var path = require('path');
 var jwt = require('jsonwebtoken');
 
-function generateToken(filepath, issuerId) {
+function generateToken(issuerId) {
 
-  var filepath = 'C:\\Users\\admin\\Downloads\\robocop.2017-10-19.private-key.pem'
-  var keyPriv = fs.readFileSync(filepath);
-
+  var keyPriv = process.env.ROBOCOP_PRIVATE_KEY.replace(/\\n/g, '\n');
   var payload = {
     iat : Math.round(Date.now()/1000),
     exp : Math.round(Date.now()/1000) + 15,
