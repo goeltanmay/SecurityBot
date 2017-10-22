@@ -29,11 +29,10 @@ register = function(req,res) {
 report = function (req, res) {
   res.status(200).send();
   // forward here to github
-  var userId = "goeltanmay"; // req.body.userId
-	var repo = "Duke-MEM-MENG"; // req.body.repo
-	var pullRequestNum = 2; // req.body.pull_request.number
-  // iterate on vulnerabilities and make the comment body
-  var message = "Hard Coded Comment";
+  var userId = req.body.userId;
+	var repo = req.body.repoName;
+	var pullRequestNum = req.body.pullRequestNumber;
+  var message = req.body.vulnerabilities.toString();
 	JWT.generateToken("5599")
 	.then(function (jwtToken) {
 		github.getInstallations(jwtToken)
