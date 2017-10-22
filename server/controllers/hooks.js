@@ -34,8 +34,8 @@ report = function (req, res) {
   var userId = req.body.userId;
 	var repoName = req.body.repoName;
 	var detail = req.body.detail;
-  var vulnerabilities = req.body.vulnerabilities.toString();
   console.log(req.body);
+  var vulnerabilities = req.body.vulnerabilities.toString();
 	JWT.generateToken("5599")
 	.then(function (jwtToken) {
 		github.getInstallations(jwtToken)
