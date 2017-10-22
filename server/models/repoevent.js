@@ -8,6 +8,14 @@ module.exports = (sequelize, DataTypes) => {
      type: DataTypes.STRING,
      defaultValue: false,
    },
+   previous_commit: {
+     type: DataTypes.STRING,
+     defaultValue: false,
+   },
+   current_commit: {
+     type : DataTypes.STRING,
+     defaultValue: false,
+   }
  });
 
  RepoEvent.associate = (models) => {

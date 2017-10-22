@@ -18,6 +18,8 @@ function installation_repositories(req, res) {
             type: 'installation_repositories',
             detail: repository.name,
             repoId: repo.id,
+            current_commit: null,
+            previous_commit: null,
           });
         }));
       })
@@ -57,6 +59,8 @@ function pull_request(req, res) {
           type: 'pull_request',
           detail: req.body.number,
           repoId: repo.id,
+          current_commit: req.body.pull_request.head.sha,
+          previous_commit: req.body.pull_request.base.sha,
         })
         .then(repoEvent => res.status(201).send(repo))
         .catch(error => res.status(400).send(error));
@@ -65,10 +69,30 @@ function pull_request(req, res) {
       break;
     default:
       res.status(200).send();
-  }
+  },
+  function push(req, res) {
+      Repo.findOne({
+        where: {
+          username: req.body.repository.owner.name,
+          repo: req.body.repository.name
+        }
+      })
+      .then(repo => {
+        RepoEvent.create({
+          type: 'push',
+          detail: req.body.after,
+          repoId: repo.id,
+          current_commit: req.body.after,
+          previous_commit: req.body.before,
+        })
+        .then(repoEvent => res.status(201).send(repo))
+        .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
 }
 
 module.exports = {
   pull_request,
   installation_repositories,
+  push,
 }

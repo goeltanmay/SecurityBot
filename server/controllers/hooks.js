@@ -7,6 +7,7 @@ const JWT = require('./jwt');
 const gitEvents = {
   'pull_request' : GitEventHandler.pull_request,
   'installation_repositories' : GitEventHandler.installation_repositories,
+  'push': GitEventHandler.push,
 }
 
 githook = function (req, res) {
