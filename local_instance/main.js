@@ -1,4 +1,5 @@
 var fs=require('fs');
+var zap=require('./zap.js');
 // var data = fs.readFileSync('./server/config/config.json'),repositoryInfo;
 // var fs=require('fs');
 var data = fs.readFileSync('./conf.json'),repositoryInfo;
@@ -58,4 +59,49 @@ var time_interval_in_miliseconds=5000;
 
 */
 
-update_code("commit","beafb5d30989f2edbe1fde03669eeca08a6444e3");
+update_code("commit","6eb1ca00ae181ed0b2f40ed560add3494b40243b","beafb5d30989f2edbe1fde03669eeca08a6444e3");
+
+function update_code(event_type, curr_hash, prev_hash){
+	console.log('entered update_code');
+	repositoryInfo = JSON.parse(data);
+  	console.log(repositoryInfo);
+  	// var directory=repositoryInfo[1].repo_directory;
+  	var directory = repositoryInfo.directory;
+  	var path=repositoryInfo.repo_path;
+  	var jenkins_path=repositoryInfo.jenkins_path;
+	
+	if(event_type=='push')
+	{
+		var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
+		console.log(cmd);
+		var myscript = exec(cmd, function (error, stdout, stderr)
+    	{
+        	if (error!==null) // There was an error executing our script
+        	{
+        		console.log(error);
+            	return "bad";
+        	}
+        	console.log("I am here");
+        	console.log(stdout);
+        	return "good";
+
+    	});
+
+	}
+	if(event_type=="pull_request")
+	{
+		child = exec('sh ../repo/scripts_local_updates/commit_update.sh '+event_detail, function (error, stdout, stderr)
+    	{
+        	if (error) // There was an error executing our script
+        	{
+            	return "bad";
+        	}
+
+        	return "good";
+
+    	});
+	}
+
+	zap.attack_using_zap(event_type,curr_hash,prev_hash);
+
+}
