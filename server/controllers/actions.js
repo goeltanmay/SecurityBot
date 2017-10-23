@@ -82,4 +82,21 @@ module.exports = {
 			}
 		});
 	}
+
+	createIssue: function(token, userId, repo, message) {
+		return request({
+			url: urlRoot + "/repos/" + userId + "/" + repo + "/issues",
+			method: 'POST',
+			headers: {
+				"User-Agent": "EnableIssues",
+				"content-type": "application/json",
+				"Authorization": "token " + token,
+				"Accept": "application/vnd.github.machine-man-preview+json"
+			},
+			json: {
+				"title" : "Robocop Report"
+				"body" : message
+			}
+		});
+	}
 }

@@ -46,7 +46,10 @@ report = function (req, res) {
 		})
 		.then(github.getToken)
 		.then(function (token) {
-      if (eventType === "pull_request") {
+      if (eventType === "installation_repositories") {
+        return github.createIssue(token, userId, repoName, vulnerabilities);
+      }
+      else if (eventType === "pull_request") {
         return github.postCommentPullRequest(token, userId, repoName, detail, vulnerabilities);
       }
       else if (eventType === "push") {
