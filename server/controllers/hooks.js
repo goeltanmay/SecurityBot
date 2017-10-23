@@ -2,7 +2,7 @@ const GitEventHandler = require('./git_event_handler');
 const Repo = require('../models').Repo;
 const github = require('./actions');
 const JWT = require('./jwt');
-
+const nodemailer = require('nodemailer');
 
 const gitEvents = {
   'pull_request' : GitEventHandler.pull_request,
@@ -62,9 +62,39 @@ report = function (req, res) {
 	});
 }
 
+emailReport = function(req, res) {
+  var transporter = nodemailer.createTransport({
+    service : 'Gmail',
+    auth: {
+           user: process.env.gmail_username, // Your email id
+           pass: process.env.gmail_password // Your password
+       }
+  });
+
+  var mailOptions = {
+    from: process.env.gmail_username, // sender address
+    to: req.body.detail, // list of receivers
+    subject: 'Robocop Report', // Subject line
+    text: req.body.vulnerabilities.toString() //, // plaintext body
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if(error){
+        console.log(error);
+        res.json({yo: 'error'});
+    }else{
+        console.log('Message sent: ' + info.response);
+        res.json({yo: info.response});
+    };
+  });
+
+  res.status(200).send();
+}
+
 module.exports = {
   githook,
   setup,
   register,
   report,
+  emailReport,
 }

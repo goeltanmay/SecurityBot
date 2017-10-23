@@ -81,7 +81,7 @@ module.exports = {
 				"body" : message
 			}
 		});
-	}
+	},
 
 	createIssue: function(token, userId, repo, message) {
 		return request({
@@ -94,7 +94,7 @@ module.exports = {
 				"Accept": "application/vnd.github.machine-man-preview+json"
 			},
 			json: {
-				"title" : "Robocop Report"
+				"title" : "Robocop Report",
 				"body" : message
 			}
 		});
