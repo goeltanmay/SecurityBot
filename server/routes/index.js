@@ -9,8 +9,9 @@ module.exports = (app) => {
   });
 
   app.get('/setup', hooksController.setup);
-  app.post('/emailReport', hooksController.emailReport)
-  app.post('/register', hooksController.register);
+  app.get('/emailReport', hooksController.emailReportForm);
+  app.post('/emailReport', hooksController.emailReport);
+  app.post('/email', hooksController.email);
   app.post('/githook', hooksController.githook);
   app.post('/report', hooksController.report);
   app.post('/api/repos', reposController.create);

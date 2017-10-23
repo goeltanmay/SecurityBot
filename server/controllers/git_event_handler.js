@@ -22,7 +22,7 @@ function installation_repositories(req, res) {
             previous_commit: null,
           });
         }));
-      })
+      });
       Promise.all(promises).then(() => res.status(201).send())
       .catch(error => res.status(400).send(error));
       break;

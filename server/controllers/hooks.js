@@ -1,5 +1,6 @@
 const GitEventHandler = require('./git_event_handler');
 const Repo = require('../models').Repo;
+const RepoEvent = require('../models').RepoEvent;
 const github = require('./actions');
 const JWT = require('./jwt');
 const nodemailer = require('nodemailer');
@@ -19,6 +20,10 @@ githook = function (req, res) {
 setup = function(req, res){
   console.log(req.body);
   res.render('setup',{ installation_id : req.query.installation_id });
+}
+
+emailReportForm = function(req, res) {
+  res.render('emailReport');
 }
 
 register = function(req,res) {
@@ -91,10 +96,36 @@ emailReport = function(req, res) {
   res.status(200).send();
 }
 
+email = function(req, res) {
+  Repo.findOne({
+    where: {
+      username: req.body.userId,
+      repo: req.body.repo
+    }
+  })
+  .then(repo => {
+    RepoEvent.create({
+      type: 'email_request',
+      detail: req.body.email,
+      repoId: repo.id,
+      current_commit: null,
+      previous_commit: null,
+    })
+    .then(repoEvent => res.status(201).send(repo))
+    .catch(error => res.status(500).send(error));
+  })
+  .catch(error => {
+    console.log(error);
+    res.status(404).send(error);
+  });
+}
+
 module.exports = {
   githook,
   setup,
   register,
   report,
   emailReport,
+  emailReportForm,
+  email,
 }
