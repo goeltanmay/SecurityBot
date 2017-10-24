@@ -42,12 +42,12 @@ public class WebTest
 	@Test
     public void pullRequestComment() throws Exception
     {
-        driver.get("https://github.com/goeltanmay/mesosphere_challenge/pulls");
+        driver.get("https://github.com/goeltanmay/mesosphere_challenge/pull/4");
         
         WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='issue_4']/div/div[3]/a")));
-        WebElement spans = driver.findElement(By.xpath("//*[@id='issue_4']/div/div[3]/a"));
-        System.out.println(spans.getText().toString());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='timeline-comment-wrapper js-comment-container'][last()]//relative-time")));
+        WebElement spans = driver.findElement(By.xpath("//div[@class='timeline-comment-wrapper js-comment-container'][last()]//relative-time"));
+        System.out.println(spans.getAttribute("datetime").toString());
         assertNotNull(spans);
         //assertEquals(5, spans);
     }
