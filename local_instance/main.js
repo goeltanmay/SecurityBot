@@ -59,7 +59,7 @@ var time_interval_in_miliseconds=5000;
 
 */
 
-update_code("commit","6eb1ca00ae181ed0b2f40ed560add3494b40243b","beafb5d30989f2edbe1fde03669eeca08a6444e3");
+update_code("pull_request","2","beafb5d30989f2edbe1fde03669eeca08a6444e3");
 
 function update_code(event_type, curr_hash, prev_hash){
 	console.log('entered update_code');
@@ -69,39 +69,45 @@ function update_code(event_type, curr_hash, prev_hash){
   	var directory = repositoryInfo.directory;
   	var path=repositoryInfo.repo_path;
   	var jenkins_path=repositoryInfo.jenkins_path;
-	
-	if(event_type=='push')
+
+	if(event_type=="push")
 	{
 		var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
 		console.log(cmd);
-		var myscript = exec(cmd, function (error, stdout, stderr)
+		exec(cmd, function (error, stdout, stderr)
     	{
-        	if (error!==null) // There was an error executing our script
+				console.log('inside functio');
+        	if (stderr) // There was an error executing our script
         	{
-        		console.log(error);
-            	return "bad";
-        	}
-        	console.log("I am here");
-        	console.log(stdout);
-        	return "good";
-
+						console.log('-----------------std error');
+        		console.log(stderr);
+            return "error";
+        	}else{
+						return "success";
+					}
     	});
 
 	}
 	if(event_type=="pull_request")
 	{
-		child = exec('sh ../repo/scripts_local_updates/commit_update.sh '+event_detail, function (error, stdout, stderr)
+		var cmd = 'sh pull_request_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
+		console.log(cmd);
+		exec(cmd, function (error, stdout, stderr)
     	{
-        	if (error) // There was an error executing our script
+        	if (stderr) // There was an error executing our script
         	{
-            	return "bad";
+						console.log('-----------------std error');
+            	console.log(stderr);
+							return "error";
+							// callback(error);
         	}
-
-        	return "good";
+					console.log("success");
+					return 'success';
+        	// callback('success');
 
     	});
 	}
 
-	zap.attack_using_zap(event_type,curr_hash,prev_hash);
+	// zap.attack_using_zap(event_type,curr_hash,prev_hash);
 
 }
