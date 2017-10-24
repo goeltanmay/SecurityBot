@@ -23,7 +23,7 @@ var time_interval_in_miliseconds=5000;
 	var event_running=false;
 
 	setInterval(function(){
-		//console.log('polling started');
+		
 		if(!event_running){
 			request.get(poll_url,(error,response,body) => {
 				if(error)
@@ -52,10 +52,7 @@ var time_interval_in_miliseconds=5000;
 						var current_commitId=event.current_commit;
 						var parent_commitId=event.previous_commit;
 						
-						//console.log(type);
-						//console.log(current_commitId);
-						//console.log(parent_commitId);
-						//console.log(repo_name);
+						
 						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
 							
