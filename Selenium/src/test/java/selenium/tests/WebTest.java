@@ -39,71 +39,17 @@ public class WebTest
 		driver.quit();
 	}
 
-	
 	@Test
-	public void googleExists() throws Exception
-	{
-		driver.get("http://www.google.com");
-        assertEquals("Google", driver.getTitle());		
-	}
-	
-	@Test
-	public void FrustrationCount() throws Exception {
-		driver.get("http://www.checkbox.io/studies.html");
-		
-		// http://geekswithblogs.net/Aligned/archive/2014/10/16/selenium-and-timing-issues.aspx
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='span8']//span[.='Frustration of Software Developers']")));
-		WebElement title = driver.findElement(By.xpath("//div[@class='span8']//span[.='Frustration of Software Developers']"));
-		WebElement row = title.findElement(By.xpath("../../../*[2]//p[1]//span[1]"));
-		assertEquals(row.getText(),"55");
-	}
-	
-	@Test
-	public void amazonRewardImage() throws Exception {
-		driver.get("http://www.checkbox.io/studies.html");
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='span8']//span[.='Frustration of Software Developers']")));
-		WebElement title = driver.findElement(By.xpath("//div[@class='span8']//span[.='Software Changes Survey']"));
-		System.out.println(title.getText());
-		WebElement amazonImage = title.findElement(By.xpath("../..//img[@src='/media/amazongc-micro.jpg']"));
-		assertNotNull(amazonImage);
-	}
-	
-
-	@Test
-	public void OpenStudyClickable() throws Exception {
-		driver.get("http://www.checkbox.io/studies.html");
-		
-		// http://geekswithblogs.net/Aligned/archive/2014/10/16/selenium-and-timing-issues.aspx
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='span8']//span[.='Frustration of Software Developers']")));
-		List<WebElement> spans = driver.findElements(By.xpath("//a[@class='status']//span[.='OPEN']"));
-		int count = 0;
-		for (WebElement span : spans){
-			WebElement parent = span.findElement(By.xpath("../../.."));			
-			WebElement participateButton = parent.findElement(By.xpath(".//button"));
-			if (participateButton.isDisplayed() && participateButton.isEnabled()) {
-				ExpectedConditions.elementToBeClickable(participateButton);
-				participateButton.click();
-			}
-			count++;
-		}
-		assertEquals(count,11);
-	}
-
-	@Test
-	public void Closed() throws Exception
-	{
-		driver.get("http://www.checkbox.io/studies.html");
-		
-		// http://geekswithblogs.net/Aligned/archive/2014/10/16/selenium-and-timing-issues.aspx
-		WebDriverWait wait = new WebDriverWait(driver, 30);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@class='status']/span[.='CLOSED']")));
-		List<WebElement> spans = driver.findElements(By.xpath("//a[@class='status']/span[.='CLOSED']"));
-
-		assertNotNull(spans);
-		assertEquals(5, spans.size());
-	}
+    public void pullRequestComment() throws Exception
+    {
+        driver.get("https://github.com/goeltanmay/mesosphere_challenge/pulls");
+        
+        WebDriverWait wait = new WebDriverWait(driver, 30);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='issue_4']/div/div[3]/a")));
+        WebElement spans = driver.findElement(By.xpath("//*[@id='issue_4']/div/div[3]/a"));
+        System.out.println(spans.getText().toString());
+        assertNotNull(spans);
+        //assertEquals(5, spans);
+    }
 
 }
