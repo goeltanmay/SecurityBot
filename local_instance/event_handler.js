@@ -10,7 +10,7 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 
 		if(event==="push" || event ==="pull_request"||event==="installation_repository")
 		{
-			update_code(event,current_commitId)
+			update_code(event,current_commitId,parent_commitId)
 			.then(attack_tools.attack)
 			.then(vulnerabilities => filter_results.filter_vulnerabilities(event,current_commitId,parent_commitId,vulnerabilities))
 			.then(filtered_vulnerabilities_list => resolve(filtered_vulnerabilities_list))
@@ -34,28 +34,57 @@ function update_code(event,current_commitId)
 
 
 	return new Promise(function (resolve, reject) {
-		// body...
+		console.log('entered update_code');
+		repositoryInfo = JSON.parse(data);
+  		console.log(repositoryInfo);
+  		// var directory=repositoryInfo[1].repo_directory;
+  		var directory = repositoryInfo.directory;
+  		var path=repositoryInfo.repo_path;
+  		var jenkins_path=repositoryInfo.jenkins_path;
+
+		if(event_type=="push")
+		{
+			var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
+			console.log(cmd);
+			exec(cmd, function (error, stdout, stderr)
+    		{
+				console.log('inside functio');
+        		if (stderr) // There was an error executing our script
+        		{
+						console.log('-----------------std error');
+        				console.log(stderr);
+            			reject("Invalid Request");
+        		}
+        		else
+        		{
+						resolve("success");
+				}
+    		});
+
+		}
 		
-		if(event==="push")
+		if(event_type=="pull_request")
 		{
+			var cmd = 'sh pull_request_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
+			console.log(cmd);
+			exec(cmd, function (error, stdout, stderr)
+    		{
+        		if(stderr) // There was an error executing our script
+        		{
+						console.log('-----------------std error');
+            			console.log(stderr);
+						reject("error");
+							// callback(error);
+        		}
+        		else
+        		{
+					console.log("success");
+					resolve("success");
+				}	
+        	// callback('success');
 
+    		});
 		}
-
-		if(event==="pull_request")
-		{
-
-		}
-
-		setTimeout(function() {
-    		resolve();	
-		}, 3000);
-
-		/*
-		if()
-			resolve();
-		else
-			reject("Code Not updated properly");
-		*/
 
 	});
 }
