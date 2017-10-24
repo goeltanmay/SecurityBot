@@ -10,7 +10,7 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 
 		if(event==="push" || event ==="pull_request"||event==="installation_repository")
 		{
-			update_code(event,current_commitId,parent_commitId)
+			update_code(event,current_commitId)
 			.then(attack_tools.attack)
 			.then(vulnerabilities => filter_results.filter_vulnerabilities(event,current_commitId,parent_commitId,vulnerabilities))
 			.then(filtered_vulnerabilities_list => resolve(filtered_vulnerabilities_list))
@@ -29,7 +29,7 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 
 
 
-function update_code(event,current_commitId)
+function update_code(event_type,curr_hash)
 {
 
 
