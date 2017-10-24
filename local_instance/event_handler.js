@@ -5,9 +5,13 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 {
 	return new Promise(function(resolve,reject){
 
-		if(event=="push" || event =="pull_request"||event="installation_repository")
+		//console.log("handle_event called");
+
+		if(event==="push" || event ==="pull_request"||event==="installation_repository")
 		{
-			update_code(event,current_commitId).then(attack_tools.attack).then(function(vulnerabilities_list))
+			update_code(event,current_commitId)
+			.then(attack_tools.attack)
+			.then(vulnerabilities => filter_vulnerabilities(vulnerabilities,current_commitId,parent_commitId))
 			.then(filtered_vulnerabilities_list => resolve(filtered_vulnerabilities_list))
 			.catch(error => console.log(error));
 		}
@@ -46,19 +50,19 @@ function filter_vulnerabilities(vulnerabilities,current_commitId,parent_commitId
 }
 
 
-function update_code(event,currentHash)
+function update_code(event,current_commitId)
 {
 
 
 	return new Promise(function (resolve, reject) {
 		// body...
 		
-		if(event=="push")
+		if(event==="push")
 		{
 
 		}
 
-		if(event=="pull_request")
+		if(event==="pull_request")
 		{
 
 		}

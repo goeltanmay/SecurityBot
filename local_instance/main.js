@@ -59,7 +59,7 @@ var time_interval_in_miliseconds=5000;
 
 */
 
-update_code("commit","6eb1ca00ae181ed0b2f40ed560add3494b40243b","beafb5d30989f2edbe1fde03669eeca08a6444e3");
+//update_code("commit","6eb1ca00ae181ed0b2f40ed560add3494b40243b","beafb5d30989f2edbe1fde03669eeca08a6444e3");
 
 function update_code(event_type, curr_hash, prev_hash,repo_name,){
 	console.log('entered update_code');

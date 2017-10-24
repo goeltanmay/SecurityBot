@@ -1,5 +1,5 @@
 var fs=require('fs');
-var zap=require('./zap.js');
+//var zap=require('./zap.js');
 const Promise = require('bluebird');
 // var data = fs.readFileSync('./server/config/config.json'),repositoryInfo;
 // var fs=require('fs');
@@ -11,6 +11,7 @@ var exec = require('child_process').exec;
 var event_handler=require('./event_handler.js');
 var user_name=repositoryInfo.user_name;
 var repo_name=repositoryInfo.repo_name;
+
 // var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
 var poll_url="http://desolate-fortress-49649.herokuapp.com/api/repos/"+user_name+"/"+repo_name+"/event";
 
@@ -43,11 +44,11 @@ var time_interval_in_miliseconds=5000;
 						var type=event.type;
 						var current_commitId=event.current_commit;
 						var parent_commitId=event.previous_commit;
-						var repo_name=event.detail;
-						console.log(type);
-						console.log(current_commitId);
-						console.log(parent_commitId);
-						console.log(repo_name);
+						
+						//console.log(type);
+						//console.log(current_commitId);
+						//console.log(parent_commitId);
+						//console.log(repo_name);
 						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
 							
@@ -64,7 +65,7 @@ var time_interval_in_miliseconds=5000;
      										"eventType":type,
      										"userId":repositoryInfo.user_name,
      										"repoName":repositoryInfo.repo_name,
-     										"detail":curr_hash,
+     										"detail":current_commitId,
      										"vulnerabilities":result
      									},
      									json:true
