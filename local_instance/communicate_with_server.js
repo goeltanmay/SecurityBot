@@ -32,9 +32,16 @@ var time_interval_in_miliseconds=5000;
 				}
 				else
 				{
+					
 					if(response.statusCode==204)
 					{
 						console.log('No event to handle');
+					}
+					else
+					if(response.statusCode==404)
+					{
+						console.log('Invalid username and repository!!');
+						process.exit(1);
 					}
 					else
 					{
