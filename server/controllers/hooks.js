@@ -35,6 +35,7 @@ register = function(req,res) {
 report = function (req, res) {
   res.status(200).send();
   // forward here to github
+  console.log(req.body);
   var eventType = req.body.eventType;
   var userId = req.body.userId;
 	var repoName = req.body.repoName;
