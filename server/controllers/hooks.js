@@ -41,63 +41,75 @@ report = function (req, res) {
   var userId = req.body.userId;
 	var repoName = req.body.repoName;
 	var detail = req.body.detail;
-  var vulnerabilities = req.body.vulnerabilities.toString();
+  var vulnerabilities = req.body.vulnerabilities;
+  var vulnerabilityList = [];
+  var promises = [];
+  vulnerabilities.alerts.forEach(function (alert) {
+    promises.push(vulnerabilityList.push({
+       "name" : alert.name,
+       "description" : alert.description,
+       "solution" : alert.solution
+   }));
+  })
 
-  if (eventType === "email_request") {
-    var transporter = nodemailer.createTransport({
-      service : 'Gmail',
-      auth: {
-             user: process.env.gmail_username, // Your email id
-             pass: process.env.gmail_password // Your password
-         }
-    });
+  Promise.all(promises)
+  .then(() =>
+    if (eventType === "email_request") {
+      var transporter = nodemailer.createTransport({
+        service : 'Gmail',
+        auth: {
+               user: process.env.gmail_username, // Your email id
+               pass: process.env.gmail_password // Your password
+           }
+      });
 
-    var mailOptions = {
-      from: process.env.gmail_username, // sender address
-      to: detail, // list of receivers
-      subject: 'Robocop Report', // Subject line
-      text: vulnerabilities //, // plaintext body
-    };
-
-    transporter.sendMail(mailOptions, function(error, info){
-      if(error){
-          console.log(error);
-          res.json({yo: 'error'});
-      }else{
-          console.log('Message sent: ' + info.response);
-          res.json({yo: info.response});
+      var mailOptions = {
+        from: process.env.gmail_username, // sender address
+        to: detail, // list of receivers
+        subject: 'Robocop Report', // Subject line
+        text: vulnerabilities //, // plaintext body
       };
-    });
 
-    res.status(200).send();
-  }
-	else {
-    JWT.generateToken("5599")
-  	.then(function (jwtToken) {
-  		github.getInstallations(jwtToken)
-  		.then(function (installations){
-  			return github.getAccessTokensUrl(installations, userId);
-  		})
-  		.then(function(access_tokens_url) {
-  			return github.postAccessTokenUrl(jwtToken, access_tokens_url);
-  		})
-  		.then(github.getToken)
-  		.then(function (token) {
-        if (eventType === "installation_repositories") {
-          return github.createIssue(token, userId, repoName, vulnerabilities);
-        }
-        else if (eventType === "pull_request") {
-          return github.postCommentPullRequest(token, userId, repoName, detail, vulnerabilities);
-        }
-        else if (eventType === "push") {
-          return github.postCommentPush(token, userId, repoName, detail, vulnerabilities);
-        }
-  		})
-  		.then(function (res) {
-  			return null;
-  		});
-  	});
-  }
+      transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.log(error);
+            res.json({yo: 'error'});
+        }else{
+            console.log('Message sent: ' + info.response);
+            res.json({yo: info.response});
+        };
+      });
+
+      res.status(200).send();
+    }
+  	else {
+      JWT.generateToken("5599")
+    	.then(function (jwtToken) {
+    		github.getInstallations(jwtToken)
+    		.then(function (installations){
+    			return github.getAccessTokensUrl(installations, userId);
+    		})
+    		.then(function(access_tokens_url) {
+    			return github.postAccessTokenUrl(jwtToken, access_tokens_url);
+    		})
+    		.then(github.getToken)
+    		.then(function (token) {
+          if (eventType === "installation_repositories") {
+            return github.createIssue(token, userId, repoName, vulnerabilities);
+          }
+          else if (eventType === "pull_request") {
+            return github.postCommentPullRequest(token, userId, repoName, detail, vulnerabilities);
+          }
+          else if (eventType === "push") {
+            return github.postCommentPush(token, userId, repoName, detail, vulnerabilities);
+          }
+    		})
+    		.then(function (res) {
+    			return null;
+    		});
+    	});
+    })
+  .catch(error => res.status(400).send(error));
 }
 
 email = function(req, res) {
