@@ -1,9 +1,11 @@
 package selenium.tests;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -22,28 +24,24 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-public class WebTest
-{
+public class WebTest {
 	private static WebDriver driver;
-	
+
 	@BeforeClass
-	public static void setUp() throws Exception 
-	{
-		//driver = new HtmlUnitDriver();
+	public static void setUp() throws Exception {
+		// driver = new HtmlUnitDriver();
 		ChromeDriverManager.getInstance().setup();
 		driver = new ChromeDriver();
 	}
-	
+
 	@AfterClass
-	public static void  tearDown() throws Exception
-	{
+	public static void tearDown() throws Exception {
 		driver.close();
 		driver.quit();
 	}
 
 	@Test
-    public void pullRequestComment() throws Exception
-    {
+	public void pullRequestComment() throws Exception {
 		String url = "https://desolate-fortress-49649.herokuapp.com/githook";
 		HttpClient httpClient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url);
@@ -51,36 +49,72 @@ public class WebTest
 		// add header
 		post.setHeader("content-type", "application/json");
 		post.setHeader("X-GitHub-Event", "pull_request");
-		
-		String jsonString = new JSONObject()
-                .put("X-GitHub-Event", "pull_request")
-                .put("action", "opened")
-                .put("number", "4")
-                .put("pull_request", new JSONObject()
-                     .put("user", new JSONObject()
-                           .put("login", "goeltanmay"))
-                     .put("head", new JSONObject()
-                           .put("sha", "92f98cee44d54f92c57378a515f817b884dc14a1"))
-                     .put("base", new JSONObject()
-                             .put("sha", "0bd3158ba40ec0d273242e0d9332a525a807debb")))
-                .put("repository", new JSONObject()
-                     .put("name", "mesosphere_challenge")).toString();
+
+		JSONObject json = new JSONObject().put("action", "opened").put("number", "4")
+				.put("pull_request",
+						new JSONObject().put("user", new JSONObject().put("login", "goeltanmay"))
+								.put("head", new JSONObject().put("sha", "92f98cee44d54f92c57378a515f817b884dc14a1"))
+								.put("base", new JSONObject().put("sha", "0bd3158ba40ec0d273242e0d9332a525a807debb")))
+				.put("repository", new JSONObject().put("name", "mesosphere_challenge"));
+		String jsonString = json.toString();
+
 		StringEntity stringEntity = new StringEntity(jsonString);
 		post.setEntity(stringEntity);
 		httpClient.execute(post);
-		
-		Thread.sleep(30000L);
-        driver.get("https://github.com/goeltanmay/mesosphere_challenge/pull/4");
-        
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='timeline-comment-wrapper js-comment-container'][last()]//relative-time")));
-        WebElement spans = driver.findElement(By.xpath("//div[@class='timeline-comment-wrapper js-comment-container'][last()]//relative-time"));
-        System.out.println(spans.getAttribute("datetime").toString());
-        Date date = Date.from( Instant.parse( spans.getAttribute("datetime").toString() ));
-        Date nowdate = Date.from(Instant.now());
-        System.out.println(date);
-        System.out.println(nowdate.getTime() - date.getTime());
-        assertNotNull(spans);
-        //assertEquals(5, spans);
-    }
+
+		Thread.sleep(5000L);
+
+		driver.get("https://github.com/goeltanmay/mesosphere_challenge/pull/" + json.get("number"));
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']")));
+		List<WebElement> comments = driver.findElements(
+				By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']"));
+		System.out.println(comments.get(comments.size() - 1).getText());
+		WebElement commentTime = comments.get(comments.size() - 1).findElement(By.xpath("//relative-time"));
+
+		Date date = Date.from(Instant.parse(commentTime.getAttribute("datetime").toString()));
+		Date nowdate = Date.from(Instant.now());
+		System.out.println(date);
+		System.out.println(nowdate.getTime() - date.getTime());
+		assertNotNull(comments);
+		assertNotNull(commentTime);
+		assertTrue("No recent comment!", (nowdate.getTime() - date.getTime()) < 15000);
+	}
+
+	@Test
+	public void commitComment() throws Exception {
+		String url = "https://desolate-fortress-49649.herokuapp.com/githook";
+		HttpClient httpClient = HttpClients.createDefault();
+		HttpPost post = new HttpPost(url);
+
+		// add header
+		post.setHeader("content-type", "application/json");
+		post.setHeader("X-GitHub-Event", "push");
+		JSONObject json = new JSONObject().put("after", "0bd3158ba40ec0d273242e0d9332a525a807debb")
+				.put("before", "b95d20ab721b72774f73d440dcb57de70127146a").put("repository", new JSONObject()
+						.put("owner", new JSONObject().put("name", "goeltanmay")).put("name", "mesosphere_challenge"));
+		String jsonString = json.toString();
+
+		StringEntity stringEntity = new StringEntity(jsonString);
+		post.setEntity(stringEntity);
+		httpClient.execute(post);
+
+		Thread.sleep(5000L);
+
+		driver.get("https://github.com/goeltanmay/mesosphere_challenge/commit/" + json.get("after"));
+		WebDriverWait wait = new WebDriverWait(driver, 10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']")));
+		List<WebElement> comments = driver.findElements(
+				By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']"));
+		System.out.println(comments.get(comments.size() - 1).getText());
+		WebElement commentTime = comments.get(comments.size() - 1).findElement(By.xpath("//relative-time"));
+
+		Date date = Date.from(Instant.parse(commentTime.getAttribute("datetime").toString()));
+		Date nowdate = Date.from(Instant.now());
+		System.out.println(nowdate.getTime() - date.getTime());
+		assertNotNull(commentTime);
+		assertTrue("No recent comment!", (nowdate.getTime() - date.getTime()) < 15000);
+	}
 }
