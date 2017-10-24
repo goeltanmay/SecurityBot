@@ -39,6 +39,9 @@ module.exports = {
      if (!repo){
        res.status(204).send();
      }
+     else if (repo.repoEvents.length == 0) {
+       res.status(404).send();
+     }
      else {
        res.status(200).send(repo.repoEvents[0]);
        RepoEvent.destroy({
