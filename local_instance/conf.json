@@ -7,5 +7,6 @@
 	"zap_key":"obu7ogg851bnrel71kgr4pulca",
 	"heroku_url":"http://desolate-fortress-49649.herokuapp.com",
 	"user_name":"goeltanmay",
-	"repo_name":"mesosphere_challenge"
+	"repo_name":"mesosphere_challenge",
+	"attack_list":["zap"]
 }
