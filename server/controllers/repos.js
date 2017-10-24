@@ -37,10 +37,10 @@ module.exports = {
      }],
    }).then( function (repo) {
      if (!repo){
-       res.status(204).send();
+       res.status(404).send();
      }
      else if (repo.repoEvents.length == 0) {
-       res.status(404).send();
+       res.status(204).send();
      }
      else {
        res.status(200).send(repo.repoEvents[0]);
