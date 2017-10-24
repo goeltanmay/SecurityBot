@@ -13,6 +13,7 @@ const gitEvents = {
 
 githook = function (req, res) {
   // do your thing here.
+  console.log(req.get('X-GitHub-Event'));
   var git_event = req.get('X-GitHub-Event');
   gitEvents[git_event](req, res);
 }
