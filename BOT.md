@@ -54,6 +54,6 @@ Our bot will aid users while performing the following tasks:
 
 
 ### Task Tracking
+We used Asana to track our tasks and detailed description of our tasks can be found in this [worksheet](WORKSHEET.md).
 
-
-### Screencase
+### Screencast
