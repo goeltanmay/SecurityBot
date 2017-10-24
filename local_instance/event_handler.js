@@ -1,4 +1,5 @@
 var attack_tools=require('./attack_tools.js')
+var filter_results=require('./filter_results.js');
 const Promise = require('bluebird');
 
 function handle_event(event, current_commitId, parent_commitId,repo_name)
@@ -11,43 +12,21 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 		{
 			update_code(event,current_commitId)
 			.then(attack_tools.attack)
-			.then(vulnerabilities => filter_vulnerabilities(vulnerabilities,current_commitId,parent_commitId))
+			.then(vulnerabilities => filter_results.filter_vulnerabilities(event,current_commitId,parent_commitId,vulnerabilities))
 			.then(filtered_vulnerabilities_list => resolve(filtered_vulnerabilities_list))
-			.catch(error => console.log(error));
+			.catch(error => reject("Invalid Request"));
 		}
 
 		if(event=="email_request")
 		{
-			report_vulnerabilities().then(resolve);
+			filter_results.get_recent_vulnerabilities().then(resolve);
 		}
 		
 
 	});
 	
-	/*
-	return new Promise(function (resolve, reject) {
-		update_code(currentHash)
-		.then(zap.attack)
-		.then(function(vulnerabilities_list){
-			return filter_vulnerabilities(vulnerabilities_list, currentHash, previousHash);
-		})
-		.then(vulnerabilities_list => resolve(vulnerabilities_list))
-		.catch(error => console.log(error));
-	});
-	*/
 }
 
-function report_vulnerabilities(){
-	return new Promise(function(resolve,reject){
-			resolve("last_five_vulnerabilities");
-	});
-}
-
-function filter_vulnerabilities(vulnerabilities,current_commitId,parent_commitId){
-	return new Promise(function(resolve,reject){
-		resolve(vulnerabilities);
-	})
-}
 
 
 function update_code(event,current_commitId)
