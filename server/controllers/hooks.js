@@ -4,6 +4,7 @@ const RepoEvent = require('../models').RepoEvent;
 const github = require('./actions');
 const JWT = require('./jwt');
 const nodemailer = require('nodemailer');
+const Promise = require('bluebird');
 
 const gitEvents = {
   'pull_request' : GitEventHandler.pull_request,
@@ -33,27 +34,29 @@ register = function(req,res) {
 
 }
 
-report = function (req, res) {
+report = function(req, res) {
   res.status(200).send();
   // forward here to github
-  console.log(req.body);
   var eventType = req.body.eventType;
   var userId = req.body.userId;
 	var repoName = req.body.repoName;
 	var detail = req.body.detail;
-  var vulnerabilities = req.body.vulnerabilities;
+  var vulnerabilities = req.body.vulnerabilities.vulnerabilities;
   var vulnerabilityList = [];
   var promises = [];
   vulnerabilities.alerts.forEach(function (alert) {
-    promises.push(vulnerabilityList.push({
-       "name" : alert.name,
-       "description" : alert.description,
-       "solution" : alert.solution
-   }));
-  })
+    promises.push(new Promise(function(resolve, reject) {
+      vulnerabilityList.push({
+         "name" : alert.name,
+         "description" : alert.description,
+         "solution" : alert.solution
+     });
+     resolve();
+    }));
+ });
 
   Promise.all(promises)
-  .then(() =>
+  .then(() => {
     if (eventType === "email_request") {
       var transporter = nodemailer.createTransport({
         service : 'Gmail',
@@ -67,7 +70,7 @@ report = function (req, res) {
         from: process.env.gmail_username, // sender address
         to: detail, // list of receivers
         subject: 'Robocop Report', // Subject line
-        text: vulnerabilities //, // plaintext body
+        text: JSON.stringify(vulnerabilityList) //, // plaintext body
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -95,21 +98,21 @@ report = function (req, res) {
     		.then(github.getToken)
     		.then(function (token) {
           if (eventType === "installation_repositories") {
-            return github.createIssue(token, userId, repoName, vulnerabilities);
+            return github.createIssue(token, userId, repoName, JSON.stringify(vulnerabilityList));
           }
           else if (eventType === "pull_request") {
-            return github.postCommentPullRequest(token, userId, repoName, detail, vulnerabilities);
+            return github.postCommentPullRequest(token, userId, repoName, detail, JSON.stringify(vulnerabilityList));
           }
           else if (eventType === "push") {
-            return github.postCommentPush(token, userId, repoName, detail, vulnerabilities);
+            return github.postCommentPush(token, userId, repoName, detail, JSON.stringify(vulnerabilityList));
           }
     		})
     		.then(function (res) {
     			return null;
     		});
     	});
-    })
-  .catch(error => res.status(400).send(error));
+    }
+  }).catch(error => res.status(400).send(error));
 }
 
 email = function(req, res) {
