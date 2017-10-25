@@ -90,7 +90,7 @@ function update_code(event_type,curr_hash)
 						console.log('----------------- error');
 						console.log(stderr);
             console.log(error);
-						reject("error");
+						reject("Invalid Request");
 							// callback(error);
         		}
         		else
@@ -102,7 +102,7 @@ function update_code(event_type,curr_hash)
 
     		});
 		}
-
+		resolve("success");
 	});
 }
 
