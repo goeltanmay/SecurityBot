@@ -5,17 +5,18 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
@@ -34,9 +35,24 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
 	private static WebDriver driver;
-	private String token = "token " + "cee0cbe7731d0f59054624be8485ea8d3d71faca";
+	private String token = "token " + "f0a72cbfb82c7267668639534c72ae5d9cad80f7";
 	
-	private HttpResponse githubRequest(String url, String body) throws ClientProtocolException, IOException{
+	private HttpResponse githubRequestPut(String url, String body) throws ClientProtocolException, IOException{
+		String base_url = "https://api.github.com/";
+		HttpClient httpClient = HttpClients.createDefault();
+		HttpPut post = new HttpPut(base_url + url);
+
+		// add header
+		post.setHeader("content-type", "application/json");
+		post.setHeader("Authorization", this.token);
+
+		StringEntity stringEntity = new StringEntity(body);
+		post.setEntity(stringEntity);
+		HttpResponse resp = httpClient.execute(post);
+		return resp;
+	}
+	
+	private HttpResponse githubRequestPost(String url, String body) throws ClientProtocolException, IOException{
 		String base_url = "https://api.github.com/";
 		HttpClient httpClient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(base_url + url);
@@ -81,13 +97,14 @@ public class WebTest {
 
 	@Test
 	public void pullRequestComment() throws Exception {
+		
 		// making a new pull request on github
 		JSONObject gitRequestBody =  new JSONObject()
 				.put("head", "sec_test")
 				.put("base", "master")
 				.put("title", "Testing pull request");
-		String git_url = "/repos/goeltanmay/mesosphere_challenge/pulls";
-		HttpResponse resp  = githubRequest(git_url, gitRequestBody.toString());
+		String git_url = "/repos/goeltanmay/PatientsApp/pulls";
+		HttpResponse resp  = githubRequestPost(git_url, gitRequestBody.toString());
 		HttpEntity entity = resp.getEntity();
 		String responseString = EntityUtils.toString(entity, "UTF-8");
 		JSONObject pull_response = new JSONObject(responseString);
@@ -99,7 +116,7 @@ public class WebTest {
 
 		
 		try {
-			driver.get("https://github.com/goeltanmay/mesosphere_challenge/pull/" + pull_number);
+			driver.get("https://github.com/goeltanmay/PatientsApp/pull/" + pull_number);
 			WebDriverWait wait = new WebDriverWait(driver, 10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(
 					By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']")));
@@ -124,7 +141,7 @@ public class WebTest {
 			System.out.println("In Finally");
 			gitRequestBody =  new JSONObject()
 					.put("state", "closed");
-			git_url = "/repos/goeltanmay/mesosphere_challenge/pulls/"+ pull_number;
+			git_url = "/repos/goeltanmay/PatientsApp/pulls/"+ pull_number;
 			resp  = githubRequestPatch(git_url, gitRequestBody.toString());
 			entity = resp.getEntity();
 			responseString = EntityUtils.toString(entity, "UTF-8");
@@ -134,25 +151,25 @@ public class WebTest {
 
 	@Test
 	public void commitComment() throws Exception {
-		String url = "https://desolate-fortress-49649.herokuapp.com/githook";
-		HttpClient httpClient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
-
-		// add header
-		post.setHeader("content-type", "application/json");
-		post.setHeader("X-GitHub-Event", "push");
-		JSONObject json = new JSONObject().put("after", "0bd3158ba40ec0d273242e0d9332a525a807debb")
-				.put("before", "b95d20ab721b72774f73d440dcb57de70127146a").put("repository", new JSONObject()
-						.put("owner", new JSONObject().put("name", "goeltanmay")).put("name", "mesosphere_challenge"));
+		// creating and committing a new file with random name
+		String filename = RandomStringUtils.randomAlphanumeric(17).toUpperCase() + ".txt";
+		JSONObject json = new JSONObject()
+				.put("path", "filename")
+				.put("message", "testing")
+				.put("content", "bXkgbmV3IGZpbGUgY29udGVudHM=")
+				.put("branch", "test_push");
 		String jsonString = json.toString();
-
-		StringEntity stringEntity = new StringEntity(jsonString);
-		post.setEntity(stringEntity);
-		httpClient.execute(post);
-
+		String url = "/repos/goeltanmay/PatientsApp/contents/"+filename;
+		HttpResponse resp = githubRequestPut(url, jsonString);
+		HttpEntity entity = resp.getEntity();
+		String responseString = EntityUtils.toString(entity, "UTF-8");
+		JSONObject pull_response = new JSONObject(responseString);
+		String file_sha = ((JSONObject)pull_response.get("content")).getString("sha");
+		String commit_sha = ((JSONObject)pull_response.get("commit")).getString("sha");
+		
 		Thread.sleep(5000L);
 
-		driver.get("https://github.com/goeltanmay/mesosphere_challenge/commit/" + json.get("after"));
+		driver.get("https://github.com/goeltanmay/PatientsApp/commit/" + commit_sha);
 		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 				By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']")));
