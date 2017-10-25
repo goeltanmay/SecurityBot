@@ -1,0 +1,26 @@
+{
+  "name": "postgres-express-react-node-tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon ./main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.1",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.1",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.4.2",
+    "nock": "^9.0.24",
+    "request": "^2.83.0",
+    "sequelize": "^4.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.12.1"
+  }
+}

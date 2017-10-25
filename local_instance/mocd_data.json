@@ -1,0 +1,11 @@
+{
+  "scanId":{"scan":"1"},
+  "progress":{"status":"100"},
+  "vulnerabilities":{ "alerts":[{
+                           "name":"sql injection"   
+  },
+{
+  "name":"v2"    
+}]
+}
+}  
