@@ -39,7 +39,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
 	private static WebDriver driver;
-	private String token = "token " + "18cb18bdd21273cb6adeecdc537e9faf29a5cfc2";
+	private String token = "token " + "e1d72a6cb33ca6b7392fb6039b57a6c74244cfa8";
 	private String happyRepo = "PatientsApp";
 	private String altRepo = "mesosphere_challenge";
 	private String pull_req_branch = "sec_test";
@@ -268,6 +268,48 @@ public class WebTest {
 		System.out.println(nowdate.getTime() - date.getTime());
 		assertNotNull(commentTime);
 		assertTrue("No recent comment!", (nowdate.getTime() - date.getTime()) < 15000);
+	}
+	
+	@Test
+	public void commitCommentalternate() throws Exception {
+		// creating and committing a new file with random name
+		String filename = RandomStringUtils.randomAlphanumeric(17).toUpperCase() + ".txt";
+		JSONObject json = new JSONObject()
+				.put("path", "filename")
+				.put("message", "testing")
+				.put("content", "bXkgbmV3IGZpbGUgY29udGVudHM=")
+				.put("branch", "test_push");
+		String jsonString = json.toString();
+		String url = "/repos/goeltanmay/"+ altRepo +"/contents/"+filename;
+		HttpResponse resp = githubRequestPut(url, jsonString);
+		HttpEntity entity = resp.getEntity();
+		String responseString = EntityUtils.toString(entity, "UTF-8");
+		JSONObject pull_response = new JSONObject(responseString);
+		String file_sha = ((JSONObject)pull_response.get("content")).getString("sha");
+		String commit_sha = ((JSONObject)pull_response.get("commit")).getString("sha");
+
+		Thread.sleep(5000L);
+		try {
+			driver.get("https://github.com/goeltanmay/"+altRepo+"/commit/" + commit_sha);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(
+					By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']")));
+			List<WebElement> comments = driver.findElements(
+					By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']"));
+			System.out.println(comments.get(comments.size() - 1).getText());
+			WebElement commentTime = comments.get(comments.size() - 1).findElement(By.xpath("//relative-time"));
+
+			Date date = Date.from(Instant.parse(commentTime.getAttribute("datetime").toString()));
+			Date nowdate = Date.from(Instant.now());
+			System.out.println(nowdate.getTime() - date.getTime());
+			assertNotNull(commentTime);
+			assertTrue("No recent comment!", (nowdate.getTime() - date.getTime()) < 15000);
+		} catch (Exception e) {
+			// TODO: handle exception
+			// if driver is going to timeout, then good test because there is no comment
+			System.out.println(e.toString());
+		}
+		
 	}
 
 	@Test
