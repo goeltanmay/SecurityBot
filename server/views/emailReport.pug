@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 Get email report of vulnerabilities found
+
+        // email form
+        form(method='POST' action='/email')
+          div.form-group
+            label(for='userId') Github user Id:
+            input#instance_url.form-control(type='text', name='userId')
+            label(for='repo') Github Repository:
+            input#instance_url.form-control(type='text', name='repo')
+            label(for='email') Email:
+            input#instance_url.form-control(type='text', name='email')
+          button.btn.btn-primary(type='submit') Submit

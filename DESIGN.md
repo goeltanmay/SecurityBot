@@ -155,6 +155,9 @@ Robocop uses three different types of layers.
 
 4. __Tool layer__ - This layer consists of the actual tools used to conduct the attacks. Tools can be added or removed in accordance with the above layer.  
 
+##### EDIT 1  
+The design had to be modified slightly, because of the way github integrations work. In the case of an integration, Github only forwards events to one machine/server. Hence the Github Communication Layer is split between 2 parts. The Robocop Server and the Robocop Clients. Robocop server receives the events pushed by Github, and stores them in a Database. Robocop Clients can then query the server to get one of the events. While the design introduces runtime inefficiency, it also allows many clients to run simultaneously for the same Repo, thus enabling parallel processing in a way.
+
 ### Additional Patterns
 
 Some other patterns that might become useful are -
