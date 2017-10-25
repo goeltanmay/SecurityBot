@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -183,5 +184,44 @@ public class WebTest {
 		System.out.println(nowdate.getTime() - date.getTime());
 		assertNotNull(commentTime);
 		assertTrue("No recent comment!", (nowdate.getTime() - date.getTime()) < 15000);
+	}
+	
+	@Test
+	public void createIssue() throws Exception {
+		String url = "https://desolate-fortress-49649.herokuapp.com/githook";
+		HttpClient httpClient = HttpClients.createDefault();
+		HttpPost post = new HttpPost(url);
+
+		// add header
+		post.setHeader("content-type", "application/json");
+		post.setHeader("X-GitHub-Event", "installation_repositories");
+		
+		List<JSONObject> repoList = new ArrayList<JSONObject>();
+		repoList.add(new JSONObject().put("name", "mesosphere_challenge"));
+		JSONObject json = new JSONObject().put("action", "added")
+				.put("sender", new JSONObject()
+						.put("login", "goeltanmay"))
+				.put("repositories_added", repoList);
+		String jsonString = json.toString();
+		StringEntity stringEntity = new StringEntity(jsonString);
+		
+		post.setEntity(stringEntity);
+		httpClient.execute(post);
+
+		Thread.sleep(5000L);
+
+		driver.get("https://github.com/goeltanmay/mesosphere_challenge/issues");
+		WebDriverWait wait = new WebDriverWait(driver, 20);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(
+				By.xpath("//div[@class='float-left col-9 p-2 lh-condensed']//span[@class='opened-by']/a[.='robocop']")));
+		List<WebElement> issuesList = driver.findElements(
+				By.xpath("//div[@class='float-left col-9 p-2 lh-condensed']//span[@class='opened-by']/a[.='robocop']"));
+		System.out.println(issuesList.get(0).getText());
+		WebElement issueTime = issuesList.get(0).findElement(By.xpath("//relative-time"));
+		Date date = Date.from(Instant.parse(issueTime.getAttribute("datetime").toString()));
+		Date nowdate = Date.from(Instant.now());
+		System.out.println(nowdate.getTime() - date.getTime());
+		assertNotNull(issueTime);
+		assertTrue("No recent issue found!", (nowdate.getTime() - date.getTime()) < 60000);
 	}
 }
