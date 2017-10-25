@@ -38,7 +38,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
 	private static WebDriver driver;
-	private String token = "token " + "f0a72cbfb82c7267668639534c72ae5d9cad80f7";
+	private String token = "token " + "9056b6e4bb375406de64183253ddd42906c5d360";
 	private int installationId = 59503;
 	
 	private HttpResponse githubRequestGet(String url) throws ClientProtocolException, IOException{
@@ -62,6 +62,7 @@ public class WebTest {
 		// add header
 		delete.setHeader("content-type", "application/json");
 		delete.setHeader("Authorization", this.token);
+		delete.setHeader("Accept", "application/vnd.github.machine-man-preview+json");
 
 		HttpResponse resp = httpClient.execute(delete);
 		return resp;
@@ -75,6 +76,7 @@ public class WebTest {
 		// add header
 		post.setHeader("content-type", "application/json");
 		post.setHeader("Authorization", this.token);
+		post.setHeader("Accept", "application/vnd.github.machine-man-preview+json");
 
 		StringEntity stringEntity = new StringEntity(body);
 		post.setEntity(stringEntity);
@@ -223,15 +225,15 @@ public class WebTest {
 		HttpEntity entity = resp.getEntity();
 		String responseString = EntityUtils.toString(entity, "UTF-8");
 		JSONObject repoResponse = new JSONObject(responseString);
+		System.out.println(repoResponse);
 		int repositoryId = repoResponse.getInt("id");
+		System.out.println(repositoryId);
 		
 		String gitUrl = "/user/installations/" + installationId + "/repositories/" + repositoryId;
 		
 		githubRequestDelete(gitUrl);
-		HttpResponse installationResp = githubRequestPut(gitUrl, "");
-		HttpEntity respEntity = installationResp.getEntity();
-		String respString = EntityUtils.toString(respEntity, "UTF-8");
-		JSONObject installationResponse = new JSONObject(respString);
+		
+		githubRequestPut(gitUrl, "");
 		
 		Thread.sleep(5000L);
 
