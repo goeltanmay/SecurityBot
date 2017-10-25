@@ -15,6 +15,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
@@ -37,6 +39,33 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 public class WebTest {
 	private static WebDriver driver;
 	private String token = "token " + "f0a72cbfb82c7267668639534c72ae5d9cad80f7";
+	private int installationId = 59503;
+	
+	private HttpResponse githubRequestGet(String url) throws ClientProtocolException, IOException{
+		String base_url = "https://api.github.com/";
+		HttpClient httpClient = HttpClients.createDefault();
+		HttpGet get = new HttpGet(base_url + url);
+
+		// add header
+		get.setHeader("content-type", "application/json");
+		get.setHeader("Authorization", this.token);
+
+		HttpResponse resp = httpClient.execute(get);
+		return resp;
+	}
+	
+	private HttpResponse githubRequestDelete(String url) throws ClientProtocolException, IOException{
+		String base_url = "https://api.github.com/";
+		HttpClient httpClient = HttpClients.createDefault();
+		HttpDelete delete = new HttpDelete(base_url + url);
+
+		// add header
+		delete.setHeader("content-type", "application/json");
+		delete.setHeader("Authorization", this.token);
+
+		HttpResponse resp = httpClient.execute(delete);
+		return resp;
+	}
 	
 	private HttpResponse githubRequestPut(String url, String body) throws ClientProtocolException, IOException{
 		String base_url = "https://api.github.com/";
@@ -188,29 +217,25 @@ public class WebTest {
 	
 	@Test
 	public void createIssue() throws Exception {
-		String url = "https://desolate-fortress-49649.herokuapp.com/githook";
-		HttpClient httpClient = HttpClients.createDefault();
-		HttpPost post = new HttpPost(url);
-
-		// add header
-		post.setHeader("content-type", "application/json");
-		post.setHeader("X-GitHub-Event", "installation_repositories");
 		
-		List<JSONObject> repoList = new ArrayList<JSONObject>();
-		repoList.add(new JSONObject().put("name", "mesosphere_challenge"));
-		JSONObject json = new JSONObject().put("action", "added")
-				.put("sender", new JSONObject()
-						.put("login", "goeltanmay"))
-				.put("repositories_added", repoList);
-		String jsonString = json.toString();
-		StringEntity stringEntity = new StringEntity(jsonString);
+		String getRepoUrl = "/repos/goeltanmay/PatientsApp";
+		HttpResponse resp  = githubRequestGet(getRepoUrl);
+		HttpEntity entity = resp.getEntity();
+		String responseString = EntityUtils.toString(entity, "UTF-8");
+		JSONObject repoResponse = new JSONObject(responseString);
+		int repositoryId = repoResponse.getInt("id");
 		
-		post.setEntity(stringEntity);
-		httpClient.execute(post);
-
+		String gitUrl = "/user/installations/" + installationId + "/repositories/" + repositoryId;
+		
+		githubRequestDelete(gitUrl);
+		HttpResponse installationResp = githubRequestPut(gitUrl, "");
+		HttpEntity respEntity = installationResp.getEntity();
+		String respString = EntityUtils.toString(respEntity, "UTF-8");
+		JSONObject installationResponse = new JSONObject(respString);
+		
 		Thread.sleep(5000L);
 
-		driver.get("https://github.com/goeltanmay/mesosphere_challenge/issues");
+		driver.get("https://github.com/goeltanmay/PatientsApp/issues");
 		WebDriverWait wait = new WebDriverWait(driver, 20);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(
 				By.xpath("//div[@class='float-left col-9 p-2 lh-condensed']//span[@class='opened-by']/a[.='robocop']")));
