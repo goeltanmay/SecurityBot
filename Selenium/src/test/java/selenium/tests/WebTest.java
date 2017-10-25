@@ -1,6 +1,7 @@
 package selenium.tests;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -36,7 +37,10 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
 	private static WebDriver driver;
-	private String token = "token " + "f0a72cbfb82c7267668639534c72ae5d9cad80f7";
+	private String token = "token " + "18cb18bdd21273cb6adeecdc537e9faf29a5cfc2";
+	private String happyRepo = "PatientsApp";
+	private String altRepo = "mesosphere_challenge";
+	private String pull_req_branch = "sec_test";
 	
 	private HttpResponse githubRequestPut(String url, String body) throws ClientProtocolException, IOException{
 		String base_url = "https://api.github.com/";
@@ -125,7 +129,7 @@ public class WebTest {
 					By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']"));
 			System.out.println(comments.get(comments.size() - 1).getText());
 			WebElement commentTime = comments.get(comments.size() - 1).findElement(By.xpath("//relative-time"));
-
+			System.out.println(commentTime.getAttribute("datetime").toString());
 			Date date = Date.from(Instant.parse(commentTime.getAttribute("datetime").toString()));
 			Date nowdate = Date.from(Instant.now());
 			System.out.println(date);
@@ -150,6 +154,57 @@ public class WebTest {
 		}		
 	}
 
+	@Test
+	public void pullRequestCommentalternate() throws Exception {
+		// making a new pull request on github
+		JSONObject gitRequestBody =  new JSONObject()
+				.put("head", pull_req_branch)
+				.put("base", "master")
+				.put("title", "Testing pull request");
+		String git_url = "/repos/goeltanmay/"+ altRepo +"/pulls";
+		HttpResponse resp  = githubRequestPost(git_url, gitRequestBody.toString());
+		HttpEntity entity = resp.getEntity();
+		String responseString = EntityUtils.toString(entity, "UTF-8");
+		JSONObject pull_response = new JSONObject(responseString);
+		int pull_number = pull_response.getInt("number");
+		String pull_head_sha = ((JSONObject) pull_response.get("head")).getString("sha");
+		String pull_base_sha = ((JSONObject) pull_response.get("base")).getString("sha");
+
+		Thread.sleep(15000L);
+
+		
+		try {
+			driver.get("https://github.com/goeltanmay/"+altRepo+"/pull/" + pull_number);
+			WebDriverWait wait = new WebDriverWait(driver, 10);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(
+					By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']")));
+			List<WebElement> comments = driver.findElements(
+					By.xpath("//div[@class='timeline-comment-wrapper js-comment-container']//strong/a[.='robocop']"));
+			System.out.println(comments.get(comments.size() - 1).getText());
+			WebElement commentTime = comments.get(comments.size() - 1).findElement(By.xpath("//relative-time"));
+
+			Date date = Date.from(Instant.parse(commentTime.getAttribute("datetime").toString()));
+			Date nowdate = Date.from(Instant.now());
+			System.out.println(date);
+			System.out.println(nowdate.getTime() - date.getTime());
+			assertNull(comments);
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.toString());
+			assertTrue(true);
+		} finally {
+			// closing the pull request
+			System.out.println("In Finally");
+			gitRequestBody =  new JSONObject()
+					.put("state", "closed");
+			git_url = "/repos/goeltanmay/"+altRepo+"/pulls/"+ pull_number;
+			resp  = githubRequestPatch(git_url, gitRequestBody.toString());
+			entity = resp.getEntity();
+			responseString = EntityUtils.toString(entity, "UTF-8");
+			System.out.println(responseString);
+		}		
+	}
+	
 	@Test
 	public void commitComment() throws Exception {
 		// creating and committing a new file with random name
