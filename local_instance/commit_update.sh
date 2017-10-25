@@ -1,7 +1,7 @@
 #!/bin/sh
 commitID=$1
 echo $commitID
-new_branch=branch+$commitID
+new_branch=branch$commitID
 echo $new_branch
 directory=$2
 echo $directory

@@ -8,12 +8,14 @@ function attack()
 {
 	repositoryInfo=JSON.parse(data);
 	return new Promise( function(resolve, reject) {
-		
-		//console.log("attack called");
 
-		
-			zap_attack_service.attack_using_zap().then(vulnerabilities => resolve(vulnerabilities));
-		
+		//console.log("attack called");
+			zap_attack_service.attack_using_zap().then(vulnerabilities => {
+				console.log("-------------------- ATTACK TOOLS ---------------");
+				console.log(vulnerabilities);
+				resolve(vulnerabilities)
+			});
+
 	});
 }
 

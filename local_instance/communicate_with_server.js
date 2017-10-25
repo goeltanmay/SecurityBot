@@ -12,6 +12,7 @@ var event_handler=require('./event_handler.js');
 var user_name=repositoryInfo.user_name;
 var repo_name=repositoryInfo.repo_name;
 
+
 // var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
 var poll_url="http://desolate-fortress-49649.herokuapp.com/api/repos/"+user_name+"/"+repo_name+"/event";
 
@@ -23,7 +24,7 @@ var time_interval_in_miliseconds=5000;
 	var event_running=false;
 
 	setInterval(function(){
-		
+
 		if(!event_running){
 			request.get(poll_url,(error,response,body) => {
 				if(error)
@@ -32,7 +33,7 @@ var time_interval_in_miliseconds=5000;
 				}
 				else
 				{
-					
+
 					if(response.statusCode==204)
 					{
 						console.log('No event to handle');
@@ -48,14 +49,14 @@ var time_interval_in_miliseconds=5000;
 						console.log('got an event');
 						event_running=true;
 						var event = JSON.parse(body);
+						console.log(event);
 						var type=event.type;
-						var current_commitId=event.current_commit;
+						var current_commitId=event.detail;
 						var parent_commitId=event.previous_commit;
-						
-						
+
 						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
-							
+							console.log('communicate_with...................');
 							console.log(result);
 
 							var response_url=repositoryInfo.heroku_url+"/report";
@@ -69,7 +70,7 @@ var time_interval_in_miliseconds=5000;
      										"eventType":type,
      										"userId":repositoryInfo.user_name,
      										"repoName":repositoryInfo.repo_name,
-     										"detail":current_commitId,
+     										"detail":event.detail,
      										"vulnerabilities":result
      									},
      									json:true
