@@ -42,10 +42,10 @@ report = function(req, res) {
   var userId = req.body.userId;
 	var repoName = req.body.repoName;
 	var detail = req.body.detail;
-  var vulnerabilities = req.body.vulnerabilities.vulnerabilities;
+  var vulnerabilities = req.body.vulnerabilities;
   var vulnerabilityList = [];
   var promises = [];
-  vulnerabilities.alerts.forEach(function (alert) {
+  vulnerabilities.forEach(function (alert) {
     promises.push(new Promise(function(resolve, reject) {
       vulnerabilityList.push({
          "name" : alert.name,
