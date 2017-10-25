@@ -36,7 +36,7 @@ Our bot will aid users while performing the following tasks:
       4. __Alternative Flows__  
        If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
-4. Get vulnerability report of the day via email
+4. [Stretch Goal] Get vulnerability report of the day via email
     1. __Preconditions__  
       The repo must have the security bot installed.
     2. __Main Flow__  
