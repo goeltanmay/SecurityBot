@@ -88,7 +88,7 @@ The local instance is built using Layered Architecture. It consists of the follo
 
 4. __Attack Service:__ An attack service is a REST service which performs penetration testing on the repository. For this milestone, our aim was to mock the service. We used nock to mock the ZAP(Zed attack Proxy) service which performs penetration testing on an application by hitting the URL's of the application. It receives mock data as output and gives it back to the Attack Tool Layer.
 
-5. __Database Layer:__
+5. __Database Layer:__ The Database layer is responsible for storing the vulnerabilities obtained from running an attack service. It first receives a list of vulnerabilities from Event Handler Layer for ongoing event and interacts with database to find the old vulnerabilities for the same repository. It then removes the vulnerabilities that are old in the list received from event handler layer. Thus, it sends back filtered vulnerabilities introduced by current event. When a collaborator initiates an "email_request" event, the database layer responds with the vulnerabilities obtained from the last five events for the same repository.
 
 ## Selenium Testing
 
