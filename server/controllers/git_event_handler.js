@@ -9,7 +9,7 @@ function installation_repositories(req, res) {
       promises = []
       req.body.repositories_added.forEach( repository => {
         promises.push(Repo.create({
-          username: req.body.sender.login,
+          username: req.body.installation.account.login,
           repo: repository.name,
           instance_url: 'skd',
         })
@@ -50,7 +50,7 @@ function pull_request(req, res) {
     case 'edited':
       Repo.findOne({
         where: {
-          username: req.body.pull_request.user.login,
+          username: req.body.repository.owner.login,
           repo: req.body.repository.name
         }
       })
