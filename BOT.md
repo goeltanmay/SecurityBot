@@ -82,11 +82,11 @@ The local instance is built using Layered Architecture. It consists of the follo
 
 1. __Communication Layer:__ The communication layer is responsible for communicating with the server hosted bot. It polls the server bot to get any pending requests for the repository it handles. If it receives a request from the server, it calls the event handler layer to initiate the event. It also receives a response from event handler layer which is a list of vulnerabilities and sends it back to the server.
 
-2. __Event Handler Layer:__ The event handler layer initiates the event. It first invokes shell scripts to update the code 
+2. __Event Handler Layer:__ The event handler layer initiates the event. It first invokes shell scripts to update the code and deploy it on the server using continuous integration through Jenkins. After updating the code it invokes the attack tool layer to perform penetration testing. It also responds back to the communication layer with the results obtained from the attack tool layer after filtering them to remove old vulnerabilities by calling filtering methods of Database layer.  
 
-3. __Attack Tool Layer:__
+3. __Attack Tool Layer:__ The attack tool layer calls different attack services and responds back with the result obtained from services to Event Handler Layer.
 
-4. __Attack Service:__
+4. __Attack Service:__ An attack service is a REST service which performs penetration testing on the repository. For this milestone, our aim was to mock the service. We used nock to mock the ZAP(Zed attack Proxy) service which performs penetration testing on an application by hitting the URL's of the application. It receives mock data as output and gives it back to the Attack Tool Layer.
 
 5. __Database Layer:__
 
