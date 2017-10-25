@@ -58,6 +58,8 @@ We also used "nock" library to mock the ZAP Service API calls. "nock" helps us t
 
 ### Bot Platform
 
+Our bot is a GutHub application that can be integrated to a GitHub repository and listens to installation, commit, pull request and email request events. Whenever one of these events in triggered on a GitHub repository, the GitHub sends this event to our Server Hosted Bot which receives the event and extracts all the relevant information. When a local hosted bot instance is available to service this request, the server bot hands over the event to the local bot. Local bot then performs penetration testing after updating the code at the local instance and returns the results to the server bot. The server bot receives the results and either comments, raises an issue or sends an email depending on the type of event triggered on the GitHub.   
+
 ### Bot Integration
 
 Our complete application is divided into two parts: Server Hosted Bot Application and Local Instance Application. The functionalities provided by these sub-applications are explained below:
@@ -92,6 +94,7 @@ The local instance is built using Layered Architecture. It consists of the follo
 
 ## Selenium Testing
 
+We did Selenium Testing in Java using the same methodology as discusses in the workshop for Selenium Testing. To run the selenium tests, import the Selenium folder in Eclipse. Install all MAVEN dependencies. Run the tests in Webtest.java file to see the results. Since our bot is triggered by GitHub, in each of the test cases, we first make the appropriate action on GitHub using GitHub APIs. To make the APIs work replace the token string on top of the file with your own token. However to run the installation tests, the token needs to belong to the repository owner. If it is required that we have to demonstrate the installation test cases, we can give a separate demo for the same.
 
 ## Task Tracking
 We used Asana to track our tasks and detailed description of our tasks can be found in this [worksheet](WORKSHEET.md).
