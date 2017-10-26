@@ -30,7 +30,16 @@ Server bot is already deployed on [heroku](http://desolate-fortress-49649.heroku
 
 1. Clone the [PatientsApp](https://github.com/goeltanmay/PatientsApp.git) repository from github.
 
-2. Install jenkins.....(jitin write further steps here)
+2. Build setup
+* Install Ant, Tomcat and and Jenkins  
+* Browse to Tomcat directory -> conf -> tomcat-users.xml and add in tomcat-users:   
+* \<user username="deployer" password="deployer" roles="manager-script" /\>  
+* Login into Jenkins and create a new item named PatientsApp  
+* Select Git in source code management and give local repo path  
+* Leave the branch as master  
+* Select With Ant in build environment
+* I Build, select Ant version
+* In Post-Build Actions, add credentials as 'deployer', 'deployer'
+* Click save and apply
 
-
-2. After performing the above steps, make the changes in the conf.json to change the tomcat URL of patient app in repo, Jenkins URL, path at which PatientsApp is cloned as repo_path, the zap url, jenkins path to jenkins-cli.jar.
+3. After performing the above steps, make the changes in the conf.json to change the tomcat URL of patient app in repo, Jenkins URL, path at which PatientsApp is cloned as repo_path, the zap url, jenkins path to jenkins-cli.jar.
