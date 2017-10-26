@@ -1,6 +1,6 @@
 ### Worksheet
 
-We used Asana as our task tracking tool. Detailed description of our tasks on weekly basis is documented below:
+We used Asana as our task tracking tool. We have already sent you invites for joining our team on Asana. So, to view the Asana Task links kindly accept our invitation. Detailed description of our tasks on weekly basis is documented below:
 
 ##### Week 1
 
