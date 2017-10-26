@@ -58,7 +58,7 @@ We also used "nock" library to mock the ZAP Service API calls. "nock" helps us t
 
 ### Bot Platform
 
-Our bot is a GutHub application that can be integrated to a GitHub repository and listens to installation, commit, pull request and email request events. Whenever one of these events in triggered on a GitHub repository, the GitHub sends this event to our Server Hosted Bot which receives the event and extracts all the relevant information. When a local hosted bot instance is available to service this request, the server bot hands over the event to the local bot. Local bot then performs penetration testing after updating the code at the local instance and returns the results to the server bot. The server bot receives the results and either comments, raises an issue or sends an email depending on the type of event triggered on the GitHub.   
+Our bot is a GutHub application that can be integrated to a GitHub repository and listens to installation, commit, pull request and email request events. Whenever one of these events in triggered on a GitHub repository, the GitHub sends this event to our Server Hosted Bot which receives the event and extracts all the relevant information. When a local hosted bot instance is available to service this request, the server bot hands over the event to the local bot. Local bot then performs penetration testing after updating the code at the local instance and returns the results to the server bot. The server bot receives the results and either comments, raises an issue or sends an email depending on the type of event triggered on the GitHub using the GitHub APIs.   
 
 ### Bot Integration
 
