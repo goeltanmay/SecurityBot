@@ -24,7 +24,7 @@ Our complete application is divided into two parts: Server Hosted Bot Applicatio
 
 ##### Instruction to set up the Server Bot
 
-
+Server bot is already deployed on [heroku](http://desolate-fortress-49649.herokuapp.com/emailReport). You can test it live on heroku.
 
 ##### Instruction to set up Local Bot
 

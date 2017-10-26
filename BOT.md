@@ -94,7 +94,7 @@ The local instance is built using Layered Architecture. It consists of the follo
 
 ## Selenium Testing
 
-We did Selenium Testing in Java using the same methodology as discusses in the workshop for Selenium Testing. To run the selenium tests, import the Selenium folder in Eclipse. Install all MAVEN dependencies. Run the tests in Webtest.java file to see the results. Since our bot is triggered by GitHub, in each of the test cases, we first make the appropriate action on GitHub using GitHub APIs. To make the APIs work replace the token string on top of the file with your own token. However to run the installation tests, the token needs to belong to the repository owner. If it is required that we have to demonstrate the installation test cases, we can give a separate demo for the same.
+We did Selenium Testing in Java using the same methodology as discusses in the workshop for Selenium Testing. To run the selenium tests, import the Selenium folder in Eclipse. Install all MAVEN dependencies. Run the tests in Webtest.java file to see the results. Since our bot is triggered by GitHub, in each of the test cases, we first make the appropriate action on GitHub using GitHub APIs. To make the APIs work replace the token string on top of the file with your own token. However to run the installation tests, the token needs to belong to the repository owner. To demonstrate the installation test cases, we can give a separate demo.
 
 ## Task Tracking
 We used Asana to track our tasks and detailed description of our tasks can be found in this [worksheet](WORKSHEET.md).
