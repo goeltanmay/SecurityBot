@@ -45,15 +45,16 @@ report = function(req, res) {
 	var detail = req.body.detail;
   var vulnerabilities = req.body.vulnerabilities;
   var vulnerabilityList = [];
+  var message_body = "";
   var promises = [];
+  var message_title = "Robocop Report : " + vulnerabilities.length +" new vulnerabilities found";
   vulnerabilities.forEach(function (alert) {
     promises.push(new Promise(function(resolve, reject) {
-      vulnerabilityList.push({
-         "name" : alert.name,
-         "description" : alert.description,
-         "solution" : alert.solution
-     });
-     resolve();
+      message_body += "\nName : " + alert.name;
+      message_body += "\nDescription : " + alert.description;
+      message_body += "\nSolution : " + alert.solution;
+      message_body += "\n---"
+      resolve();
     }));
  });
 
@@ -71,8 +72,8 @@ report = function(req, res) {
       var mailOptions = {
         from: process.env.gmail_username, // sender address
         to: detail, // list of receivers
-        subject: 'Robocop Report', // Subject line
-        text: JSON.stringify(vulnerabilityList) //, // plaintext body
+        subject: message_title, // Subject line
+        text: message_body //, // plaintext body
       };
 
       transporter.sendMail(mailOptions, function(error, info){
@@ -100,13 +101,13 @@ report = function(req, res) {
     		.then(github.getToken)
     		.then(function (token) {
           if (eventType === "installation_repositories") {
-            return github.createIssue(token, userId, repoName, JSON.stringify(vulnerabilityList));
+            return github.createIssue(token, userId, repoName, message_title, message_body);
           }
           else if (eventType === "pull_request") {
-            return github.postCommentPullRequest(token, userId, repoName, detail, JSON.stringify(vulnerabilityList));
+            return github.postCommentPullRequest(token, userId, repoName, detail, message_title + "\n" + message_body);
           }
           else if (eventType === "push") {
-            return github.postCommentPush(token, userId, repoName, detail, JSON.stringify(vulnerabilityList));
+            return github.postCommentPush(token, userId, repoName, detail, message_title + "\n" + message_body);
           }
     		})
     		.then(function (res) {
