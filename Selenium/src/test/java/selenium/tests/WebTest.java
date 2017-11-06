@@ -1,5 +1,6 @@
 package selenium.tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -7,7 +8,6 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +39,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
 	private static WebDriver driver;
-	private String token = "token " + "e1d72a6cb33ca6b7392fb6039b57a6c74244cfa8";
+	private String token = "token " + "4e6a34573f8460f28187e6c7016e88f4516684b2";
 	private String happyRepo = "PatientsApp";
 	private String altRepo = "mesosphere_challenge";
 	private String pull_req_branch = "sec_test";
@@ -346,5 +346,44 @@ public class WebTest {
 		System.out.println(nowdate.getTime() - date.getTime());
 		assertNotNull(issueTime);
 		assertTrue("No recent issue found!", (nowdate.getTime() - date.getTime()) < 60000);
+	}
+	
+	@Test
+	public void createIssueAlternate() throws Exception {
+
+		String getRepoUrl = "/repos/goeltanmay/" + altRepo;
+		HttpResponse resp  = githubRequestGet(getRepoUrl);
+		HttpEntity entity = resp.getEntity();
+		String responseString = EntityUtils.toString(entity, "UTF-8");
+		JSONObject repoResponse = new JSONObject(responseString);
+		System.out.println(repoResponse);
+		int repositoryId = repoResponse.getInt("id");
+
+		String gitUrl = "/user/installations/" + installationId + "/repositories/" + repositoryId;
+
+		githubRequestDelete(gitUrl);
+
+		githubRequestPut(gitUrl, "");
+
+		Thread.sleep(5000L);
+		
+		try {
+			driver.get("https://github.com/goeltanmay/"+ altRepo +"/issues");
+			WebDriverWait wait = new WebDriverWait(driver, 20);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(
+					By.xpath("//div[@class='float-left col-9 p-2 lh-condensed']//span[@class='opened-by']/a[.='robocop']")));
+			List<WebElement> issuesList = driver.findElements(
+					By.xpath("//div[@class='float-left col-9 p-2 lh-condensed']//span[@class='opened-by']/a[.='robocop']"));
+			System.out.println(issuesList.get(0).getText());
+			WebElement issueTime = issuesList.get(0).findElement(By.xpath("//relative-time"));
+			Date date = Date.from(Instant.parse(issueTime.getAttribute("datetime").toString()));
+			Date nowdate = Date.from(Instant.now());
+			System.out.println(nowdate.getTime() - date.getTime());
+			assertFalse("No recent issue found!", (nowdate.getTime() - date.getTime()) < 60000);
+			
+		} catch (Exception e) {
+			// This is a good test as we want the driver to timeout because it doesn't find the issue
+			System.out.println("test passed");
+		} 
 	}
 }
