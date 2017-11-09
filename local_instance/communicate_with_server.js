@@ -42,7 +42,7 @@ var time_interval_in_miliseconds=5000;
 					if(response.statusCode==404)
 					{
 						console.log('Invalid username and repository!!');
-						process.exit(1);
+						//process.exit(1);
 					}
 					else
 					{
@@ -71,7 +71,7 @@ var time_interval_in_miliseconds=5000;
      										"userId":repositoryInfo.user_name,
      										"repoName":repositoryInfo.repo_name,
      										"detail":event.detail,
-     										"vulnerabilities":result
+     										"vulnerabilities":{"zap":result[0],"snyk":result[1]}
      									},
      									json:true
 									}, function(error, response, body){
