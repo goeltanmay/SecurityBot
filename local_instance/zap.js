@@ -140,7 +140,7 @@ function filter_vulnerabilities(type,cur_hash,pre_hash,vulnerabilities, callback
 }
 
 
-filter_vulnerabilities('commit','123','121',{'yo':'bitch','sec':'2nd vul'},function(vuls){console.log('');})
+filter_vulnerabilities('commit','123','121',{'Hello':'yall','sec':'2nd vul'},function(vuls){console.log('');})
 // filter_vulnerabilities('commit',null,null,{'yo':'bitch','sec':'2nd vul'},function(vuls){console.log('');})
 
 exports.attack_using_zap=attack_using_zap;
