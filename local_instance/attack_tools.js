@@ -4,10 +4,10 @@ var zap_attack_service=require('./zap_attack.js');
 var snyk_service = require('./snyk.js');
 const Promise = require('bluebird');
 
-/*attack().then(function(vulnerabilities){
+attack().then(function(vulnerabilities){
 	console.log(vulnerabilities[0]);
 	console.log(vulnerabilities[1]);
-});*/
+});
 
 function attack()
 {
