@@ -608,7 +608,7 @@ var zap_small = [
       "__filename": "/Users/jitinnagpal/Documents/SE/bot/code/SecurityBot/node_modules/zaproxy/node_modules/tunnel-agent/package.json",
       "parentDepType": "prod"
     }];
-filter_vulnerabilities('installation_repositorie','124','123',[ zap_small,snyk_small] )
+// filter_vulnerabilities('installation_repositorie','124','123',[ zap_big,snyk_big] );
 
 function filter_vulnerabilities(type,cur_hash,pre_hash,vulnerabilities){
 	console.log('inside filter_vulnerabilities');
@@ -630,54 +630,69 @@ function filter_vulnerabilities(type,cur_hash,pre_hash,vulnerabilities){
 						if(vul==null){
 							resolve(vulnerabilities);
 						}
+						var vul2 = vul;
 						var result = []
-
-						var obj = [];
-						old_vul = vul.zap_result;
-						var counter = 0;
-						var index=0;
 						var all_promises=[];
-						for(element in vulnerabilities[0]){
-							console.log('element zap-------');
-							console.log(element);
-							counter++;
-							var vul = vulnerabilities[0][element];
-							if(_isContains(old_vul,vul.name)){
-								//vulnerability is not new
-							}else{
-								obj[index++]=vul;
+						var zap_promise = new Promise(function(resolve, reject) {
+							var obj = [];
+							old_vul = vul2.zap_result;
+							var counter = 0;
+							var index=0;
+							for(element in vulnerabilities[0]){
+								// console.log('element zap-------');
+								// console.log(element);
+								counter++;
+								var vul = vulnerabilities[0][element];
+								if(_isContains(old_vul,vul.name)){
+									//vulnerability is not new
+								}else{
+									obj[index++]=vul;
+								}
+								if (counter == vulnerabilities[0].length){
+									// console.log('result zap---------------');
+									// console.log(obj);
+									// result[0] = obj;
+									// console.log(result);
+									resolve(obj);
+								}
 							}
-							if (counter == vulnerabilities[0].length){
-								console.log('result zap---------------');
-								// console.log(obj);
-								result[0] = obj;
-								console.log(result);
-								// resolve(result);
-							}
-						}
+						});
+						all_promises.push(zap_promise);
+
 
 						//filter snyk vulnerabilities
-						var snyk_obj = [];
-						old_vuls = vul.snyk_result;
-						var counter = 0;
-						var index=0;
-						for(element in vulnerabilities[1]){
-							console.log('element snyk-------');
-							console.log(element);
-							counter++;
-							var vul = vulnerabilities[1][element];
-							if(_isContains(old_vuls,vul.title)){
-								//vulnerability is not new
-							}else{
-								snyk_obj[index++]=vul;
+						var snyk_promise = new Promise(function(resolve, reject) {
+							var snyk_obj = [];
+							old_vuls = vul2.snyk_result;
+							var counter = 0;
+							var index=0;
+							for(element in vulnerabilities[1]){
+								// console.log('element snyk-------');
+								// console.log(element);
+								counter++;
+								var vul = vulnerabilities[1][element];
+								if(_isContains(old_vuls,vul.title)){
+									//vulnerability is not new
+								}else{
+									snyk_obj[index++]=vul;
+								}
+								if (counter == vulnerabilities[1].length){
+									// console.log('result snyk---------------');
+									// console.log(snyk_obj);
+									// result[1]=snyk_obj;
+									resolve(snyk_obj);
+								}
 							}
-							if (counter == vulnerabilities[1].length){
-								console.log('result snyk---------------');
-								console.log(snyk_obj);
-								result[1]=snyk_obj;
-								resolve(result);
-							}
-						}
+						});
+
+						all_promises.push(snyk_promise);
+
+						Promise.all(all_promises).then(function (values) {
+							console.log(values[0]);
+							console.log(values[1]);
+							resolve(values);
+						});
+
 						// filter snyk vulnerabilities - end
 				});
 			}
@@ -699,73 +714,70 @@ function get_recent_vulnerabilities(){
  	return new Promise(function(resolve,reject){
 
  				console.log('inside get_recent_vulnerabilities');
-	 			var result = [];
 	 			vuls = Vulnerability.findAll({
 		 			limit:5,
 		 			where:{},
 		 			order:[['createdAt', 'DESC']]
 	 			}).then(function(lists){
-		 			var index=0;
-					var counter1 = 0;
-
-		 			for(list in lists){
-			 				var vulnerabilities = lists[list].zap_result;
-							var counter2 = 0;
-							counter1++;
-			 				for(v in vulnerabilities){
-									counter2++;
-									//  console.log('--------------');
-				 					var vul = vulnerabilities[v];
-				 					if(_isContains(result,vul.name)){
-					 					//vulverability isn't new
-				 					}else{
-										//new vulverability, added in result
-				 							result[index++]=vul;
-				 					}
-									if (counter1 == list.length && counter2 == vulnerabilities.length) {
-											resolve(result);
-									}
-			 				}
-		 			}
+					var all_promises=[];
+					var zap_promise = new Promise(function(resolve, reject) {
+						var index=0;
+						var counter1 = 0;
+						var result = [];
+			 			for(list in lists){
+				 				var vulnerabilities = lists[list].zap_result;
+								var counter2 = 0;
+								counter1++;
+				 				for(v in vulnerabilities){
+										counter2++;
+										//  console.log('--------------');
+					 					var vul = vulnerabilities[v];
+					 					if(_isContains(result,vul.name)){
+						 					//vulverability isn't new
+					 					}else{
+											//new vulverability, added in result
+					 							result[index++]=vul;
+					 					}
+										if (counter1 == list.length && counter2 == vulnerabilities.length) {
+												resolve(result);
+										}
+				 				}
+			 			}
+					});
+					all_promises.push(zap_promise);
+					var snyk_promise = new Promise(function(resolve, reject) {
+						var index=0;
+						var counter1 = 0;
+						var result = [];
+			 			for(list in lists){
+				 				var vulnerabilities = lists[list].snyk_result;
+								var counter2 = 0;
+								counter1++;
+				 				for(v in vulnerabilities){
+										counter2++;
+										//  console.log('--------------');
+					 					var vul = vulnerabilities[v];
+					 					if(_isContains(result,vul.title)){
+						 					//vulverability isn't new
+					 					}else{
+											//new vulverability, added in result
+					 							result[index++]=vul;
+					 					}
+										if (counter1 == list.length && counter2 == vulnerabilities.length) {
+												resolve(result);
+										}
+				 				}
+			 			}
+					});
+					all_promises.push(snyk_promise);
+					Promise.all(all_promises).then(function (values) {
+						resolve(values);
+					});
 	 			});
  	});
 }
+get_recent_vulnerabilities().then(values=>{console.log(values)});
 
-//this function shall return a list of snyk vulnerabilities
-function get_recent_snyk_vulnerabilities(){
- 	return new Promise(function(resolve,reject){
- 				console.log('inside get_recent_vulnerabilities');
-	 			var result = [];
-	 			vuls = Vulnerability.findAll({
-		 			limit:5,
-		 			where:{},
-		 			order:[['createdAt', 'DESC']]
-	 			}).then(function(lists){
-		 			var index=0;
-					var counter1 = 0;
-
-		 			for(list in lists){
-			 				var vulnerabilities = lists[list].snyk_result;
-							var counter2 = 0;
-							counter1++;
-			 				for(v in vulnerabilities){
-									counter2++;
-									//  console.log('--------------');
-				 					var vul = vulnerabilities[v];
-				 					if(_isContains(result,vul.title)){
-					 					//vulverability isn't new
-				 					}else{
-										//new vulverability, added in result
-				 							result[index++]=vul;
-				 					}
-									if (counter1 == list.length && counter2 == vulnerabilities.length) {
-											resolve(result);
-									}
-			 				}
-		 			}
-	 			});
- 	});
-}
 
  module.exports={
  	filter_vulnerabilities,
