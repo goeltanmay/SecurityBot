@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "An app to automate security testing of your application",
   "main": "main.js",
-  "engine":{
+  "engines":{
     "node":"8.4.0"
   },
   "scripts": {
