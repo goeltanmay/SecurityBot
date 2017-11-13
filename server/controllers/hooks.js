@@ -44,11 +44,14 @@ report = function(req, res) {
 	var repoName = req.body.repoName;
 	var detail = req.body.detail;
   var vulnerabilities = req.body.vulnerabilities;
+  var zap_vulnerabilities = vulnerabilities.zap;
+  var snyk_vulnerabilities = vulnerabilities.snyk;
   var vulnerabilityList = [];
+  var vulnerabilityLength = zap_vulnerabilities.length + snyk_vulnerabilities.length;
   var message_body = "";
   var promises = [];
-  var message_title = "Robocop Report : " + vulnerabilities.length +" new vulnerabilities found";
-  vulnerabilities.forEach(function (alert) {
+  var message_title = "Robocop Report : " + vulnerabilityLength  +" new vulnerabilities found";
+  zap_vulnerabilities.forEach(function (alert) {
     promises.push(new Promise(function(resolve, reject) {
       message_body += "\nName : " + alert.name;
       message_body += "\nDescription : " + alert.description;
@@ -59,6 +62,21 @@ report = function(req, res) {
  });
 
   Promise.all(promises)
+  .then(() =>{
+    return new Promise(function(resolve, reject) {
+      var promises = [];
+      snyk_vulnerabilities.forEach(function (alert) {
+        promises.push(new Promise(function(resolve, reject) {
+          message_body += "\nName : " + alert.name;
+          message_body += "\nDescription : " + alert.description;
+          message_body += "\nSolution : " + alert.solution;
+          message_body += "\n---"
+          resolve();
+        }));
+      });
+      Promise.all(promises).then(resolve());
+    });
+  })
   .then(() => {
     if (eventType === "email_request") {
       var transporter = nodemailer.createTransport({
