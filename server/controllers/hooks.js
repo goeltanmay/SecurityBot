@@ -67,9 +67,9 @@ report = function(req, res) {
       var promises = [];
       snyk_vulnerabilities.forEach(function (alert) {
         promises.push(new Promise(function(resolve, reject) {
-          message_body += "\nName : " + alert.name;
+          message_body += "\nName : " + alert.title;
           message_body += "\nDescription : " + alert.description;
-          message_body += "\nSolution : " + alert.solution;
+          // message_body += "\nSolution : " + alert.solution;
           message_body += "\n---"
           resolve();
         }));
