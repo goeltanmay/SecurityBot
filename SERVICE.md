@@ -3,10 +3,12 @@
 We have integrated two services, OWASP ZAP and Snyk for finding vulnerabilities in a project.
 
 #### OWASP ZAP
+We used Zed Attack Proxy(ZAP) to perform penetration testing of repository that is registered with our bot application. ZAP operates by running the deployed instance of an application in a browser using proxy to hit the URL's that are part of the application to identify the vulnerabilities that can be potential causes for a network attack.
 
+Whenever a local instance, which contains the deployed instance, receives a request from server hosted bot application, which listens to GitHub events, it updates the code for that particular repository. It then calls ZAP API service which returns a list of vulnerabilities which is sent back to the server bot which performs further action such as raising an issue, commenting to a commit or a pull request on the GitHub repository depending on the type of request/event.
 
 #### Snyk
-
+Snyk helps us find vulnerabilities in Node.js npm, Ruby and Java dependencies. 
 
 #### Use cases
 
