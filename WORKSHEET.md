@@ -2,6 +2,8 @@
 
 We used Asana as our task tracking tool. We have already sent you invites for joining our team on Asana. So, to view the Asana Task links kindly accept our invitation. Detailed description of our tasks on weekly basis is documented below:
 
+#### Milestone: Bot
+
 ##### Week 1
 
 | Deliverable   | Item/Status   |  Issues/Tasks
@@ -47,3 +49,21 @@ We used Asana as our task tracking tool. We have already sent you invites for jo
 | Write selenium Tests for Robocop | Done | [Asana Link](https://app.asana.com/0/445808828739095/459270581163758/f)
 | Create a Worksheet.md and add Asana tasks to the markdown | Done | [Asana Link](https://app.asana.com/0/445808828739095/459255572817536/f)
 | Create BOT.md for BOT milestone | Done | [Asana Link](https://app.asana.com/0/445808828739095/447816377354508/f)
+
+#### Milestone: Service
+
+##### Week 1
+
+| Deliverable   | Item/Status   |  Issues/Tasks
+| ------------- | ------------  |  ------------
+| Choose another service to integrate      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268864/f)
+| Connect with ZAP      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268862/f)
+| String Formatting for email and comment/issue text      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268860/f)
+
+##### Week 2
+
+| Deliverable   | Item/Status   |  Issues/Tasks
+| ------------- | ------------  |  ------------
+| Integrate second service     | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268866/f)
+| Modify report format according to different services      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/476017001380652/f)
+| Change the response that is sent back to heroku deployed bot to send both SNYK as well as ZAP vulnerabilities      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/474131837623334/f)
