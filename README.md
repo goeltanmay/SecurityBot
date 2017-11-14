@@ -43,3 +43,16 @@ Server bot is already deployed on [heroku](http://desolate-fortress-49649.heroku
 * Click save and apply
 
 3. After performing the above steps, make the changes in the conf.json to change the tomcat URL of patient app in repo, Jenkins URL, path at which PatientsApp is cloned as repo_path, the zap url, jenkins path to jenkins-cli.jar.
+
+##### Instructions to install SNYK
+
+Follow the following steps to install SNYK:
+
+1. Run the command "npm install -g snyk"
+
+2. Got to [SNYK]("https://snyk.io/create-organisation") and create your account. Click on MyAccount tab on the top right and copy your API token
+
+3. Using the API token above run the following command: "snyk auth <YOUR_TOKEN_HERE>"
+
+In the last step replace your token in place of <YOUR_TOKEN_HERE>. Performing the above three steps will successfully install and authenticate SNYK.
+
