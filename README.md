@@ -50,7 +50,7 @@ Follow the following steps to install SNYK:
 
 1. Run the command "npm install -g snyk"
 
-2. Got to [SNYK]("https://snyk.io/create-organisation") and create your account. Click on MyAccount tab on the top right and copy your API token
+2. Got to [SNYK](https://snyk.io/create-organisation) and create your account. Click on MyAccount tab on the top right and copy your API token
 
 3. Using the API token above run the following command: "snyk auth <YOUR_TOKEN_HERE>"
 
