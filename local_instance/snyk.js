@@ -11,6 +11,7 @@ function snyk_scan()
 			repositoryInfo = JSON.parse(data);
 			//console.log(process.env.snyk_api_token);
 			//console.log(repositoryInfo.snyk_url);
+			console.log("i am in snyk service");
 			var cmd ='sh snyk.sh' +' '+process.env.snyk_api_token+' '+repositoryInfo.snyk_url;
 			//console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)

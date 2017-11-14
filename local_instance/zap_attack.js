@@ -18,7 +18,10 @@ function attack_using_zap()
 		var repo_url=repositoryInfo.repo;
 		var zap_url=repositoryInfo.zap_url;
 		
-		var key=repositoryInfo.zap_key;
+		var key=process.env.zap_key;
+		console.log(key);
+
+		console.log("I am zap service");
 
 
 		//var attack_url_service=nock("http://localhost:9000").get("/JSON/spider/action/scan/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&url="+repo_url+"&recurse=true").reply(200,JSON.stringify(zap_mock_data.scanId));

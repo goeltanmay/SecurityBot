@@ -11,6 +11,7 @@ attack().then(function(vulnerabilities){
 
 function attack()
 {
+	console.log("reached here");
 	repositoryInfo=JSON.parse(data);
 	return new Promise( function(resolve, reject) {
 		

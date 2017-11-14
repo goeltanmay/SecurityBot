@@ -46,18 +46,18 @@ var time_interval_in_miliseconds=5000;
 					}
 					else
 					{
-						console.log('got an event');
+						//console.log('got an event');
 						event_running=true;
 						var event = JSON.parse(body);
-						console.log(event);
+						//console.log(event);
 						var type=event.type;
 						var current_commitId=event.detail;
 						var parent_commitId=event.previous_commit;
 
 						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
-							console.log('communicate_with...................');
-							console.log(result);
+							//console.log('communicate_with...................');
+							//console.log(result);
 
 							var response_url=repositoryInfo.heroku_url+"/report";
 
