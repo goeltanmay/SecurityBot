@@ -1,6 +1,10 @@
-
+var fs=require('fs');
+var data = fs.readFileSync('./conf.json'),repositoryInfo;
 var attack_tools=require('./attack_tools.js')
 var filter_results=require('./filter_results.js');
+var sys  = require('util');
+var exec = require('child_process').exec;
+
 const Promise = require('bluebird');
 
 function handle_event(event, current_commitId, parent_commitId,repo_name)
@@ -22,10 +26,10 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 		{
 			filter_results.get_recent_vulnerabilities().then(resolve);
 		}
-		
+
 
 	});
-	
+
 }
 
 
@@ -42,19 +46,24 @@ function update_code(event_type,curr_hash)
   		var directory = repositoryInfo.directory;
   		var path=repositoryInfo.repo_path;
   		var jenkins_path=repositoryInfo.jenkins_path;
-
+			// console.log('directory:'+directory);
+			// console.log('path:'+path);
+			// console.log('jenkins_path:'+jenkins_path);
 		if(event_type=="push")
 		{
+			console.log("inside push");
 			var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
-			console.log(cmd);
+			console.log('-------'+cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{
+					console.log('stdout: ' + stdout);
+					console.log('stderr: '+stderr);
 				console.log('inside functio');
-        		if (stderr) // There was an error executing our script
+        		if (error) // There was an error executing our script
         		{
 						console.log('-----------------std error');
         				console.log(stderr);
-            			reject("Invalid Request");
+            			reject(stderr);
         		}
         		else
         		{
@@ -63,7 +72,7 @@ function update_code(event_type,curr_hash)
     		});
 
 		}
-		
+
 		if(event_type=="pull_request")
 		{
 			var cmd = 'sh pull_request_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
@@ -81,7 +90,7 @@ function update_code(event_type,curr_hash)
         		{
 					console.log("success");
 					resolve("success");
-				}	
+				}
         	// callback('success');
 
     		});
