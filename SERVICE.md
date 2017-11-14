@@ -8,7 +8,7 @@ We used Zed Attack Proxy(ZAP) to perform penetration testing of repository that 
 Whenever a local instance, which contains the deployed instance, receives a request from server hosted bot application, which listens to GitHub events, it updates the code for that particular repository. It then calls ZAP API service which returns a list of vulnerabilities which is sent back to the server bot which performs further action such as raising an issue, commenting to a commit or a pull request on the GitHub repository depending on the type of request/event.
 
 #### Snyk
-Snyk helps us find vulnerabilities in Node.js npm, Ruby and Java dependencies. 
+Snyk helps us find vulnerabilities in Node.js npm, Ruby and Java dependencies. It looks for dependencies in the repository and returns a list of vulnerabilities found in those dependencies. For example, in a java based application snyk will look for pom.xml, which contains all the dependencies for that project, and then will find the vulnerabilities associated with each dependency.
 
 #### Use cases
 
