@@ -39,7 +39,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
 	private static WebDriver driver;
-	private String token = "token " + "4e6a34573f8460f28187e6c7016e88f4516684b2";
+	private String token = "token " + System.getenv("GITHUB_TOKEN");
 	private String happyRepo = "PatientsApp";
 	private String altRepo = "mesosphere_challenge";
 	private String pull_req_branch = "sec_test";
@@ -271,7 +271,7 @@ public class WebTest {
 		assertNotNull(commentTime);
 		assertTrue("No recent comment!", (nowdate.getTime() - date.getTime()) < 15000);
 	}
-	
+
 	@Test
 	public void commitCommentalternate() throws Exception {
 		// creating and committing a new file with random name
@@ -311,7 +311,7 @@ public class WebTest {
 			// if driver is going to timeout, then good test because there is no comment
 			System.out.println(e.toString());
 		}
-		
+
 	}
 
 	@Test
@@ -347,7 +347,7 @@ public class WebTest {
 		assertNotNull(issueTime);
 		assertTrue("No recent issue found!", (nowdate.getTime() - date.getTime()) < 60000);
 	}
-	
+
 	@Test
 	public void createIssueAlternate() throws Exception {
 
@@ -366,7 +366,7 @@ public class WebTest {
 		githubRequestPut(gitUrl, "");
 
 		Thread.sleep(5000L);
-		
+
 		try {
 			driver.get("https://github.com/goeltanmay/"+ altRepo +"/issues");
 			WebDriverWait wait = new WebDriverWait(driver, 20);
@@ -380,10 +380,10 @@ public class WebTest {
 			Date nowdate = Date.from(Instant.now());
 			System.out.println(nowdate.getTime() - date.getTime());
 			assertFalse("No recent issue found!", (nowdate.getTime() - date.getTime()) < 60000);
-			
+
 		} catch (Exception e) {
 			// This is a good test as we want the driver to timeout because it doesn't find the issue
 			System.out.println("test passed");
-		} 
+		}
 	}
 }
