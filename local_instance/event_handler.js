@@ -78,11 +78,11 @@ function update_code(event_type,curr_hash)
 			var cmd = 'sh pull_request_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
 			console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
-    		{
-        		if(stderr) // There was an error executing our script
+    		{console.log('error------------'+error);
+        		if(error) // There was an error executing our script
         		{
-						console.log('-----------------std error');
-            			console.log(stderr);
+						console.log('-----------------std error: '+stderr);
+            			// console.log(stderr);
 						reject("error");
 							// callback(error);
         		}

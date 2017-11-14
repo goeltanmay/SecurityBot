@@ -627,73 +627,76 @@ function filter_vulnerabilities(type,cur_hash,pre_hash,vulnerabilities){
 						resolve(vulnerabilities);
 					} else {
 						Vulnerability.findOne({where: {curr_hash: pre_hash,},}).then(vul => {
-						if(vul==null){
+							console.log('-------------------------------vul found:'+vul);
+						if(vul===null){
 							resolve(vulnerabilities);
 						}
-						var vul2 = vul;
-						var result = []
-						var all_promises=[];
-						var zap_promise = new Promise(function(resolve, reject) {
-							var obj = [];
-							old_vul = vul2.zap_result;
-							var counter = 0;
-							var index=0;
-							for(element in vulnerabilities[0]){
-								// console.log('element zap-------');
-								// console.log(element);
-								counter++;
-								var vul = vulnerabilities[0][element];
-								if(_isContains(old_vul,vul.name)){
-									//vulnerability is not new
-								}else{
-									obj[index++]=vul;
+						else{
+							var vul2 = vul;
+							var result = []
+							var all_promises=[];
+							var zap_promise = new Promise(function(resolve, reject) {
+								var obj = [];
+								old_vul = vul2.zap_result;
+								var counter = 0;
+								var index=0;
+								for(element in vulnerabilities[0]){
+									// console.log('element zap-------');
+									// console.log(element);
+									counter++;
+									var vul = vulnerabilities[0][element];
+									if(_isContains(old_vul,vul.name)){
+										//vulnerability is not new
+									}else{
+										obj[index++]=vul;
+									}
+									if (counter == vulnerabilities[0].length){
+										// console.log('result zap---------------');
+										// console.log(obj);
+										// result[0] = obj;
+										// console.log(result);
+										resolve(obj);
+									}
 								}
-								if (counter == vulnerabilities[0].length){
-									// console.log('result zap---------------');
-									// console.log(obj);
-									// result[0] = obj;
-									// console.log(result);
-									resolve(obj);
+							});
+							all_promises.push(zap_promise);
+
+
+							//filter snyk vulnerabilities
+							var snyk_promise = new Promise(function(resolve, reject) {
+								var snyk_obj = [];
+								old_vuls = vul2.snyk_result;
+								var counter = 0;
+								var index=0;
+								for(element in vulnerabilities[1]){
+									// console.log('element snyk-------');
+									// console.log(element);
+									counter++;
+									var vul = vulnerabilities[1][element];
+									if(_isContains(old_vuls,vul.title)){
+										//vulnerability is not new
+									}else{
+										snyk_obj[index++]=vul;
+									}
+									if (counter == vulnerabilities[1].length){
+										// console.log('result snyk---------------');
+										// console.log(snyk_obj);
+										// result[1]=snyk_obj;
+										resolve(snyk_obj);
+									}
 								}
-							}
-						});
-						all_promises.push(zap_promise);
+							});
 
+							all_promises.push(snyk_promise);
 
-						//filter snyk vulnerabilities
-						var snyk_promise = new Promise(function(resolve, reject) {
-							var snyk_obj = [];
-							old_vuls = vul2.snyk_result;
-							var counter = 0;
-							var index=0;
-							for(element in vulnerabilities[1]){
-								// console.log('element snyk-------');
-								// console.log(element);
-								counter++;
-								var vul = vulnerabilities[1][element];
-								if(_isContains(old_vuls,vul.title)){
-									//vulnerability is not new
-								}else{
-									snyk_obj[index++]=vul;
-								}
-								if (counter == vulnerabilities[1].length){
-									// console.log('result snyk---------------');
-									// console.log(snyk_obj);
-									// result[1]=snyk_obj;
-									resolve(snyk_obj);
-								}
-							}
-						});
+							Promise.all(all_promises).then(function (values) {
+								console.log(values[0]);
+								console.log(values[1]);
+								resolve(values);
+							});
 
-						all_promises.push(snyk_promise);
-
-						Promise.all(all_promises).then(function (values) {
-							console.log(values[0]);
-							console.log(values[1]);
-							resolve(values);
-						});
-
-						// filter snyk vulnerabilities - end
+							// filter snyk vulnerabilities - end
+						}
 				});
 			}
 	});
