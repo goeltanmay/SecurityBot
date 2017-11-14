@@ -13,7 +13,7 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 
 		//console.log("handle_event called");
 
-		if(event==="push" || event ==="pull_request"||event==="installation_repository")
+		if(event==="push" || event ==="pull_request"||event==="installation_repositories")
 		{
 			update_code(event,current_commitId)
 			.then(attack_tools.attack)

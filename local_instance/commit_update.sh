@@ -12,7 +12,7 @@ echo $repo_path
 cd $repo_path
 pwd
 echo git checkout -b $new_branch $commitID
-git checkout master
+# git checkout master
 git pull origin master
 git checkout -b $new_branch $commitID
 echo bhanched_checked_out......
