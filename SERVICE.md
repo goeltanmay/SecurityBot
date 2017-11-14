@@ -17,3 +17,9 @@ We have integrated two services, OWASP ZAP and Snyk for finding vulnerabilities 
 3. __A repo collaborator has to check a pull request for vulnerabilities:__ Some contributor raises a pull request. Github signals the bot with the pull_request event which contains details of the pull request. Bot fetches the code from the Pull Request and runs OWASP ZAP and Snyk. Bot makes comments on the Pull Request, detailing the new vulnerabilities added because of it.
 
 4. __Get vulnerability report of the day via email:__ When a user needs an update about vulnerabilities present in a repository, he registers through a basic UI to receive an email. After registration, bot receives an email event and queries the database and fetches a list of vulnerabilities from past 5 commits. It sends out an email stating the vulnerabilities found.
+
+#### Task Tracking
+We are using Asana to track our tasks and detailed description of our tasks for this milestone can be found under "Milestone: Service" in this [worksheet](WORKSHEET.md).
+
+#### Screencast
+Screencast is available in [YouTube](https://youtu.be/QWTKwQYfV18).
