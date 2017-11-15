@@ -50,12 +50,12 @@ report = function(req, res) {
   var vulnerabilityLength = zap_vulnerabilities.length + snyk_vulnerabilities.length;
   var message_body = "";
   var promises = [];
-  var message_title = "### Robocop Report : " + vulnerabilityLength  +" new vulnerabilities found";
+  var message_title = "Robocop Report : " + vulnerabilityLength  +" new vulnerabilities found";
   zap_vulnerabilities.forEach(function (alert) {
     promises.push(new Promise(function(resolve, reject) {
-      message_body += "\n**Name :** " + alert.name;
-      message_body += "\n**Description :** " + alert.description;
-      message_body += "\n**Solution :** " + alert.solution;
+      message_body += "\nName : " + alert.name;
+      message_body += "\nDescription : " + alert.description;
+      message_body += "\nSolution : " + alert.solution;
       message_body += "\n___"
       resolve();
     }));
@@ -67,8 +67,8 @@ report = function(req, res) {
       var promises = [];
       snyk_vulnerabilities.forEach(function (alert) {
         promises.push(new Promise(function(resolve, reject) {
-          message_body += "\n**Name :** " + alert.title;
-          message_body += "\n**Description :** " + alert.description;
+          message_body += "\nName : " + alert.title;
+          message_body += "\nDescription : " + alert.description;
           // message_body += "\nSolution : " + alert.solution;
           message_body += "\n___"
           resolve();
