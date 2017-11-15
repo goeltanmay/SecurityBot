@@ -5,7 +5,7 @@
   },
   "development": {
     "username": "root",
-    "password": "catalunia19",
+    "password": "dev_password_here",
     "database": "node_schema",
     "host": "127.0.0.1",
     "dialect": "mysql"
