@@ -7,7 +7,7 @@ var exec = require('child_process').exec;
 
 const Promise = require('bluebird');
 
-function handle_event(event, current_commitId, parent_commitId,repo_name)
+function handle_event(event, detail, current_commitId, parent_commitId,repo_name)
 {
 	return new Promise(function(resolve,reject){
 
@@ -15,9 +15,9 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 
 		if(event==="push" || event ==="pull_request"||event==="installation_repositories")
 		{
-			update_code(event,current_commitId)
+			update_code(event,detail,current_commitId)
 			.then(attack_tools.attack)
-			.then(vulnerabilities => filter_results.filter_vulnerabilities(event,current_commitId,parent_commitId,vulnerabilities))
+			.then(vulnerabilities => filter_results.filter_vulnerabilities(event,detail,current_commitId,parent_commitId,vulnerabilities))
 			.then(filtered_vulnerabilities_list => resolve(filtered_vulnerabilities_list))
 			.catch(error => reject("Invalid Request"));
 		}
@@ -34,7 +34,7 @@ function handle_event(event, current_commitId, parent_commitId,repo_name)
 
 
 
-function update_code(event_type,curr_hash)
+function update_code(event_type,detail,curr_hash)
 {
 
 
@@ -46,13 +46,14 @@ function update_code(event_type,curr_hash)
   		var directory = repositoryInfo.directory;
   		var path=repositoryInfo.repo_path;
   		var jenkins_path=repositoryInfo.jenkins_path;
+			var repo_name=repositoryInfo.repo_name;
 			// console.log('directory:'+directory);
 			// console.log('path:'+path);
 			// console.log('jenkins_path:'+jenkins_path);
 		if(event_type=="push")
 		{
 			console.log("inside push");
-			var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
+			var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name;
 			console.log('-------'+cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{
@@ -75,7 +76,27 @@ function update_code(event_type,curr_hash)
 
 		if(event_type=="pull_request")
 		{
-			var cmd = 'sh pull_request_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path;
+			var cmd = 'sh pull_request_update.sh' + ' ' + detail + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name;
+			console.log(cmd);
+			exec(cmd, function (error, stdout, stderr)
+    		{console.log('error------------'+error);
+        		if(error) // There was an error executing our script
+        		{
+						console.log('-----------------std error: '+stderr);
+            			// console.log(stderr);
+						reject("error");
+							// callback(error);
+        		}
+        		else
+        		{
+					console.log("success");
+					resolve("success");
+				}
+        	// callback('success');
+
+    		});
+		}else if(event_type=='installation_repositories'){
+			var cmd = 'sh inst_repo.sh' + ' ' + path + ' ' + jenkins_path+' '+repo_name;
 			console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{console.log('error------------'+error);

@@ -49,12 +49,13 @@ var time_interval_in_miliseconds=5000;
 						//console.log('got an event');
 						event_running=true;
 						var event = JSON.parse(body);
-						//console.log(event);
+						console.log(event);
 						var type=event.type;
-						var current_commitId=event.detail;
+						var current_commitId = event.current_commit;
 						var parent_commitId=event.previous_commit;
+						var detail = event.detail;
 
-						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
+						event_handler.handle_event(type,detail,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
 							//console.log('communicate_with...................');
 							//console.log(result);

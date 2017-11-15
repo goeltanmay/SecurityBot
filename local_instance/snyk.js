@@ -10,7 +10,7 @@ function snyk_scan()
 	return new Promise(function(resolve,reject){
 
 		console.log('parsing data-------------');
-		console.log(data);
+		// console.log(data);
 		var data = fs.readFileSync('./conf.json'),repositoryInfo;
 			repositoryInfo = JSON.parse(data);
 			console.log('parsed data');
