@@ -27,4 +27,4 @@ We have taken feedback given in the last milestone into account and improved the
 We are using Asana to track our tasks and detailed description of our tasks for this milestone can be found under "Milestone: Service" in this [worksheet](WORKSHEET.md).
 
 #### Screencast
-Screencast is available on [YouTube](https://youtu.be/g9_y8TNwyVg).
+Screencast is available on [YouTube](https://youtu.be/5KhvW88rf5Q).
