@@ -18,8 +18,11 @@ echo $repo_path
 cd $repo_path
 echo 'pwd is '
 pwd
+# git pull
+echo git fetch origin pull/$pullRequestID/head:$new_branch
 git fetch origin pull/$pullRequestID/head:$new_branch
+echo git checkout $new_branch
 git checkout $new_branch
 jenkins_path=$4
 echo $jenkins_path
-java -jar $jenkins_path -s $JENKINS_URL build PatientsApp
+java -jar $jenkins_path -s $JENKINS_URL build $5
