@@ -73,8 +73,6 @@ function pull_request(req, res) {
 }
 
 function push(req, res) {
-  console.log("logging push before");
-  console.log(req.body.before);
   Repo.findOne({
     where: {
       username: req.body.repository.owner.name,
