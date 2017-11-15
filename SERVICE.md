@@ -20,8 +20,11 @@ Snyk helps us find vulnerabilities in Node.js npm, Ruby and Java dependencies. I
 
 4. __Get vulnerability report of the day via email:__ When a user needs an update about vulnerabilities present in a repository, he registers through a basic UI to receive an email. After registration, bot receives an email event and queries the database and fetches a list of vulnerabilities from past 5 commits. It sends out an email stating the vulnerabilities found.
 
+#### Improvements done from last milestone
+We have taken feedback given in the last milestone into account and improved the project accordingly. We have removed token from selenium tests and now we are fetching it from environment variable. Also, we have refined the format of robocop report to look more readable.
+
 #### Task Tracking
 We are using Asana to track our tasks and detailed description of our tasks for this milestone can be found under "Milestone: Service" in this [worksheet](WORKSHEET.md).
 
 #### Screencast
-Screencast is available in [YouTube](https://youtu.be/QWTKwQYfV18).
+Screencast is available on [YouTube](https://youtu.be/g9_y8TNwyVg).
