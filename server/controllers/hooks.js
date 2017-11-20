@@ -56,7 +56,7 @@ report = function(req, res) {
       message_body += "\nName : " + alert.name;
       message_body += "\nDescription : " + alert.description;
       message_body += "\nSolution : " + alert.solution;
-      message_body += "\n---"
+      message_body += "\n___"
       resolve();
     }));
  });
@@ -70,7 +70,7 @@ report = function(req, res) {
           message_body += "\nName : " + alert.title;
           message_body += "\nDescription : " + alert.description;
           // message_body += "\nSolution : " + alert.solution;
-          message_body += "\n---"
+          message_body += "\n___"
           resolve();
         }));
       });

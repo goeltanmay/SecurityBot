@@ -3,10 +3,12 @@
 We have integrated two services, OWASP ZAP and Snyk for finding vulnerabilities in a project.
 
 #### OWASP ZAP
+We used Zed Attack Proxy(ZAP) to perform penetration testing of repository that is registered with our bot application. ZAP operates by running the deployed instance of an application in a browser using proxy to hit the URL's that are part of the application to identify the vulnerabilities that can be potential causes for a network attack.
 
+Whenever a local instance, which contains the deployed instance, receives a request from server hosted bot application, which listens to GitHub events, it updates the code for that particular repository. It then calls ZAP API service which returns a list of vulnerabilities which is sent back to the server bot which performs further action such as raising an issue, commenting to a commit or a pull request on the GitHub repository depending on the type of request/event.
 
 #### Snyk
-
+Snyk helps us find vulnerabilities in Node.js npm, Ruby and Java dependencies. It looks for dependencies in the repository and returns a list of vulnerabilities found in those dependencies. For example, in a java based application snyk will look for pom.xml, which contains all the dependencies for that project, and then will find the vulnerabilities associated with each dependency.
 
 #### Use cases
 
@@ -18,8 +20,11 @@ We have integrated two services, OWASP ZAP and Snyk for finding vulnerabilities 
 
 4. __Get vulnerability report of the day via email:__ When a user needs an update about vulnerabilities present in a repository, he registers through a basic UI to receive an email. After registration, bot receives an email event and queries the database and fetches a list of vulnerabilities from past 5 commits. It sends out an email stating the vulnerabilities found.
 
+#### Improvements done from last milestone
+We have taken feedback given in the last milestone into account and improved the project accordingly. We have removed token from selenium tests and now we are fetching it from environment variable. Also, we have refined the format of robocop report to look more readable.
+
 #### Task Tracking
 We are using Asana to track our tasks and detailed description of our tasks for this milestone can be found under "Milestone: Service" in this [worksheet](WORKSHEET.md).
 
 #### Screencast
-Screencast is available in [YouTube](https://youtu.be/QWTKwQYfV18).
+Screencast is available on [YouTube](https://youtu.be/5KhvW88rf5Q).

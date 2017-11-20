@@ -59,6 +59,7 @@ We used Asana as our task tracking tool. We have already sent you invites for jo
 | Choose another service to integrate      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268864/f)
 | Connect with ZAP      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268862/f)
 | String Formatting for email and comment/issue text      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268860/f)
+| Filter vulnerabilities coming from snyk      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/479656499237398/f)
 
 ##### Week 2
 
@@ -67,3 +68,7 @@ We used Asana as our task tracking tool. We have already sent you invites for jo
 | Integrate second service     | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/467824432268866/f)
 | Modify report format according to different services      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/476017001380652/f)
 | Change the response that is sent back to heroku deployed bot to send both SNYK as well as ZAP vulnerabilities      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/474131837623334/f)
+| Modify response of filtered vulnerabilities to accommodate results from both zap and snyk      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/479656499237400/f)
+| Modify database to accommodate new service (snyk)      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/479656499237402/f)
+| Create worksheet.md to track tasks for service milestone      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/476017001380654/f)
+| Make screencast for service milestone      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/479656499237396/f)

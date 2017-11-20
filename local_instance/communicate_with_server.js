@@ -42,22 +42,23 @@ var time_interval_in_miliseconds=5000;
 					if(response.statusCode==404)
 					{
 						console.log('Invalid username and repository!!');
-						process.exit(1);
+						//process.exit(1);
 					}
 					else
 					{
-						console.log('got an event');
+						//console.log('got an event');
 						event_running=true;
 						var event = JSON.parse(body);
 						console.log(event);
 						var type=event.type;
-						var current_commitId=event.detail;
+						var current_commitId = event.current_commit;
 						var parent_commitId=event.previous_commit;
+						var detail = event.detail;
 
-						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
+						event_handler.handle_event(type,detail,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
-							console.log('communicate_with...................');
-							console.log(result);
+							//console.log('communicate_with...................');
+							//console.log(result);
 
 							var response_url=repositoryInfo.heroku_url+"/report";
 
@@ -71,7 +72,7 @@ var time_interval_in_miliseconds=5000;
      										"userId":repositoryInfo.user_name,
      										"repoName":repositoryInfo.repo_name,
      										"detail":event.detail,
-     										"vulnerabilities":result
+     										"vulnerabilities":{"zap":result[0],"snyk":result[1]}
      									},
      									json:true
 									}, function(error, response, body){
