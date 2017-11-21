@@ -41,7 +41,6 @@
     "selenium-webdriver": "^3.6.0",
     "sequelize": "^4.13.1",
     "sequelize-cli": "^3.0.0",
-    "zaproxy": "^0.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.12.1"
