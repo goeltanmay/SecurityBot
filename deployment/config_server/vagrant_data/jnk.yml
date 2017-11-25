@@ -26,6 +26,7 @@
         - ant
 
     tasks:
+      #install java 8
 
       # - name: add repo for java 8
       #   apt_repository: repo='ppa:webupd8team/java' state=present
@@ -45,181 +46,76 @@
       #     update-cache: yes
       #     force: yes
       #   sudo: yes
-      #
-      # - name: updating apt packages
-      #   become: yes
-      #   action: apt update_cache=yes state=latest
-      #
-      # - name: download jenkins
-      #   shell: wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
-      #   become: yes
-      #
-      # - name: update jenkins source list
-      #   shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d.jenkins.list'
-      #   become: yes
-      #
-      # - name: updating apt packages
-      #   become: yes
-      #   action: apt update_cache=yes state=latest
-      #
-      # - name: jenkins installation into server
-      #   apt:
-      #     name: jenkins
-      #     state: present
-      #     install_recommends: yes
+      #install java 8 - end
 
-      # # - name: slurp initial admin password
-      # #   slurp:
-      # #     str: /var/lib/jenkins/secrets/initialAdminPassword
-      # #   register: jenkins_password
-      #
-      # # - name: install jenkins git and maven plugin using CLI jar
-      # #   command: java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/install-plugin {{ item }} --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password }}
-      # #   with_items:
-      # #     - git
-      # #     - maven-plugin
-      # #   ignore_errors: True
-      # #   failed_when: False
-      # #   no_log: True
-      #
-      #
-      # # - name: install jenkins dependency
-      # #   apt: name=software-properties-common state=latest
-      # #
-      # # # - name: installing {{ item }}
-      # # #   apt: pkg={{ item }} state=present
-      # # #   become: yes
-      # # #   with_items: "{{packages}}"
-      # #
-      # # - name: install  git
-      # #   apt: name=git state=present
-      # #
-      # # - name: add jenkins.io key
-      # #   apt_key:
-      # #     url: "{{ jenkins_repo_key_url }}"
-      # #     state: present
-      # #
-      # # - name: Create source list
-      # #   lineinfile:
-      # #     dest: /etc/apt/sources.list.d/jenkins.list
-      # #     create: yes
-      # #     state: present
-      # #     line: "{{ jenkins_repo_url }}"
-      # #
-      # # - name: add jenkins repo
-      # #   apt:
-      # #     update_cache: yes
-      # #
-      # # - name: install jenkins
-      # #   apt:
-      # #     update_cache: yes
-      # #
-      # - name: Start jenkins
-      #   service: name=jenkins state=started
-      #
-      # - name: wait for jenkins to start
-      #   wait_for: port={{ jenkins_http_port }} delay={{ jenkins_connection_delay }}
-      #
-      # # - name: remove java arg line in jenkins default line
-      # #   lineinfile: dest={{ jenkins_defaults_file }} regexp="^JAVA_ARGS="-Djava.awt.headless=true"" state=absent
-      #
-      # - name: disable setup wizard
-      #   lineinfile: dest={{ jenkins_defaults_file }} line={{ jenkins_java_args }} state=present
-      #
-      # - name: start jenkins on init changes
-      #   service: name=jenkins state=restarted
-      #
-      # - name: wait for jenkins to start
-      #   wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
-      #
-      # - name: download jenkins cli jar
-      #   get_url:
-      #     url: "{{ cli_jar_url }}"
-      #     dest: "{{ jenkins_jar_location }}"
-      #     mode: 755
+      #update packages and istall jenkins
+      - name: updating apt packages
+        become: yes
+        action: apt update_cache=yes state=latest
+
+      - name: download jenkins
+        shell: wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
+        become: yes
+
+      - name: update jenkins source list
+        shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d.jenkins.list'
+        become: yes
+
+      - name: updating apt packages
+        become: yes
+        action: apt update_cache=yes state=latest
+
+      - name: jenkins installation into server
+        apt:
+          name: jenkins
+          state: present
+          install_recommends: yes
+
+      - name: download jenkins cli jar
+        get_url:
+          url: "{{ cli_jar_url }}"
+          dest: "{{ jenkins_jar_location }}"
+          mode: 755
       # #
       - name: slurp initial admin password
         slurp:
           src: /var/lib/jenkins/secrets/initialAdminPassword
         register: jenkins_admin_password
       #
-      # # - name: install jenkins git and maven plugin using CLI jar
-      # #   command: java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/install-plugin {{ item }} --username {{ jenkins_admin_username }}
-      # #   with_items:
-      # #     - git
-      # #     - maven-plugin
-      # #   ignore_errors: True
-      # #   failed_when: False
-      # #   no_log: True
-      # #
-      # # - name: wait for Git plugin to be installed
-      # #   wait_for:
-      # #     path: "{{ jenkins_home }}/plugins/git.api"
-      # #     state: present
-      # #     delay: 10
-      # #
-      # # - name: copy job configuration to ci-server
-      # #   copy: src=templates/PatientsApp.xml dest=/home/vagrant/ mode=755
-      # #
-      # # - name: Restart jenkins
-      # #   service: name=jenkins state=restarted
-      # #
-      # # - name: wait for jenkins to start
-      # #   wait_for: port={{ jenkins_http_port }} delay={{ jenkins_connection_delay }}
-      # #
-      # - copy:
-      #     src: /home/vagrant/vagrant_data/PatientsApp.xml
-      #     dest: /var/lib/jenkins/PatientsApp.xml
-      #     owner: jenkins
-      #     group: jenkins
-      #     mode: 0777
-      - name: list_jobs
-        shell: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ list-jobs  --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
-        register: list_jobs
+      - name: install jenkins git and maven plugin using CLI jar
+        command: java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/ install-plugin {{ item }} --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password['content'] | b64decode }}
+        with_items:
+          - git
+          - ant
+        ignore_errors: True
+        failed_when: False
+        no_log: True
 
-      - name: delete previous job
-        shell: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ delete-job {{job_name}}  --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
-        when: list_jobs.stdout.find('PatientsApp') != -1
+      - name: start jenkins on init changes
+        service: name=jenkins state=restarted
+
+      - name: wait for jenkins to start
+        wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
+
+      - copy:
+          src: /home/vagrant/vagrant_data/PatientsApp.xml
+          dest: /var/lib/jenkins/PatientsApp.xml
+          owner: jenkins
+          group: jenkins
+          mode: 0777
+
+      # - name: list_jobs
+      #   # shell: java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/ install-plugin {{ item }} --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password['content'] | b64decode }}
+      #   action: shell java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/ list-jobs  --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password['content'] | b64decode }}
+      #   register: list_jobs
+
+      # - name: delete previous job
+      #   command: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ delete-job {{job_name}}  --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+      #   when: list_jobs.stdout.find('PatientsApp') != -1
 
       - name: create job using jenkins cli jar
-        shell: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ create-job {{job_name}} < /var/lib/jenkins/PatientsApp.xml --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+        command: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ create-job {{job_name}} < /var/lib/jenkins/PatientsApp.xml --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+        ignore_errors: yes
 
-      # #
-      # #
-      # #
-      # # - name: downloading jenkins
-      # #   shell: wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | sudo apt-key add -
-      # #   become: yes
-      # #
-      # # - name: updating jenkins sources list
-      # #   shell: sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-      # #   become: yes
-      # #
-      # # - name: installing jenkins
-      # #   apt:
-      # #     name: jenkins
-      # #     state: present
-      # #     install_recommends: yes
-      # #   become: true
-      # #
-      # #
-      # # - copy:
-      # #   src: /home/vagrant/auto_job_run.xml
-      # #   dest: /home/vagrant/auto_job_run.xml
-      # #   mode: 0777
-      # #
-      # # - wait_for:
-      # #   host: 192.168.33.105
-      # #   port: 8080
-      # #   delay: 30
-      # #
-      # # - name: get client jar file
-      # #   action: shell wget http://192.168.33.105:8080/jnlpJars/jenkins-cli.jar
-      # #   args:
-      # #     creates: home/vagrant/jenkins-cli.jar
-      # #
-      # # - name: create job
-      # #   action: shell java -jar jenkins-cli.jar -s http://192.168.33.210:8080/ create-job JOB < auto_job_run.xml
-      # #
-      # # - name: final job
-      # #   action: shell java -jar /home/vagrant/jenkins-cli.jar -s http://192.168.33.105:8080/ build JOB
+      - name: final job
+        action: shell java -jar /home/vagrant/jenkins-cli.jar -s http://192.168.33.105:8080/ build JOB
