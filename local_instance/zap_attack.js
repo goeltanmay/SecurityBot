@@ -13,8 +13,8 @@ function attack_using_zap()
 
 
 		repositoryInfo = JSON.parse(data);
-		var repo_url=repositoryInfo.repo;
-		var zap_url=repositoryInfo.zap_url;
+		var repo_url=process.env.repo;
+		var zap_url=process.env.zap_url;
 
 		var key=process.env.zap_key;
 		console.log('key---'+key);

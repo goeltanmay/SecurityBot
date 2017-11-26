@@ -1,0 +1,80 @@
+---
+- hosts: nodes
+
+  vars:
+    snyk_token: "{{ lookup('env','snyk_api_token') }}"
+    zap_key: "{{ lookup('env','zap_key') }}"
+
+  tasks:
+  - name: Install Packages
+    apt: name={{ item }} update_cache=yes state=latest
+    with_items:
+      - npm
+      - nodejs-legacy
+      - git
+      - wget
+    register: packages_installed
+    become: yes
+
+  - name: Install snyk service
+    command: sudo npm install -g snyk
+    register: snyk_installed
+    become: yes
+
+  - debug:
+      msg: "{{ snyk_token }}"
+
+  - name: Authenticate snyk
+    command: sudo snyk auth "{{ snyk_token }}"
+    register: snyk_authenticated
+    when: snyk_installed.changed
+    become: yes
+
+
+  - name: Install java 8 preresequesits
+    apt: name=python-software-properties
+    become: yes
+
+
+  - name: Add repo for installing java 8
+    action: apt_repository repo='ppa:webupd8team/java'
+    become: yes
+
+  - name: set licence selected
+    shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+    become: yes
+
+  - name: set licence seen
+    shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+    become: yes
+
+  - name: install java 8
+    apt:
+      name: oracle-java8-installer
+      state: latest
+      update-cache: yes
+      force: yes
+    become: yes
+
+  - name: updating apt packages
+    become: yes
+    action: apt update_cache=yes state=latest
+
+  - name: Downloading ZAP
+    command: wget https://github.com/zaproxy/zaproxy/releases/download/2.5.0/ZAP_2.5.0_Linux.tar.gz
+    register: zap_dependencies_installed
+    become: yes
+
+  - name: Extracting ZAP tar file
+    command: tar -xzvf ZAP_2.5.0_Linux.tar.gz
+    become: yes
+
+  - name: Creating a zaproxy folder to keep zap in it
+    command: sudo cp -Ra ZAP_2.5.0 /opt/zaproxy
+    become: yes
+
+  - name: Starting ZAP
+    command: sudo /opt/zaproxy/ZAP_2.5.0/zap.sh -daemon -config api.key= "{{ zap_key }}" -host localhost -port 8081
+    async: 1000
+    poll: 0
+    become: yes

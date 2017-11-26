@@ -9,8 +9,8 @@ const request = require('request');
 var sys  = require('util');
 var exec = require('child_process').exec;
 var event_handler=require('./event_handler.js');
-var user_name=repositoryInfo.user_name;
-var repo_name=repositoryInfo.repo_name;
+var user_name=process.env.user_name;
+var repo_name=process.env.repo_name;
 
 
 // var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
