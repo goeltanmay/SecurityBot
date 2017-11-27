@@ -47,6 +47,7 @@ function update_code(event_type,detail,curr_hash)
   		var path=process.env.repo_path;
   		var jenkins_path=process.env.jenkins_path;
 	    var repo_name=process.env.repo_name;
+			var jenkins_url=process.env.jenkins_url;
 			// console.log('directory:'+directory);
 			// console.log('path:'+path);
 			// console.log('jenkins_path:'+jenkins_path);
@@ -71,7 +72,7 @@ function update_code(event_type,detail,curr_hash)
 		if(event_type=="push")
 		{
 			console.log("inside push");
-			var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name;
+			var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name + ' '+jenkins_url;
 			console.log('-------'+cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{
@@ -94,7 +95,7 @@ function update_code(event_type,detail,curr_hash)
 
 		if(event_type=="pull_request")
 		{
-			var cmd = 'sh pull_request_update.sh' + ' ' + detail + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name;
+			var cmd = 'sh pull_request_update.sh' + ' ' + detail + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name + ' '+jenkins_url;
 			console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{
@@ -115,7 +116,7 @@ function update_code(event_type,detail,curr_hash)
 
     		});
 		}else if(event_type=='installation_repositories'){
-			var cmd = 'sh inst_repo.sh' + ' ' + path + ' ' + jenkins_path+' '+repo_name;
+			var cmd = 'sh inst_repo.sh' + ' ' + path + ' ' + jenkins_path+' '+repo_name + ' '+jenkins_url;
 			console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{
