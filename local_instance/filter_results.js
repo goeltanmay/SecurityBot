@@ -1,6 +1,6 @@
 const request = require('request');
 var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
 const Vulnerability = require('./server/models').Vulnerability;
 
 // filter_vulnerabilities('installation_repositorie','124','123',[ zap_big,snyk_big] );

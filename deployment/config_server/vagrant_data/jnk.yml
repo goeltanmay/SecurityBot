@@ -5,6 +5,7 @@
     vars:
       snyk_token: "{{ lookup('env','snyk_api_token') }}"
       zap_key: "{{ lookup('env','zap_key') }}"
+
       jenkins_java_args: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupwizard=false"'
       jenkins_defaults_file: /etc/default/jenkins
       jenkins_home: /var/lib/jenkins
@@ -212,8 +213,8 @@
       - name: start jenkins on init changes
         service: name=jenkins state=restarted
 
-      - name: wait for jenkins to start
-        wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
+      # - name: wait for jenkins to start
+      #   wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
       #   when: not install_done|skipped or install_done.changed
       #   register: jenkins_res
 
@@ -392,3 +393,14 @@
         async: 1000
         poll: 0
         become: yes
+
+      - name: "Node: Install forever (to run our Node.js app)."
+        npm: name=forever global=yes state=present
+
+      - name: Running NPM install
+        npm:
+          path=/home/SecurityBot/
+          state=present
+
+      - name: Run app
+        command: forever start /home/SecurityBot/local_instance/communicate_with_server.js 10006

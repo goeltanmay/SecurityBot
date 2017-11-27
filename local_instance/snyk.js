@@ -1,6 +1,6 @@
 const request = require('request');
 var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
 const Promise = require('bluebird');
 var sys  = require('util');
 var exec = require('child_process').exec;
@@ -39,8 +39,8 @@ function snyk_scan()
 						}
 						catch(e)
 						{
-							resolve([]);	
-						}	
+							resolve([]);
+						}
 				}
     		});
 

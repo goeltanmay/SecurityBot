@@ -1,5 +1,5 @@
 var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
 var attack_tools=require('./attack_tools.js')
 var filter_results=require('./filter_results.js');
 var sys  = require('util');
@@ -40,8 +40,8 @@ function update_code(event_type,detail,curr_hash)
 
 	return new Promise(function (resolve, reject) {
 		console.log('entered update_code');
-		repositoryInfo = JSON.parse(data);
-  		console.log(repositoryInfo);
+		// repositoryInfo = JSON.parse(data);
+  	// 	console.log(repositoryInfo);
   		// var directory=repositoryInfo[1].repo_directory;
   		var directory = process.env.directory;
   		var path=process.env.repo_path;
@@ -50,6 +50,24 @@ function update_code(event_type,detail,curr_hash)
 			// console.log('directory:'+directory);
 			// console.log('path:'+path);
 			// console.log('jenkins_path:'+jenkins_path);
+
+
+    var cmd = 'sh zap_process.sh'+' '+process.env.zap_key;
+
+		exec(cmd, function (error, stdout, stderr)
+			{
+				console.log('stdout: ' + stdout);
+				console.log('stderr: '+stderr);
+			  console.log('inside functio');
+					if (error) // There was an error executing our script
+					{
+					console.log('-----------------std error');
+							console.log(stderr);
+								reject(stderr);
+					}
+			});
+
+
 		if(event_type=="push")
 		{
 			console.log("inside push");

@@ -1,6 +1,6 @@
 const request = require('request');
 var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
 
 const Promise = require('bluebird');
 
@@ -12,7 +12,7 @@ function attack_using_zap()
 	{
 
 
-		repositoryInfo = JSON.parse(data);
+		// repositoryInfo = JSON.parse(data);
 		var repo_url=process.env.repo;
 		var zap_url=process.env.zap_url;
 
