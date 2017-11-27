@@ -180,6 +180,8 @@ function get_recent_vulnerabilities(){
 					});
 					console.log('snyk_promise_retrieved');
 					all_promises.push(snyk_promise);
+console.log('all_promises');
+console.log(all_promises);
 					Promise.all(all_promises).then(function (values) {
 						console.log('both promises being sent');
 						resolve(values);
