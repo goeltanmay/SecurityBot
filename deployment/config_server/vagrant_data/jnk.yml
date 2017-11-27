@@ -3,6 +3,8 @@
     become: yes
     #variable setup
     vars:
+      snyk_token: "{{ lookup('env','snyk_api_token') }}"
+      zap_key: "{{ lookup('env','zap_key') }}"
       jenkins_java_args: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupwizard=false"'
       jenkins_defaults_file: /etc/default/jenkins
       jenkins_home: /var/lib/jenkins
@@ -16,6 +18,7 @@
       jenkins_connection_delay: 20
       jenkins_jar_location: /opt/jenkins-cli.jar
       job_name: PatientsApp
+      mysql_root_password: root
       packages:
         # - nginx
         - git-core
@@ -26,29 +29,113 @@
         - ant
 
     tasks:
+      - name: updating apt packages
+        become: yes
+        action: apt update_cache=yes state=latest
+
+      - name: install  git
+        apt: name=git state=present
+
+      - name: install  ant
+        apt: name=ant state=present
+
+       # clone patientsapp
+      - name: clone PatientsApp
+        git: name=https://github.com/goeltanmay/PatientsApp.git dest="/home/PatientsApp" clone=yes
+
+        #clone security bot
+      - name: clone Security Bot
+        git: name=https://github.com/goeltanmay/SecurityBot.git dest="/home/SecurityBot" clone=yes
+
+        #tomcat start
+      - name: install tomcat
+        shell: cd /opt; sudo rm -rf /opt/apach*; sudo rm -rf /opt/tomc*; wget http://www-us.apache.org/dist/tomcat/tomcat-8/v8.5.23/bin/apache-tomcat-8.5.23.tar.gz; tar xzf apache-tomcat-8.5.23.tar.gz; sudo mv apache-tomcat-8.5.23 tomcat8
+        become: yes
+        become_method: sudo
+
+      - name: copy tomcat config file
+        copy:
+          src: /home/vagrant/vagrant_data/tomcat-users.xml
+          dest: /opt/tomcat8/conf/tomcat-users.xml
+          owner: root
+          group: root
+          mode: 0500
+        become: yes
+        become_method: sudo
+
+      - name: Shutdown Tomcat
+        shell: nohup sh /opt/tomcat8/bin/shutdown.sh
+        become: yes
+        become_method: sudo
+
+      - name: copy server.xml file to deployment folder
+        copy:
+          src: /home/vagrant/vagrant_data/server.xml
+          dest: /opt/tomcat8/conf/server.xml
+          owner: root
+          group: root
+          mode: 0500
+        become: yes
+        become_method: sudo
+
+      - name: start Tomcat
+        shell: nohup sh /opt/tomcat8/bin/startup.sh
+        become: yes
+        become_method: sudo
+        register: tomcat
+      - debug: var=tomcat.stdout_lines
+       # tomcat - end
+
       #install java 8
 
-      # - name: add repo for java 8
-      #   apt_repository: repo='ppa:webupd8team/java' state=present
+      # # - name: add repo for java 8
+      # #   apt_repository: repo='ppa:webupd8team/java' state=present
+      # #
+      # # - name: set licence selected
+      # #   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+      # #   sudo: yes
+      # #
+      # # - name: set licence seen
+      # #   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+      # #   sudo: yes
+      # #
+      # # - name: install java 8
+      # #   apt:
+      # #     name: oracle-java8-installer
+      # #     state: latest
+      # #     update-cache: yes
+      # #     force: yes
+      # #   sudo: yes
       #
-      # - name: set licence selected
-      #   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-      #   sudo: yes
-      #
-      # - name: set licence seen
-      #   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
-      #   sudo: yes
-      #
-      # - name: install java 8
-      #   apt:
-      #     name: oracle-java8-installer
-      #     state: latest
-      #     update-cache: yes
-      #     force: yes
-      #   sudo: yes
-      #install java 8 - end
+      # #install java 8 - end
 
-      #update packages and istall jenkins
+      #update packages and install jenkins
+      - name: add jenkins.io key
+        apt_key:
+          url: "{{ jenkins_repo_key_url }}"
+          state: present
+
+      - name: Create source list
+        lineinfile:
+          dest: /etc/apt/sources.list.d/jenkins.list
+          create: yes
+          state: present
+          line: "{{ jenkins_repo_url }}"
+
+      - name: add jenkins repo
+        apt:
+          update_cache: yes
+
+      - name: install jenkins
+        apt:
+          update_cache: yes
+
+      # - name: Start jenkins
+      #   service: name=jenkins state=started
+      #
+      # - name: wait for jenkins to start
+      #   wait_for: port={{ jenkins_http_port }} delay={{ jenkins_connection_delay }}
+
       - name: updating apt packages
         become: yes
         action: apt update_cache=yes state=latest
@@ -71,18 +158,47 @@
           state: present
           install_recommends: yes
 
+       # - copy:
+      #     src: /home/vagrant/vagrant_data/config.xml
+      #     dest: /var/lib/jenkins/config.xml
+      #     force: yes
+      #     mode: 0777
+
+      - name: wait for jenkins to start
+        wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
+      # #   register: jenkins_up
+
       - name: download jenkins cli jar
+        sudo: yes
+        become: yes
         get_url:
           url: "{{ cli_jar_url }}"
           dest: "{{ jenkins_jar_location }}"
           mode: 755
+          timeout: 30
+        # when: jenkins_up.changed or jenkins_up.ok
+
+      # - name: update jenkins conf
+      #   shell: sudo ex +g/useSecurity/d +g/authorizationStrategy/d -scwq /var/lib/jenkins/config.xml
+      #   become: yes
+      #   sudo: yes
+
+      - name: restart jenkins
+        command: sudo /etc/init.d/jenkins restart
+        become: yes
+      # # #   register: jenkins_rest
+
       # #
       - name: slurp initial admin password
         slurp:
           src: /var/lib/jenkins/secrets/initialAdminPassword
         register: jenkins_admin_password
-      #
-      - name: install jenkins git and maven plugin using CLI jar
+
+      - debug:
+          msg: admin password "{{ jenkins_admin_password }}"
+
+
+      - name: install jenkins git and ant plugin using CLI jar
         command: java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/ install-plugin {{ item }} --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password['content'] | b64decode }}
         with_items:
           - git
@@ -90,32 +206,189 @@
         ignore_errors: True
         failed_when: False
         no_log: True
+        # when: not jenkins_rest|skipped or jenkins_rest.changed
+      # #   register: install_done
 
       - name: start jenkins on init changes
         service: name=jenkins state=restarted
 
       - name: wait for jenkins to start
         wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
+      #   when: not install_done|skipped or install_done.changed
+      #   register: jenkins_res
 
       - copy:
           src: /home/vagrant/vagrant_data/PatientsApp.xml
           dest: /var/lib/jenkins/PatientsApp.xml
-          owner: jenkins
-          group: jenkins
+          force: yes
+          # owner: jenkins
+          # group: jenkins
           mode: 0777
+          # wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
+          # when: not jenkins_res|skipped or jenkins_res.changed
 
-      # - name: list_jobs
-      #   # shell: java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/ install-plugin {{ item }} --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password['content'] | b64decode }}
-      #   action: shell java -jar {{ jenkins_jar_location }} -s http://{{ jenkins_hostname }}:{{ jenkins_http_port }}/ list-jobs  --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password['content'] | b64decode }}
-      #   register: list_jobs
+      - name: list jobs
+        command: sudo java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ list-jobs --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+        register: list_jobs
+        become: yes
+        # when: not jenkins_res|skipped or jenkins_res.changed
 
-      # - name: delete previous job
-      #   command: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ delete-job {{job_name}}  --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
-      #   when: list_jobs.stdout.find('PatientsApp') != -1
+      - name: delete previous job
+        command: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ delete-job {{job_name}}  --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+        when: list_jobs.stdout.find('PatientsApp') != -1
 
       - name: create job using jenkins cli jar
-        command: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ create-job {{job_name}} < /var/lib/jenkins/PatientsApp.xml --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
-        ignore_errors: yes
+        shell: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ create-job {{job_name}} < /var/lib/jenkins/PatientsApp.xml --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+        become: yes
+        # ignore_errors: yes
 
       - name: final job
-        action: shell java -jar /home/vagrant/jenkins-cli.jar -s http://192.168.33.105:8080/ build JOB
+        shell: java -jar {{jenkins_jar_location}} -s http://{{jenkins_hostname}}:{{jenkins_http_port}}/ build {{job_name}} --username {{jenkins_admin_username}} --password {{ jenkins_admin_password['content'] | b64decode }}
+        become: yes
+        sudo: yes
+
+      # install mysql
+      - name: "cleanup /tmp/*"
+        shell: /bin/rm -rf /tmp/*
+
+      - name: install MySQL
+        apt:
+          name: "{{ item }}"
+        with_items:
+          - python-mysqldb
+          - mysql-server
+
+      - name: Start the MySQL service
+        sudo: yes
+        service:
+          name: mysql
+          state: started
+          enabled: true
+
+      - name: update mysql root password for all root accounts
+        sudo: yes
+        mysql_user:
+          name: root
+          host: "{{ item }}"
+          password: "{{ mysql_root_password }}"
+          login_user: root
+          login_password: "{{ mysql_root_password }}"
+          check_implicit_admin: yes
+          priv: "*.*:ALL,GRANT"
+        with_items:
+          - "{{ ansible_hostname }}"
+          - 127.0.0.1
+          - ::1
+          - localhost
+
+      - name: Copy database dump file
+        copy:
+          src: /home/vagrant/vagrant_data/patientsapp_patients.sql
+          dest: /tmp
+
+      - name: Copy the root credentials as .my.cnf file
+        template: src=.my.cnf dest=~/.my.cnf mode=0600
+      # install mysql - end
+
+      - name: Restore database
+        mysql_db:
+          name: patientsapp
+          state: import
+          target: /tmp/patientsapp_patients.sql
+        become: yes
+
+      # # - name: Copy the root credentials as .my.cnf file
+      # #   template: src=root.cnf.j2 dest=~/.my.cnf mode=0600
+      # #
+      # # - name: Set MySQL root password
+      # #   debconf: name='mysql-server' question='mysql-server/root_password' value='{{database_password | quote}}' vtype='password'
+      # #
+      # # - name: Confirm MySQL root password before installing
+      # #   debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{database_password | quote}}' vtype='password'
+      # #
+      # #
+      # # - name: Copy the root credentials as .my.cnf file
+      # #   template: src=root.cnf.j2 dest=~/.my.cnf mode=0600
+      # # install mysql - end
+      #
+      #   tomcat
+
+      - name: copy war file to deployment folder
+        shell: cp /var/lib/jenkins/workspace/PatientsApp/dist/PatientsApp.war /opt/tomcat8/webapps/PatientsApp.war
+        become: yes
+        become_method: sudo
+
+
+      # sachin
+      - name: Install Packages
+        apt: name={{ item }} update_cache=yes state=latest
+        with_items:
+          - npm
+          - nodejs-legacy
+          - git
+          - wget
+        register: packages_installed
+        become: yes
+
+      - name: Install snyk service
+        command: sudo npm install -g snyk
+        register: snyk_installed
+        become: yes
+
+      - debug:
+          msg: "{{ snyk_token }}"
+
+      - name: Authenticate snyk
+        command: sudo snyk auth "{{ snyk_token }}"
+        register: snyk_authenticated
+        when: snyk_installed.changed
+        become: yes
+
+
+      - name: Install java 8 preresequesits
+        apt: name=python-software-properties
+        become: yes
+
+
+      - name: Add repo for installing java 8
+        action: apt_repository repo='ppa:webupd8team/java'
+        become: yes
+
+      - name: set licence selected
+        shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+        become: yes
+
+      - name: set licence seen
+        shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+        become: yes
+
+      - name: install java 8
+        apt:
+          name: oracle-java8-installer
+          state: latest
+          update-cache: yes
+          force: yes
+        become: yes
+
+      - name: updating apt packages
+        become: yes
+        action: apt update_cache=yes state=latest
+
+      - name: Downloading ZAP
+        command: wget https://github.com/zaproxy/zaproxy/releases/download/2.5.0/ZAP_2.5.0_Linux.tar.gz
+        register: zap_dependencies_installed
+        become: yes
+
+      - name: Extracting ZAP tar file
+        command: tar -xzvf ZAP_2.5.0_Linux.tar.gz
+        become: yes
+
+      - name: Creating a zaproxy folder to keep zap in it
+        command: sudo cp -Ra ZAP_2.5.0 /opt/zaproxy
+        become: yes
+
+      - name: Starting ZAP
+        command: sudo /opt/zaproxy/zap.sh -daemon -config api.key= "{{ zap_key }}" -host localhost -port 8081
+        async: 1000
+        poll: 0
+        become: yes
