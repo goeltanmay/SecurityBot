@@ -151,6 +151,7 @@ function get_recent_vulnerabilities(){
 				 				}
 			 			}
 					});
+					console.log('zap_promise_retrieved');
 					all_promises.push(zap_promise);
 					var snyk_promise = new Promise(function(resolve, reject) {
 						var index=0;
@@ -176,6 +177,7 @@ function get_recent_vulnerabilities(){
 				 				}
 			 			}
 					});
+					console.log('snyk_promise_retrieved');
 					all_promises.push(snyk_promise);
 					Promise.all(all_promises).then(function (values) {
 						resolve(values);
