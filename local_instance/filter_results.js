@@ -176,6 +176,7 @@ function get_recent_vulnerabilities(){
 										}
 				 				}
 			 			}
+						resolve(result);
 					});
 					console.log('snyk_promise_retrieved');
 					all_promises.push(snyk_promise);
