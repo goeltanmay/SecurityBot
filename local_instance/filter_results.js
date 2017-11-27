@@ -180,12 +180,13 @@ function get_recent_vulnerabilities(){
 					console.log('snyk_promise_retrieved');
 					all_promises.push(snyk_promise);
 					Promise.all(all_promises).then(function (values) {
+						console.log('both promises being sent');
 						resolve(values);
 					});
 	 			});
  	});
 }
-get_recent_vulnerabilities().then(values=>{console.log(values)});
+// get_recent_vulnerabilities().then(values=>{console.log(values)});
 
 
  module.exports={
