@@ -58,4 +58,4 @@ typings/
 .env
 
 # dont include db config
-config.json
+# config.json

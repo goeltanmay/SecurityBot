@@ -43,10 +43,10 @@ function update_code(event_type,detail,curr_hash)
 		repositoryInfo = JSON.parse(data);
   		console.log(repositoryInfo);
   		// var directory=repositoryInfo[1].repo_directory;
-  		var directory = repositoryInfo.directory;
-  		var path=repositoryInfo.repo_path;
-  		var jenkins_path=repositoryInfo.jenkins_path;
-			var repo_name=repositoryInfo.repo_name;
+  		var directory = process.env.directory;
+  		var path=process.env.repo_path;
+  		var jenkins_path=process.env.jenkins_path;
+	    var repo_name=process.env.repo_name;
 			// console.log('directory:'+directory);
 			// console.log('path:'+path);
 			// console.log('jenkins_path:'+jenkins_path);
@@ -79,7 +79,8 @@ function update_code(event_type,detail,curr_hash)
 			var cmd = 'sh pull_request_update.sh' + ' ' + detail + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name;
 			console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
-    		{console.log('error------------'+error);
+    		{
+    			console.log('error------------'+error);
         		if(error) // There was an error executing our script
         		{
 						console.log('-----------------std error: '+stderr);
@@ -99,7 +100,8 @@ function update_code(event_type,detail,curr_hash)
 			var cmd = 'sh inst_repo.sh' + ' ' + path + ' ' + jenkins_path+' '+repo_name;
 			console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
-    		{console.log('error------------'+error);
+    		{
+    			console.log('error------------'+error);
         		if(error) // There was an error executing our script
         		{
 						console.log('-----------------std error: '+stderr);
