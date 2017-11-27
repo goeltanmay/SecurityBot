@@ -17,7 +17,7 @@ function attack_using_zap()
 		var zap_url=process.env.zap_url;
 
 		var key=process.env.zap_key;
-		console.log('key---'+key);
+		// console.log('key---'+key);
 
 		console.log("I am zap service");
 
