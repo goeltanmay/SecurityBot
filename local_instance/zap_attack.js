@@ -19,16 +19,16 @@ function attack_using_zap()
 		var key=process.env.zap_key;
 		// console.log('key---'+key);
 
-		console.log("I am zap service");
+		// console.log("I am zap service");
 
 
 		var attack_url=zap_url+"/JSON/spider/action/scan/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&url="+repo_url+"&recurse=true";
 
 
 		request.get(attack_url,(error,response,body) => {
-			console.log('-----------------------body:');
-			console.log(body);
-			console.log('-----------------------body:');
+			// console.log('-----------------------body:');
+			// console.log(body);
+			// console.log('-----------------------body:');
 			var body_content = JSON.parse(body);
 
 			scanid=body_content.scan;

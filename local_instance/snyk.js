@@ -9,7 +9,7 @@ function snyk_scan()
 {
 	return new Promise(function(resolve,reject){
 
-		console.log('parsing data-------------');
+		// console.log('parsing data-------------');
 		// console.log(data);
 		//var data = fs.readFileSync('./conf.json'),repositoryInfo;
 			//repositoryInfo = JSON.parse(data);
@@ -17,9 +17,9 @@ function snyk_scan()
 
 			//console.log(process.env.snyk_api_token);
 			//console.log(repositoryInfo.snyk_url);
-			console.log("i am in snyk service");
+			// console.log("i am in snyk service");
 			var cmd ='sh snyk.sh' +' '+process.env.snyk_api_token+' '+process.env.snyk_url;
-			console.log(cmd);
+			// console.log(cmd);
 			exec(cmd, function (error, stdout, stderr)
     		{
 				//console.log('inside function snyk_scan');

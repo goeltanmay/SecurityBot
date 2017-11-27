@@ -8,7 +8,7 @@ const Promise = require('bluebird');
 
 function attack()
 {
-	console.log("reached here");
+	// console.log("reached here");
 	// repositoryInfo=JSON.parse(data);
 	return new Promise( function(resolve, reject) {
 
