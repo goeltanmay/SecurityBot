@@ -61,6 +61,8 @@ var time_interval_in_miliseconds=5000;
 							//console.log(result);
 
 							var response_url=process.env.heroku_url+"/report";
+                                                        console.log('request successful');
+							console.log(result);
 
 							request.post({
      									url: response_url,
