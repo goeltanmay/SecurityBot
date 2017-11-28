@@ -3,14 +3,14 @@ var fs=require('fs');
 const Promise = require('bluebird');
 // var data = fs.readFileSync('./server/config/config.json'),repositoryInfo;
 // var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
-repositoryInfo=JSON.parse(data);
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// repositoryInfo=JSON.parse(data);
 const request = require('request');
 var sys  = require('util');
 var exec = require('child_process').exec;
 var event_handler=require('./event_handler.js');
-var user_name=repositoryInfo.user_name;
-var repo_name=repositoryInfo.repo_name;
+var user_name=process.env.user_name;
+var repo_name=process.env.repo_name;
 
 
 // var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
@@ -42,24 +42,27 @@ var time_interval_in_miliseconds=5000;
 					if(response.statusCode==404)
 					{
 						console.log('Invalid username and repository!!');
-						process.exit(1);
+						//process.exit(1);
 					}
 					else
 					{
-						console.log('got an event');
+						//console.log('got an event');
 						event_running=true;
 						var event = JSON.parse(body);
 						console.log(event);
 						var type=event.type;
-						var current_commitId=event.detail;
+						var current_commitId = event.current_commit;
 						var parent_commitId=event.previous_commit;
+						var detail = event.detail;
 
-						event_handler.handle_event(type,current_commitId,parent_commitId,repo_name)
+						event_handler.handle_event(type,detail,current_commitId,parent_commitId,repo_name)
 						.then(function(result){
-							console.log('communicate_with...................');
-							console.log(result);
+							//console.log('communicate_with...................');
+							//console.log(result);
 
-							var response_url=repositoryInfo.heroku_url+"/report";
+							var response_url=process.env.heroku_url+"/report";
+                                                        console.log('request successful');
+							// console.log(result);
 
 							request.post({
      									url: response_url,
@@ -68,10 +71,10 @@ var time_interval_in_miliseconds=5000;
      									},
      									body:{
      										"eventType":type,
-     										"userId":repositoryInfo.user_name,
-     										"repoName":repositoryInfo.repo_name,
+     										"userId":process.env.user_name,
+     										"repoName":process.env.repo_name,
      										"detail":event.detail,
-     										"vulnerabilities":result
+     										"vulnerabilities":{"zap":result[0],"snyk":result[1]}
      									},
      									json:true
 									}, function(error, response, body){
