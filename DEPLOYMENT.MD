@@ -1,5 +1,9 @@
 # DEPLOYMENT
 
+### Deployment scripts
+
+We have created ansible playbook for deploying our bot server and a local instance.  
+
 ### Acceptance tests
 
 We have created a Github organization, SecurityBotOrganization for the purpose of testing our application. Please accept our invitations to join the organization and follow the steps given below to test our bot.

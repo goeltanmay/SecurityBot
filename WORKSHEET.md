@@ -83,7 +83,7 @@ We used Asana as our task tracking tool. We have already sent you invites for jo
 | Figure out installation of mysql properly using ansible      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/485216308910803/f)
 | Provisioning of ZAP and snyk services     | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/487639574647862/f)
 | Set up all the environment variables using ansible      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/485216308910805/f)
-|       | Done             |  [Asana Task]()
+| Provisioning of Jenkins, java, ant etc for local instance      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/489134134353450/f)
 
 ##### Week 2
 
@@ -92,4 +92,4 @@ We used Asana as our task tracking tool. We have already sent you invites for jo
 | Make an Ansible script to install all dependencies      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/485216308910801/f)
 | Remove hard coded passwords and keys from ansible script and use ansible server's environment variables      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/485216308910807/f)
 | Refactored code to remove conf.json in local instance to use urls as environment variables      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/487639574647864/f)
-|       | Done             |  [Asana Task]()
+| Deploy local instance on google compute      | Done             |  [Asana Task](https://app.asana.com/0/445808828739095/489134134353452/f)
