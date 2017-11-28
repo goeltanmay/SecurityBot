@@ -1,5 +1,5 @@
 ---
-- hosts: nodes
+- hosts: server_nodes
   become: yes
   vars:
     node_version: 8
