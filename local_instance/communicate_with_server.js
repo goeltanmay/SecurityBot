@@ -3,14 +3,14 @@ var fs=require('fs');
 const Promise = require('bluebird');
 // var data = fs.readFileSync('./server/config/config.json'),repositoryInfo;
 // var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
-repositoryInfo=JSON.parse(data);
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// repositoryInfo=JSON.parse(data);
 const request = require('request');
 var sys  = require('util');
 var exec = require('child_process').exec;
 var event_handler=require('./event_handler.js');
-var user_name=repositoryInfo.user_name;
-var repo_name=repositoryInfo.repo_name;
+var user_name=process.env.user_name;
+var repo_name=process.env.repo_name;
 
 
 // var repo_path="E:/MS_NCSU/ThirdSemester/SecurityBot/"+repo_name;
@@ -60,7 +60,9 @@ var time_interval_in_miliseconds=5000;
 							//console.log('communicate_with...................');
 							//console.log(result);
 
-							var response_url=repositoryInfo.heroku_url+"/report";
+							var response_url=process.env.heroku_url+"/report";
+                                                        console.log('request successful');
+							// console.log(result);
 
 							request.post({
      									url: response_url,
@@ -69,8 +71,8 @@ var time_interval_in_miliseconds=5000;
      									},
      									body:{
      										"eventType":type,
-     										"userId":repositoryInfo.user_name,
-     										"repoName":repositoryInfo.repo_name,
+     										"userId":process.env.user_name,
+     										"repoName":process.env.repo_name,
      										"detail":event.detail,
      										"vulnerabilities":{"zap":result[0],"snyk":result[1]}
      									},

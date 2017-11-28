@@ -1,6 +1,6 @@
 const request = require('request');
 var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
 
 const Promise = require('bluebird');
 
@@ -12,23 +12,23 @@ function attack_using_zap()
 	{
 
 
-		repositoryInfo = JSON.parse(data);
-		var repo_url=repositoryInfo.repo;
-		var zap_url=repositoryInfo.zap_url;
+		// repositoryInfo = JSON.parse(data);
+		var repo_url=process.env.repo;
+		var zap_url=process.env.zap_url;
 
 		var key=process.env.zap_key;
-		console.log('key---'+key);
+		// console.log('key---'+key);
 
-		console.log("I am zap service");
+		// console.log("I am zap service");
 
 
 		var attack_url=zap_url+"/JSON/spider/action/scan/?zapapiformat=JSON&apikey="+key+"&formMethod=GET&url="+repo_url+"&recurse=true";
 
 
 		request.get(attack_url,(error,response,body) => {
-			console.log('-----------------------body:');
-			console.log(body);
-			console.log('-----------------------body:');
+			// console.log('-----------------------body:');
+			// console.log(body);
+			// console.log('-----------------------body:');
 			var body_content = JSON.parse(body);
 
 			scanid=body_content.scan;

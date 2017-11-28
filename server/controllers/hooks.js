@@ -97,17 +97,15 @@ report = function(req, res) {
       transporter.sendMail(mailOptions, function(error, info){
         if(error){
             console.log(error);
-            res.json({yo: 'error'});
         }else{
             console.log('Message sent: ' + info.response);
-            res.json({yo: info.response});
         };
       });
 
       res.status(200).send();
     }
   	else {
-      JWT.generateToken("5599")
+      JWT.generateToken("7054") // Fixed ROBOCOP id used for signing JWT tokens
     	.then(function (jwtToken) {
     		github.getInstallations(jwtToken)
     		.then(function (installations){

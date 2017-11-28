@@ -1,14 +1,14 @@
 const request = require('request');
 var fs=require('fs');
-var data = fs.readFileSync('./conf.json'),repositoryInfo;
+// var data = fs.readFileSync('./conf.json'),repositoryInfo;
 const Vulnerability = require('./server/models').Vulnerability;
 
 // filter_vulnerabilities('installation_repositorie','124','123',[ zap_big,snyk_big] );
 
 function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
-	console.log('inside filter_vulnerabilities');
-	console.log('curr hash:'+cur_hash);
-	console.log('pre hash:'+pre_hash);
+	// console.log('inside filter_vulnerabilities');
+	// console.log('curr hash:'+cur_hash);
+	// console.log('pre hash:'+pre_hash);
 	return new Promise(function(resolve, reject) {
 		Vulnerability.create({
 					curr_hash: cur_hash,
@@ -18,16 +18,16 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 				}).then(task => {
 					// you can now access the newly created task via the variable task
 					if (type === 'installation_repositories'){
-						console.log('installation_repositories, resolving now');
+						// console.log('installation_repositories, resolving now');
 						resolve(vulnerabilities);
 					}
 
 					else if (pre_hash == null || pre_hash==='0000000000000000000000000000000000000000'){
-						console.log('pre hash is null, resolving now');
+						// console.log('pre hash is null, resolving now');
 						resolve(vulnerabilities);
 					} else {
 						Vulnerability.findOne({where: {curr_hash: pre_hash,},}).then(vul => {
-							console.log('-------------------------------vul found:'+vul);
+							// console.log('-------------------------------vul found:'+vul);
 						if(vul===null){
 							resolve(vulnerabilities);
 						}
@@ -36,7 +36,7 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 							var result = []
 							var all_promises=[];
 							var zap_promise = new Promise(function(resolve, reject) {
-								console.log('zap promise');
+								// console.log('zap promise');
 								var obj = [];
 								old_vul = vul2.zap_result;
 								var counter = 0;
@@ -52,7 +52,7 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 										obj[index++]=vul;
 									}
 									if (counter == vulnerabilities[0].length){
-										console.log('result zap---------------'+obj);
+										// console.log('result zap---------------'+obj);
 										// console.log(obj);
 										// result[0] = obj;
 										// console.log(result);
@@ -65,7 +65,7 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 
 							//filter snyk vulnerabilities
 							var snyk_promise = new Promise(function(resolve, reject) {
-								console.log('snyk promise');
+								// console.log('snyk promise');
 								var snyk_obj = [];
 								old_vuls = vul2.snyk_result;
 								var counter = 0;
@@ -83,7 +83,7 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 										snyk_obj[index++]=vul;
 									}
 									if (counter == vulnerabilities[1].length){
-										console.log('result snyk---------------'+snyk_obj);
+										// console.log('result snyk---------------'+snyk_obj);
 										// console.log(snyk_obj);
 										// result[1]=snyk_obj;
 										resolve(snyk_obj);
@@ -94,8 +94,8 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 							all_promises.push(snyk_promise);
 
 							Promise.all(all_promises).then(function (values) {
-								console.log(values[0]);
-								console.log(values[1]);
+								// console.log(values[0]);
+								// console.log(values[1]);
 								resolve(values);
 							});
 
@@ -120,7 +120,7 @@ function filter_vulnerabilities(type,detail,cur_hash,pre_hash,vulnerabilities){
 function get_recent_vulnerabilities(){
  	return new Promise(function(resolve,reject){
 
- 				console.log('inside get_recent_vulnerabilities');
+ 				// console.log('inside get_recent_vulnerabilities');
 	 			vuls = Vulnerability.findAll({
 		 			limit:5,
 		 			where:{},
@@ -151,6 +151,7 @@ function get_recent_vulnerabilities(){
 				 				}
 			 			}
 					});
+					// console.log('zap_promise_retrieved');
 					all_promises.push(zap_promise);
 					var snyk_promise = new Promise(function(resolve, reject) {
 						var index=0;
@@ -175,15 +176,20 @@ function get_recent_vulnerabilities(){
 										}
 				 				}
 			 			}
+						resolve(result);
 					});
+					// console.log('snyk_promise_retrieved');
 					all_promises.push(snyk_promise);
+// console.log('all_promises');
+// console.log(all_promises);
 					Promise.all(all_promises).then(function (values) {
+						// console.log('both promises being sent');
 						resolve(values);
 					});
 	 			});
  	});
 }
-get_recent_vulnerabilities().then(values=>{console.log(values)});
+// get_recent_vulnerabilities().then(values=>{console.log(values)});
 
 
  module.exports={
