@@ -28,4 +28,4 @@ When a user needs an update about vulnerabilities present in a repository, he re
 We are using Asana to track our tasks and detailed description of our tasks for this milestone can be found under "Milestone: Deployment" in this [worksheet](WORKSHEET.md).
 
 ### Screencast
-Screencast is available on [YouTube](https://youtu.be/5KhvW88rf5Q).
+Screencast is available on [YouTube](https://youtu.be/Qhn-OpmSwQM).
