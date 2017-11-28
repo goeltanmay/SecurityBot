@@ -31,7 +31,7 @@ function installation_repositories(req, res) {
       req.body.repositories_removed.forEach( repository => {
         promises.push(Repo.destroy({
           where: {
-            username: req.body.sender.login,
+            username: req.body.account.login,
             repo: repository.name,
           }
         }))
@@ -73,6 +73,8 @@ function pull_request(req, res) {
 }
 
 function push(req, res) {
+  console.log("logging push before");
+  console.log(req.body.before);
   Repo.findOne({
     where: {
       username: req.body.repository.owner.name,
