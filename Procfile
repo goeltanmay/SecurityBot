@@ -1,1 +1,1 @@
-web: node_modules/.bin/forever start main.js
+web: node main.js
