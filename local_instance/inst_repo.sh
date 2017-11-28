@@ -4,7 +4,8 @@ repo_path=$1
 # echo $repo_path
 cd $repo_path
 # git pull origin maste
-sudo git fetch
+sudo git checkout master
+sudo git pull
 # git --work-tree=/Users/jitinnagpal/Documents/workspace/PatientsApp checkout -b new_branchbeafb5d30989f2edbe1fde03669eeca08a6444e3 beafb5d30989f2edbe1fde03669eeca08a6444e3
 jenkins_path=$2
 JENKINS_URL=$4
