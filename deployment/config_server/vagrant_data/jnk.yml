@@ -403,4 +403,4 @@
           state=present
 
       - name: Run app
-        command: forever start /home/SecurityBot/local_instance/communicate_with_server.js 10006
+        command: forever start --minUptime 100000 --spinSleepTime 100000 communicate_with_server.js
