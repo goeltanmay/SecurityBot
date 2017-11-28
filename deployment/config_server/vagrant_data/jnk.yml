@@ -5,6 +5,8 @@
     vars:
       snyk_token: "{{ lookup('env','snyk_api_token') }}"
       zap_key: "{{ lookup('env','zap_key') }}"
+      bot_git: "{{ lookup('env','bot_git') }}"
+      patients_git: "{{ lookup('env','patients_git') }}"
 
       jenkins_java_args: 'JAVA_ARGS="-Djava.awt.headless=true -Djenkins.install.runSetupwizard=false"'
       jenkins_defaults_file: /etc/default/jenkins
@@ -42,11 +44,11 @@
 
        # clone patientsapp
       - name: clone PatientsApp
-        git: name=https://github.com/goeltanmay/PatientsApp.git dest="/home/PatientsApp" clone=yes
+        git: name="{{patients_git}}" dest="/home/PatientsApp" clone=yes
 
         #clone security bot
       - name: clone Security Bot
-        git: name=https://github.com/goeltanmay/SecurityBot.git dest="/home/SecurityBot" clone=yes
+        git: name="{{bot_git}}" dest="/home/SecurityBot" clone=yes
 
         #tomcat start
       - name: install tomcat
@@ -89,24 +91,24 @@
 
       #install java 8
 
-      # # - name: add repo for java 8
-      # #   apt_repository: repo='ppa:webupd8team/java' state=present
-      # #
-      # # - name: set licence selected
-      # #   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-      # #   sudo: yes
-      # #
-      # # - name: set licence seen
-      # #   shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
-      # #   sudo: yes
-      # #
-      # # - name: install java 8
-      # #   apt:
-      # #     name: oracle-java8-installer
-      # #     state: latest
-      # #     update-cache: yes
-      # #     force: yes
-      # #   sudo: yes
+      - name: add repo for java 8
+        apt_repository: repo='ppa:webupd8team/java' state=present
+
+      - name: set licence selected
+        shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
+        sudo: yes
+
+      - name: set licence seen
+        shell: /bin/echo debconf shared/accepted-oracle-license-v1-1 seen true | /usr/bin/debconf-set-selections
+        sudo: yes
+
+      - name: install java 8
+        apt:
+          name: oracle-java8-installer
+          state: latest
+          update-cache: yes
+          force: yes
+        sudo: yes
       #
       # #install java 8 - end
 
@@ -184,9 +186,9 @@
       #   become: yes
       #   sudo: yes
 
-      - name: restart jenkins
-        command: sudo /etc/init.d/jenkins restart
-        become: yes
+      # - name: restart jenkins
+      #   command: sudo /etc/init.d/jenkins restart
+      #   become: yes
       # # #   register: jenkins_rest
 
       # #
@@ -195,8 +197,8 @@
           src: /var/lib/jenkins/secrets/initialAdminPassword
         register: jenkins_admin_password
 
-      - debug:
-          msg: admin password "{{ jenkins_admin_password }}"
+      # - debug:
+      #     msg: admin password "{{ jenkins_admin_password }}"
 
 
       - name: install jenkins git and ant plugin using CLI jar
@@ -210,8 +212,8 @@
         # when: not jenkins_rest|skipped or jenkins_rest.changed
       # #   register: install_done
 
-      - name: start jenkins on init changes
-        service: name=jenkins state=restarted
+      # - name: start jenkins on init changes
+      #   service: name=jenkins state=restarted
 
       # - name: wait for jenkins to start
       #   wait_for: port={{ jenkins_http_port }} delay = {{ jenkins_connection_delay }}
@@ -336,8 +338,8 @@
         register: snyk_installed
         become: yes
 
-      - debug:
-          msg: "{{ snyk_token }}"
+      # - debug:
+      #     msg: "{{ snyk_token }}"
 
       - name: Authenticate snyk
         command: sudo snyk auth "{{ snyk_token }}"
@@ -403,4 +405,4 @@
           state=present
 
       - name: Run app
-        command: forever start --minUptime 100000 --spinSleepTime 100000 communicate_with_server.js
+        command: forever start --minUptime 100000 --spinSleepTime 100000 /home/SecurityBot/local_instance/communicate_with_server.js
