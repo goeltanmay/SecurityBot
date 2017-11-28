@@ -105,7 +105,7 @@ report = function(req, res) {
       res.status(200).send();
     }
   	else {
-      JWT.generateToken("5599") // JWT.generateToken(process.env.ISSUER_ID)
+      JWT.generateToken("7054") // Fixed ROBOCOP id used for signing JWT tokens
     	.then(function (jwtToken) {
     		github.getInstallations(jwtToken)
     		.then(function (installations){
