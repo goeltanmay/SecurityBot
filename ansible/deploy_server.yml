@@ -1,0 +1,152 @@
+---
+- hosts: nodes
+  become: yes
+  vars:
+    node_version: 8
+    database_password: root
+    database_name: deployment
+    gmail_username: "{{ lookup('env', 'ROBOCOP_GMAIL_USERNAME')}}"
+    gmail_password: "{{ lookup('env', 'ROBOCOP_GMAIL_PASSWORD')}}"
+    ROBOCOP_PRIVATE_KEY: "{{ lookup('env', 'ROBOCOP_PRIVATE_KEY')}}"
+
+  tasks:
+      - name: Add Nodesource Keys
+        become: yes
+        apt_key:
+          url: http://deb.nodesource.com/gpgkey/nodesource.gpg.key
+          state: present
+
+      # Note: "xenial" is ubuntu-speak for 16.04
+      - name: Add Nodesource Apt Sources
+        become: yes
+        apt_repository:
+          repo: '{{ item }}'
+          state: present
+        with_items:
+          - 'deb http://deb.nodesource.com/node_6.x xenial main'
+          - 'deb-src http://deb.nodesource.com/node_6.x xenial main'
+
+      - name: Install NodeJS and NPM
+        become: yes
+        apt:
+          name: nodejs
+          state: latest
+          update_cache: yes
+
+      - name: Install forever
+        become: yes
+        update_cache: yes
+        npm:
+          name: forever
+          global: yes
+          state: present
+
+
+      - name: Install mysql2
+        become: yes
+        update_cache: yes
+        npm:
+          name: mysql2
+          global: yes
+          state: present
+
+      - name: Install git
+        apt: pkg=git state=present update_cache=yes
+        become: yes
+
+      - name: "Ensure Services are running the latest version"
+        apt:
+          name: "{{ item }}"
+          state: latest
+        with_items:
+          - bash
+          - openssl
+          - openssh-client
+          - openssh-server
+
+      - name: "Cleanup /tmp/*"
+        shell: /bin/rm -rf /tmp/*
+
+      - name: Set MySQL root password before installing
+        debconf: name='mysql-server' question='mysql-server/root_password' value='{{database_password | quote}}' vtype='password'
+
+      - name: Confirm MySQL root password before installing
+        debconf: name='mysql-server' question='mysql-server/root_password_again' value='{{database_password | quote}}' vtype='password'
+
+      - name: Install MySQL
+        apt:
+          name: "{{ item }}"
+        with_items:
+          - python-mysqldb
+          - mysql-server
+
+      - name: Copy the root credentials as .my.cnf file
+        template: src=root.cnf.j2 dest=~/.my.cnf mode=0600
+
+
+      - name: Create Mysql Database
+        mysql_db: name={{ database_name }} state=present
+
+      - name: creating source directory"
+        file:
+          path: "/home/vagrant/SecurityBot"
+          state: directory
+          recurse: yes
+        become: yes
+
+      - file:
+          path: "/home/vagrant/SecurityBot"
+          mode: 0777
+          state: directory
+        become: yes
+
+      - name: Clone git repo
+        update_cache: yes
+        git:
+          name: http://github.com/goeltanmay/SecurityBot.git
+          clone: yes
+          dest: "/home/vagrant/SecurityBot"
+
+      - name: Adding the path in the bashrc files
+        lineinfile: dest=/home/vagrant/.bashrc line='export CLEARDB_DATABASE_URL=mysql://root:{{ database_password }}@localhost:3306/{{ database_name }}' state=present
+
+      # # - name: Install npm deps
+      # #   become: yes
+      # #   npm:
+      # #     path: "/home/vagrant/SecurityBot"
+      # #     state: present
+      # #
+
+      - name: npm install command
+        command: sudo npm install chdir=/home/vagrant/SecurityBot/
+        async: 1000
+        poll: 0
+        register: npm_install
+        environment:
+          npm_config_loglevel: silent
+
+      - name: 'npm install long running'
+        async_status: jid={{ npm_install.ansible_job_id }}
+        register: job_result
+        until: job_result.finished
+        retries: 30
+
+      - name: Install sequelize-cli
+        command: sudo npm install -g sequelize-cli
+
+      - name: Run sequelize migrations
+        command: sequelize db:migrate chdir=/home/vagrant/SecurityBot/
+        environment:
+          CLEARDB_DATABASE_URL: mysql://root:{{ database_password }}@localhost:3306/{{ database_name }}
+          NODE_ENV: production
+
+
+      - name: Run the instance
+        command : forever start /home/vagrant/SecurityBot/main.js
+        environment:
+          CLEARDB_DATABASE_URL: mysql://root:{{ database_password }}@localhost:3306/{{ database_name }}
+          NODE_ENV: production
+          gmail_username: "{{ gmail_username }}"
+          gmail_password: "{{ gmail_password }}"
+          ROBOCOP_PRIVATE_KEY: "{{ ROBOCOP_PRIVATE_KEY }}"
+    # - name: setup other environment variables
