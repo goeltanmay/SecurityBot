@@ -77,18 +77,18 @@ function update_code(event_type,detail,curr_hash)
 		var event_promise = new Promise(function(resolve, reject) {
 			if(event_type=="push")
 			{
-				// console.log("inside push");
+				console.log("inside push");
 				var cmd ='sh commit_update.sh' + ' ' + curr_hash + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name + ' '+jenkins_url;
-				// console.log('-------'+cmd);
+				console.log('-------'+cmd);
 				exec(cmd, function (error, stdout, stderr)
 	    		{
-					// 	console.log('stdout: ' + stdout);
-					// 	console.log('stderr: '+stderr);
-					// console.log('inside functio');
+						console.log('stdout: ' + stdout);
+						console.log('stderr: '+stderr);
+					console.log('inside functio');
 	        		if (error) // There was an error executing our script
 	        		{
-							// console.log('-----------------std error');
-	        		// 		console.log(stderr);
+							console.log('-----------------std error');
+	        				console.log(stderr);
 	            			reject(stderr);
 	        		}
 	        		else
@@ -102,20 +102,20 @@ function update_code(event_type,detail,curr_hash)
 			if(event_type=="pull_request")
 			{
 				var cmd = 'sh pull_request_update.sh' + ' ' + detail + ' ' +directory+' '+ path + ' ' + jenkins_path+' '+repo_name + ' '+jenkins_url;
-				// console.log(cmd);
+				console.log(cmd);
 				exec(cmd, function (error, stdout, stderr)
 	    		{
-	    			// console.log('error------------'+error);
+	    			console.log('error------------'+error);
 	        		if(error) // There was an error executing our script
 	        		{
-							// console.log('-----------------std error: '+stderr);
-	            			// console.log(stderr);
+							console.log('-----------------std error: '+stderr);
+	            			console.log(stderr);
 							reject("error");
 								// callback(error);
 	        		}
 	        		else
 	        		{
-						// console.log("success");
+						console.log("success");
 						resolve("success");
 					}
 	        	// callback('success');
@@ -123,20 +123,20 @@ function update_code(event_type,detail,curr_hash)
 	    		});
 			}else if(event_type=='installation_repositories'){
 				var cmd = 'sh inst_repo.sh' + ' ' + path + ' ' + jenkins_path+' '+repo_name + ' '+jenkins_url;
-				// console.log(cmd);
+				console.log(cmd);
 				exec(cmd, function (error, stdout, stderr)
 	    		{
-	    			// console.log('error------------'+error);
+	    			console.log('error------------'+error);
 	        		if(error) // There was an error executing our script
 	        		{
-							// console.log('-----------------std error: '+stderr);
-	            			// console.log(stderr);
+							console.log('-----------------std error: '+stderr);
+	            			console.log(stderr);
 							reject("error");
 								// callback(error);
 	        		}
 	        		else
 	        		{
-						// console.log("success");
+						console.log("success");
 						resolve("success");
 					}
 	        	// callback('success');
