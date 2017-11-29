@@ -57,7 +57,7 @@ When a user needs an update about vulnerabilities present in a repository, he re
 
 Please follow the following steps to test this use case:
 
-1. Go to this [link](http://desolate-fortress-49649.herokuapp.com/emailreport) and fill in your the "Github user id" as:"SecurityBotOrganization", "Github Repository" as: "PatientsApp" and "Email" as:"<your email id>".
+1. Go to this [link](http://desolate-fortress-49649.herokuapp.com/emailreport) and fill in your the "Github user id" as:"SecurityBotOrganization", "Github Repository" as: "PatientsApp" and "Email" as:"your_email_id_here".
 
 2. Click Submit
 
