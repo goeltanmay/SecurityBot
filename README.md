@@ -69,7 +69,7 @@ We have created ansible playbook for deploying our bot server and a local instan
     * bot_git : Link for ".git" file for Security Bot
     * patients_git: Link for ".git" file for PatientsApp    
 
-2. After setting the above environment variables run this ansible [playbook](https://github.com/goeltanmay/SecurityBot/blob/master/deployment/config_server/vagrant_data/jnk.yml)
+2. After setting the above environment variables run this ansible [playbook](https://github.com/goeltanmay/SecurityBot/blob/master/deployment/config_server/vagrant_data/local_instance_provisioning.yml)
 
 #### Deployment of Server BOT
 
