@@ -16,10 +16,10 @@ In this case, github signals the bot through installation_repositories event, wh
 
 Please follow the following steps to test this use case:
 
-1. Go to this [link](https://github.com/organizations/SecurityBotOrganization/settings/installations) to add PatientsApp to the Robocop Bot application
-2. You will see an Installed Github application named "Robocop App". Click on Configure button
-3. Scroll down the page and you will see Repository Access. If you see PatientsApp in the list of Selected Repositories, then remove it.
-4. Now type PatientsApp and select it to add to the Robocop
+1. Go to this [link](https://github.com/organizations/SecurityBotOrganization/settings/installations) to add PatientsApp to the Robocop Bot application.
+2. You will see an Installed Github application named "Robocop App". Click on Configure button.
+3. Scroll down the page and you will see Repository Access. If you see PatientsApp in the list of Selected Repositories, remove it by clicking on 'x' adjacent to it. Click Save.
+4. Now type PatientsApp in select repositories textbox and select it from the suggestions to add to Robocop to it. Click Save.
 5. Go to PatientsApp repository which is already added to the SecurityBotOrganization. Select branch as master and click on Issues. You can see a new issue which contains a list of three vulnarabilities  that are detected by ZAP and Snyk.
 
 #### Use Case 2: A developer wants to see all the vulnerabilities introduced in the code because of his commit
