@@ -2,7 +2,9 @@
 
 ### Deployment scripts
 
-We have created ansible playbook for deploying our bot server and a local instance.  
+We have created ansible playbook for deploying our bot server and a local instance. The instructions to execute these commands are written in readme.md file which can be found [here](https://github.com/goeltanmay/SecurityBot/blob/master/README.md)
+
+Please follow the instructions under Deployment Milestone to run the playbooks.
 
 ### Acceptance tests
 
