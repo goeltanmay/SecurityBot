@@ -16,24 +16,23 @@ There are several static analysis tools and fuzzing tools to test the security o
 
 Our bot will aid users while performing the following tasks:
 
-1. Check security vulnerabilities of an application when bot is integrated with the repo for the first time
-    1. __Preconditions__  
-    The repo must not have the security bot installed.
-    2. __Main Flow__  
-     Github signals the bot to check the code present in the repository against any potential vulnerabilities. Bot fetches the code from the repository and runs OWASP ZAP and static analysis tools [S1]. Bot will collect the list of vulnerabilities and raise an issue with the vulnerabilities found [S2].
-    3. __Subflows__  
-    [S1] - The tools will be picked according to the programming language or framework used.
-    [S2] - The issue will be raised with title as <type_of_vulnerability>.
-    4. __Alternative Flows__  
-    If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
+__1. Check security vulnerabilities of an application when bot is integrated with the repo for the first time.__
 
-    ![Add Robocop to a repo](screenshots/add_robocop.png)
+In this case, github signals the bot through installation_repositories event, which contains details of newly added repository, to check the code present in the repository against any potential vulnerabilities.
 
-    ![Issue creation](screenshots/issue_creation.png)
+Robocop is added to a repository for the first time.
 
-    ![Issue description](screenshots/issue_description.png)
+![Add Robocop to a repo](screenshots/add_robocop.png)
 
-2. A developer wants to see all the vulnerabilities introduced in the code because of his commit.
+Bot fetches the code from the repository and runs OWASP ZAP and Snyk. Bot will collect the list of vulnerabilities and raise an issue with the vulnerabilities found.
+
+![Issue creation](screenshots/issue_creation.png)
+
+List of vulnerabilities present in the repo reported by robocop.
+
+![Issue description](screenshots/issue_description.png)
+
+__2. A developer wants to see all the vulnerabilities introduced in the code because of his commit.__
 
 In this case, Robocop comments on the commit done by the developer with the vulnerabilities introduced because of it.
 
@@ -45,30 +44,31 @@ Github signals the bot with the push event which contains commit details. Bot fe
 
 ![Robocop's comment on a commit](screenshots/robocop_comment.png)
 
-3. A repo collaborator has to check a pull request for vulnerabilities.
-      1. __Preconditions__  
-       The repo must have the security bot installed.
-      2. __Main Flow__  
-       Some contributor raises a pull request [S1]. Github signals the bot with the pull request number. Bot fetches the code from the Pull Request and runs OWASP ZAP and static analysis tools. Bot makes comments on the Pull Request, detailing the new vulnerabilities added because of it.
-      3. __Subflows__  
-       [S1] - The contributor can raise a pull request from another fork, or from one of the branches in the same repo. The bot will analyze both the base and the branch to be merged, and report any differences.
-      4. __Alternative Flows__  
-       If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.  
-       ![Pull request code change](screenshots/PR_code_change.png)  
-       ![PR creation](screenshots/pull_request_created.png)  
-       ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)  
+__3. A repo collaborator has to check a pull request for vulnerabilities.__
 
-4. Get recent vulnerability report via email
-    1. __Preconditions__  
-      The repo must have the security bot installed.
-    2. __Main Flow__  
-      Bot will query the database and fetch list of vulnerabilities from past 5 commits. It sends out an email stating the vulnerabilities found.
-    3. __Alternative Flows__  
-      If no vulnerabilities are found, the bot sends an email that no vulnerability is detected in the code.
+Our project has become big now and some outside contributor wants to suggest some changes in the code and raises a pull request for the same. Github signals the bot with the pull_request event which contains details of the pull request. Bot fetches the code from the Pull Request and runs OWASP ZAP and Snyk. Bot makes comments on the Pull Request, detailing the new vulnerabilities added because of it.
 
-      ![Request Email](screenshots/request_email.png)
+Code change done by some contributor.
 
-      ![Email](screenshots/email.png)
+![Pull request code change](screenshots/PR_code_change.png)  
+
+Pull request created by the contributor.
+
+![PR creation](screenshots/pull_request_created.png)  
+
+Robocop comments on the pull request with the list of vulnerabilities found.
+
+![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)  
+
+__4. Get recent vulnerability report via email.__
+
+When a user needs an update about vulnerabilities present in a repository, he registers through a basic UI to request a list of vulnerabilities present via email.
+
+![Request Email](screenshots/request_email.png)
+
+After registration, bot receives an email event and send it to local instance. The event triggers local instance to query the database, fetch a list of vulnerabilities from past 5 commits and send it back to the bot. Bot now sends out an email stating the vulnerabilities found.
+
+![Email](screenshots/email.png)
 
 ### Project and Development Process
 
