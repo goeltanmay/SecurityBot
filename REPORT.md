@@ -27,6 +27,12 @@ Our bot will aid users while performing the following tasks:
     4. __Alternative Flows__  
     If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
+    ![Add Robocop to a repo](screenshots/add robocop.png)
+
+    ![Issue creation](screenshots/issue creation.png)
+
+    ![Issue description](screenshots/issue description.png)
+
 2. A developer wants to see all the vulnerabilities introduced in the code because of his commit
     1. __Preconditions__  
      The repo must have the security bot installed.
@@ -38,6 +44,10 @@ Our bot will aid users while performing the following tasks:
     4. __Alternative Flows__  
      If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
+     ![Commit diff](screenshots/commit diff.png)
+
+     ![Robocop's comment on a commit](screenshots/robocop comment.png)
+
 3. A repo collaborator has to check a pull request for vulnerabilities.
       1. __Preconditions__  
        The repo must have the security bot installed.
@@ -48,6 +58,12 @@ Our bot will aid users while performing the following tasks:
       4. __Alternative Flows__  
        If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
+       ![Pull request code change](screenshots/PR code change.png)
+
+       ![PR creation](screenshots/pull request created.png)
+
+       ![Robocop's comment on PR](screenshots/robocop comment on PR.png)
+
 4. Get vulnerability report of the day via email
     1. __Preconditions__  
       The repo must have the security bot installed.
@@ -55,6 +71,10 @@ Our bot will aid users while performing the following tasks:
       Bot will query the database and fetch list of vulnerabilities from past 5 commits. It sends out an email stating the vulnerabilities found.
     3. __Alternative Flows__  
       If no vulnerabilities are found, the bot sends an email that no vulnerability is detected in the code.
+
+      ![Request Email](screenshots/request email.png)
+
+      ![Email](screenshots/email.png)
 
 ### Project and Development Process
 
