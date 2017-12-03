@@ -80,3 +80,7 @@ We have created ansible playbook for deploying our bot server and a local instan
     * DATABASE_PASSWORD: The password that you want to set for the mysql server.
 
 2. After setting the above environment variable run this ansible [playbook](https://github.com/goeltanmay/SecurityBot/blob/master/ansible/deploy_server.yml)
+
+#### Final Report
+The final report is available [here](REPORT.md).
+A short screencast explaining the motivation and features of our bot can be found on [YouTube]().
