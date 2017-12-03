@@ -93,3 +93,5 @@ For deployment milestone we used Ansible for the provisioning of the bot. We dev
 ### Limitations and Future Work
 
 We have structured the bot so that it is scalable and can be used by big corporations as well as small. However, one of the limitations of our work is that we only used OWASP ZAP and SNYK to find vulnerabilities. In future, we would like to include more tools like Fortify, which could do static code analysis, dynamic fuzzers to look for vulnerabilities like buffer overflow etc. One research topic could be on how to use the output of one tool to empower the second tool, so that results are more accurate and fast.
+
+Another future work is to publish the actual bot on github. To do this, we will have to come up with a payment system, and also address concerns on whether these vulnerabilities should be displayed on github. We can have an option of privately emailing the committer or the manager.
