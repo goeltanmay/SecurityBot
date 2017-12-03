@@ -89,3 +89,5 @@ We divided ourselves into 2 teams of 2 people. Tanmay and Palak worked on the se
 Most of the technical hurdles were solved within the BOT milestone, and the first version was delivered. In this version, the services on the local instance were mocked, but the structure of the mocked calls was the same as actual service calls which meant that in the service milestone, we just had to switch off mocking to make our code work.
 
 ### Limitations and Future Work
+
+We have structured the bot so that it is scalable and can be used by big corporations as well as small. However, one of the limitations of our work is that we only used OWASP ZAP and SNYK to find vulnerabilities. In future, we would like to include more tools like Fortify, which could do static code analysis, dynamic fuzzers to look for vulnerabilities like buffer overflow etc. One research topic could be on how to use the output of one tool to empower the second tool, so that results are more accurate and fast.
