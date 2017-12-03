@@ -16,22 +16,21 @@ There are several static analysis tools and fuzzing tools to test the security o
 
 Our bot will aid users while performing the following tasks:
 
-1. Check security vulnerabilities of an application when bot is integrated with the repo for the first time
-    1. __Preconditions__  
-    The repo must not have the security bot installed.
-    2. __Main Flow__  
-     Github signals the bot to check the code present in the repository against any potential vulnerabilities. Bot fetches the code from the repository and runs OWASP ZAP and static analysis tools [S1]. Bot will collect the list of vulnerabilities and raise an issue with the vulnerabilities found [S2].
-    3. __Subflows__  
-    [S1] - The tools will be picked according to the programming language or framework used.
-    [S2] - The issue will be raised with title as <type_of_vulnerability>.
-    4. __Alternative Flows__  
-    If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
+1. Check security vulnerabilities of an application when bot is integrated with the repo for the first time.
 
-    ![Add Robocop to a repo](screenshots/add_robocop.png)
+In this case, github signals the bot through installation_repositories event, which contains details of newly added repository, to check the code present in the repository against any potential vulnerabilities.
 
-    ![Issue creation](screenshots/issue_creation.png)
+Robocop is added to a repository for the first time.
 
-    ![Issue description](screenshots/issue_description.png)
+![Add Robocop to a repo](screenshots/add_robocop.png)
+
+Bot fetches the code from the repository and runs OWASP ZAP and Snyk. Bot will collect the list of vulnerabilities and raise an issue with the vulnerabilities found.
+
+![Issue creation](screenshots/issue_creation.png)
+
+List of vulnerabilities present in the repo reported by robocop.
+
+![Issue description](screenshots/issue_description.png)
 
 2. A developer wants to see all the vulnerabilities introduced in the code because of his commit.
 
