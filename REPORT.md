@@ -27,11 +27,11 @@ Our bot will aid users while performing the following tasks:
     4. __Alternative Flows__  
     If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
-    ![Add Robocop to a repo](screenshots/add robocop.png)
+    ![Add Robocop to a repo](screenshots/add_robocop.png)
 
-    ![Issue creation](screenshots/issue creation.png)
+    ![Issue creation](screenshots/issue_creation.png)
 
-    ![Issue description](screenshots/issue description.png)
+    ![Issue description](screenshots/issue_description.png)
 
 2. A developer wants to see all the vulnerabilities introduced in the code because of his commit
     1. __Preconditions__  
@@ -44,9 +44,9 @@ Our bot will aid users while performing the following tasks:
     4. __Alternative Flows__  
      If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
-     ![Commit diff](screenshots/commit diff.png)
+     ![Commit diff](screenshots/commit_diff.png)
 
-     ![Robocop's comment on a commit](screenshots/robocop comment.png)
+     ![Robocop's comment on a commit](screenshots/robocop_comment.png)
 
 3. A repo collaborator has to check a pull request for vulnerabilities.
       1. __Preconditions__  
@@ -58,11 +58,11 @@ Our bot will aid users while performing the following tasks:
       4. __Alternative Flows__  
        If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
-       ![Pull request code change](screenshots/PR code change.png)
+       ![Pull request code change](screenshots/PR_code_change.png)
 
-       ![PR creation](screenshots/pull request created.png)
+       ![PR creation](screenshots/pull_request_created.png)
 
-       ![Robocop's comment on PR](screenshots/robocop comment on PR.png)
+       ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)
 
 4. Get recent vulnerability report via email
     1. __Preconditions__  
@@ -72,7 +72,7 @@ Our bot will aid users while performing the following tasks:
     3. __Alternative Flows__  
       If no vulnerabilities are found, the bot sends an email that no vulnerability is detected in the code.
 
-      ![Request Email](screenshots/request email.png)
+      ![Request Email](screenshots/request_email.png)
 
       ![Email](screenshots/email.png)
 
