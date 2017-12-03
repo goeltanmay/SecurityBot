@@ -31,7 +31,7 @@ function installation_repositories(req, res) {
       req.body.repositories_removed.forEach( repository => {
         promises.push(Repo.destroy({
           where: {
-            username: req.body.account.login,
+            username: req.body.installation.account.login,
             repo: repository.name,
           }
         }))

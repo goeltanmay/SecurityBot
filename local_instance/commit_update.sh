@@ -13,8 +13,8 @@ cd $repo_path
 pwd
 # echo git checkout -b $new_branch $commitID
 # git checkout master
-sudo git pull origin master
-sudo git checkout -b $new_branch $commitID
+sudo git pull
+sudo git checkout -B $new_branch $commitID
 # echo bhanched_checked_out......
 # git --work-tree=/Users/jitinnagpal/Documents/workspace/PatientsApp checkout -b new_branchbeafb5d30989f2edbe1fde03669eeca08a6444e3 beafb5d30989f2edbe1fde03669eeca08a6444e3
 jenkins_path=$4

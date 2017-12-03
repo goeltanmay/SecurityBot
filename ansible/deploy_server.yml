@@ -3,7 +3,7 @@
   become: yes
   vars:
     node_version: 8
-    database_password: root
+    database_password: "{{ lookup('env', 'DATABASE_PASSWORD')}}"
     database_name: deployment
     gmail_username: "{{ lookup('env', 'ROBOCOP_GMAIL_USERNAME')}}"
     gmail_password: "{{ lookup('env', 'ROBOCOP_GMAIL_PASSWORD')}}"
