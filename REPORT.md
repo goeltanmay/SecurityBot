@@ -56,13 +56,10 @@ Our bot will aid users while performing the following tasks:
       3. __Subflows__  
        [S1] - The contributor can raise a pull request from another fork, or from one of the branches in the same repo. The bot will analyze both the base and the branch to be merged, and report any differences.
       4. __Alternative Flows__  
-       If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
-
-       ![Pull request code change](screenshots/PR_code_change.png)
-
-       ![PR creation](screenshots/pull_request_created.png)
-
-       ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)
+       If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.  
+       ![Pull request code change](screenshots/PR_code_change.png)  
+       ![PR creation](screenshots/pull_request_created.png)  
+       ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)  
 
 4. Get recent vulnerability report via email
     1. __Preconditions__  
