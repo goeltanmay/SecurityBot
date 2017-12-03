@@ -39,11 +39,11 @@ In this case, Robocop comments on the commit done by the developer with the vuln
 
 A developer commits a piece of code.
 
-     ![Commit diff](screenshots/commit_diff.png)
+![Commit diff](screenshots/commit_diff.png)
 
 Github signals the bot with the push event which contains commit details. Bot fetches the code from the commit and runs OWASP ZAP and Snyk. Bot collects the list of vulnerabilities and posts a comment on the commit with the new vulnerabilities found because of it.
 
-     ![Robocop's comment on a commit](screenshots/robocop_comment.png)
+![Robocop's comment on a commit](screenshots/robocop_comment.png)
 
 3. A repo collaborator has to check a pull request for vulnerabilities.
       1. __Preconditions__  
