@@ -49,17 +49,24 @@ __3. A repo collaborator has to check a pull request for vulnerabilities.__
 Our project has become big now and some outside contributor wants to suggest some changes in the code and raises a pull request for the same. Github signals the bot with the pull_request event which contains details of the pull request. Bot fetches the code from the Pull Request and runs OWASP ZAP and Snyk. Bot makes comments on the Pull Request, detailing the new vulnerabilities added because of it.
 
 Code change done by some contributor.
+
 ![Pull request code change](screenshots/PR_code_change.png)  
 
 Pull request created by the contributor.
+
 ![PR creation](screenshots/pull_request_created.png)  
 
 Robocop comments on the pull request with the list of vulnerabilities found.
+
 ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)  
 
 __4. Get recent vulnerability report via email.__
 
+When a user needs an update about vulnerabilities present in a repository, he registers through a basic UI to request a list of vulnerabilities present via email.
+
 ![Request Email](screenshots/request_email.png)
+
+After registration, bot receives an email event and send it to local instance. The event triggers local instance to query the database, fetch a list of vulnerabilities from past 5 commits and send it back to the bot. Bot now sends out an email stating the vulnerabilities found.
 
 ![Email](screenshots/email.png)
 
