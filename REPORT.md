@@ -18,7 +18,7 @@ Our bot will aid users while performing the following tasks:
 
 1. Check security vulnerabilities of an application when bot is integrated with the repo for the first time
     1. __Preconditions__  
-    The repo must have the security bot installed.
+    The repo must not have the security bot installed.
     2. __Main Flow__  
      Github signals the bot to check the code present in the repository against any potential vulnerabilities. Bot fetches the code from the repository and runs OWASP ZAP and static analysis tools [S1]. Bot will collect the list of vulnerabilities and raise an issue with the vulnerabilities found [S2].
     3. __Subflows__  
@@ -64,7 +64,7 @@ Our bot will aid users while performing the following tasks:
 
        ![Robocop's comment on PR](screenshots/robocop comment on PR.png)
 
-4. Get vulnerability report of the day via email
+4. Get recent vulnerability report via email
     1. __Preconditions__  
       The repo must have the security bot installed.
     2. __Main Flow__  
@@ -78,8 +78,9 @@ Our bot will aid users while performing the following tasks:
 
 ### Project and Development Process
 
-We were really excited as we believed we are solving a real problem. Most of the development work was done during the BOT milestone. The way github apps work is that there needs to be one server where github pushes the events, so we had to split our original design of one bot into 2. One was the server which communicated with github and had all the github related logic, and the local instance, which ran the different security tools and reported the results to the server.
+We are really excited as we believed we are solving a real problem. Most of the development work was done during the BOT milestone. The way github apps work is that there needs to be one server where github pushes the events, so we had to split our original design of one bot into 2. One was the server which communicated with github and had all the github related logic, and the local instance, which ran the different security tools and reported the results to the server.
 
 We divided ourselves into 2 teams of 2 people. Tanmay and Palak worked on the server while Jitin and Sachin worked on the local instance. We practiced pair programming, and had everyday standups during the BOT milestone, so that all the development happened in sync and both the teams were not waiting on the other. 
 
 ### Limitations and Future Work
+
