@@ -56,13 +56,10 @@ Our bot will aid users while performing the following tasks:
       3. __Subflows__  
        [S1] - The contributor can raise a pull request from another fork, or from one of the branches in the same repo. The bot will analyze both the base and the branch to be merged, and report any differences.
       4. __Alternative Flows__  
-       If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
-
-       ![Pull request code change](screenshots/PR_code_change.png)
-
-       ![PR creation](screenshots/pull_request_created.png)
-
-       ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)
+       If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.  
+       ![Pull request code change](screenshots/PR_code_change.png)  
+       ![PR creation](screenshots/pull_request_created.png)  
+       ![Robocop's comment on PR](screenshots/robocop_comment_on_PR.png)  
 
 4. Get recent vulnerability report via email
     1. __Preconditions__  
@@ -88,7 +85,7 @@ We divided ourselves into 2 teams of 2 people. Tanmay and Palak worked on the se
 
 Most of the technical hurdles were solved within the BOT milestone, and the first version was delivered. In this version, the services on the local instance were mocked, but the structure of the mocked calls was the same as actual service calls which meant that in the service milestone, we just had to switch off mocking to make our code work.
 
-For deployment milestone we used Ansible for the provisioning of the bot. We developed Ansible scripts which automatically hosted our server bot on Heroku instance and local instance bot on Google Compute instance.  
+For deployment milestone, we used Ansible for the provisioning of the bot. We developed Ansible scripts which automatically hosted our server bot on Heroku instance and local instance bot on Google Compute instance.   
 
 ### Limitations and Future Work
 
