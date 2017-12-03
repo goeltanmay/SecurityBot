@@ -83,4 +83,4 @@ We have created ansible playbook for deploying our bot server and a local instan
 
 #### Final Report
 The final report is available [here](REPORT.md).
-A short screencast explaining the motivation and features of our bot can be found on [YouTube]().
+A short screencast explaining the motivation and features of our bot can be found on [YouTube](https://www.youtube.com/watch?v=Bf9z3ai-Z6M&feature=youtu.be).
