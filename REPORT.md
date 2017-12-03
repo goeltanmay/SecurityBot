@@ -33,20 +33,17 @@ Our bot will aid users while performing the following tasks:
 
     ![Issue description](screenshots/issue_description.png)
 
-2. A developer wants to see all the vulnerabilities introduced in the code because of his commit
-    1. __Preconditions__  
-     The repo must have the security bot installed.
-    2. __Main Flow__  
-     One of the developers commits a piece of code. Github signals the bot with the commit id. Bot fetches the code from the commit and runs OWASP ZAP and static analysis tools [S1]. Bot will collect the list of vulnerabilities and post a comment on the commit with the new vulnerabilities found because of it. It also raises an issue with the vulnerabilities found [S2].
-    3. __Subflows__  
-     [S1] - The tools will be picked according to the programming language or framework used.
-     [S2] - The issue will be raised with title as <type_of_vulnerability>.
-    4. __Alternative Flows__  
-     If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
+2. A developer wants to see all the vulnerabilities introduced in the code because of his commit.
 
-     ![Commit diff](screenshots/commit_diff.png)
+In this case, Robocop comments on the commit done by the developer with the vulnerabilities introduced because of it.
 
-     ![Robocop's comment on a commit](screenshots/robocop_comment.png)
+A developer commits a piece of code.
+
+![Commit diff](screenshots/commit_diff.png)
+
+Github signals the bot with the push event which contains commit details. Bot fetches the code from the commit and runs OWASP ZAP and Snyk. Bot collects the list of vulnerabilities and posts a comment on the commit with the new vulnerabilities found because of it.
+
+![Robocop's comment on a commit](screenshots/robocop_comment.png)
 
 3. A repo collaborator has to check a pull request for vulnerabilities.
       1. __Preconditions__  
@@ -88,6 +85,7 @@ Most of the technical hurdles were solved within the BOT milestone, and the firs
 For deployment milestone, we used Ansible for the provisioning of the bot. We developed Ansible scripts which automatically hosted our server bot on Heroku instance and local instance bot on Google Compute instance.
 
 Overall, the development process was really enjoyable for all team members. Task tracking and pair programming helped in maintaining good pace, and made sure that there was no deadline pressure as we planned the work well. We also learned technologies like node, github apis, jenkins, ansible which would definitely help us in the future.  
+
 
 ### Limitations and Future Work
 
