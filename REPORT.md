@@ -18,7 +18,7 @@ Our bot will aid users while performing the following tasks:
 
 1. Check security vulnerabilities of an application when bot is integrated with the repo for the first time
     1. __Preconditions__  
-    The repo must have the security bot installed.
+    The repo must not have the security bot installed.
     2. __Main Flow__  
      Github signals the bot to check the code present in the repository against any potential vulnerabilities. Bot fetches the code from the repository and runs OWASP ZAP and static analysis tools [S1]. Bot will collect the list of vulnerabilities and raise an issue with the vulnerabilities found [S2].
     3. __Subflows__  
@@ -26,6 +26,12 @@ Our bot will aid users while performing the following tasks:
     [S2] - The issue will be raised with title as <type_of_vulnerability>.
     4. __Alternative Flows__  
     If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
+
+    ![Add Robocop to a repo](screenshots/add robocop.png)
+
+    ![Issue creation](screenshots/issue creation.png)
+
+    ![Issue description](screenshots/issue description.png)
 
 2. A developer wants to see all the vulnerabilities introduced in the code because of his commit
     1. __Preconditions__  
@@ -38,6 +44,10 @@ Our bot will aid users while performing the following tasks:
     4. __Alternative Flows__  
      If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
+     ![Commit diff](screenshots/commit diff.png)
+
+     ![Robocop's comment on a commit](screenshots/robocop comment.png)
+
 3. A repo collaborator has to check a pull request for vulnerabilities.
       1. __Preconditions__  
        The repo must have the security bot installed.
@@ -48,7 +58,13 @@ Our bot will aid users while performing the following tasks:
       4. __Alternative Flows__  
        If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
 
-4. Get vulnerability report of the day via email
+       ![Pull request code change](screenshots/PR code change.png)
+
+       ![PR creation](screenshots/pull request created.png)
+
+       ![Robocop's comment on PR](screenshots/robocop comment on PR.png)
+
+4. Get recent vulnerability report via email
     1. __Preconditions__  
       The repo must have the security bot installed.
     2. __Main Flow__  
@@ -56,14 +72,20 @@ Our bot will aid users while performing the following tasks:
     3. __Alternative Flows__  
       If no vulnerabilities are found, the bot sends an email that no vulnerability is detected in the code.
 
+      ![Request Email](screenshots/request email.png)
+
+      ![Email](screenshots/email.png)
+
 ### Project and Development Process
 
 We were really excited as we believed we are solving a real problem. We looked up the github app store and found that there were only 2 applications related to security, and both of them were just dependency checkers so there was definitely a space for a more comprehensive security application.
+
+We are really excited as we believed we are solving a real problem. Most of the development work was done during the BOT milestone. The way github apps work is that there needs to be one server where github pushes the events, so we had to split our original design of one bot into 2. One was the server which communicated with github and had all the github related logic, and the local instance, which ran the different security tools and reported the results to the server.
 
 Most of the development work was done during the BOT milestone. The way github apps work is that there needs to be one server where github pushes the events, so we had to split our original design of one bot into 2. One was the server which communicated with github and had all the github related logic, and the local instance, which ran the different security tools and reported the results to the server.
 
 We divided ourselves into 2 teams of 2 people. Tanmay and Palak worked on the server while Jitin and Sachin worked on the local instance. We practiced pair programming, and had everyday standups during the BOT milestone, so that all the development happened in sync and both the teams were not waiting on the other.
 
-Most of the technical hurdles were solved within the BOT milestone, and the first version was delivered. In this version, the services on the local instance were mocked, but the structure of the mocked calls was the same as actual service calls which meant that in the service milestone, we just had to switch off mocking to make our code work. 
+Most of the technical hurdles were solved within the BOT milestone, and the first version was delivered. In this version, the services on the local instance were mocked, but the structure of the mocked calls was the same as actual service calls which meant that in the service milestone, we just had to switch off mocking to make our code work.
 
 ### Limitations and Future Work
