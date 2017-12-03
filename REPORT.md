@@ -85,7 +85,9 @@ We divided ourselves into 2 teams of 2 people. Tanmay and Palak worked on the se
 
 Most of the technical hurdles were solved within the BOT milestone, and the first version was delivered. In this version, the services on the local instance were mocked, but the structure of the mocked calls was the same as actual service calls which meant that in the service milestone, we just had to switch off mocking to make our code work.
 
-For deployment milestone, we used Ansible for the provisioning of the bot. We developed Ansible scripts which automatically hosted our server bot on Heroku instance and local instance bot on Google Compute instance.   
+For deployment milestone, we used Ansible for the provisioning of the bot. We developed Ansible scripts which automatically hosted our server bot on Heroku instance and local instance bot on Google Compute instance.
+
+Overall, the development process was really enjoyable for all team members. Task tracking and pair programming helped in maintaining good pace, and made sure that there was no deadline pressure as we planned the work well. We also learned technologies like node, github apis, jenkins, ansible which would definitely help us in the future.  
 
 ### Limitations and Future Work
 
