@@ -91,3 +91,5 @@ Most of the technical hurdles were solved within the BOT milestone, and the firs
 For deployment milestone we used Ansible for the provisioning of the bot. We developed Ansible scripts which automatically hosted our server bot on Heroku instance and local instance bot on Google Compute instance.  
 
 ### Limitations and Future Work
+
+We have structured the bot so that it is scalable and can be used by big corporations as well as small. However, one of the limitations of our work is that we only used OWASP ZAP and SNYK to find vulnerabilities. In future, we would like to include more tools like Fortify, which could do static code analysis, dynamic fuzzers to look for vulnerabilities like buffer overflow etc. One research topic could be on how to use the output of one tool to empower the second tool, so that results are more accurate and fast.
