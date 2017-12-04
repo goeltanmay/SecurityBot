@@ -33,18 +33,15 @@ Our bot will aid users while performing the following tasks:
 
     ![Issue description](screenshots/issue_description.png)
 
-2. A developer wants to see all the vulnerabilities introduced in the code because of his commit
-    1. __Preconditions__  
-     The repo must have the security bot installed.
-    2. __Main Flow__  
-     One of the developers commits a piece of code. Github signals the bot with the commit id. Bot fetches the code from the commit and runs OWASP ZAP and static analysis tools [S1]. Bot will collect the list of vulnerabilities and post a comment on the commit with the new vulnerabilities found because of it. It also raises an issue with the vulnerabilities found [S2].
-    3. __Subflows__  
-     [S1] - The tools will be picked according to the programming language or framework used.
-     [S2] - The issue will be raised with title as <type_of_vulnerability>.
-    4. __Alternative Flows__  
-     If no vulnerabilities are found, the bot comments that no vulnerability is detected in the code.
+2. A developer wants to see all the vulnerabilities introduced in the code because of his commit.
+
+In this case, Robocop comments on the commit done by the developer with the vulnerabilities introduced because of it.
+
+A developer commits a piece of code.
 
      ![Commit diff](screenshots/commit_diff.png)
+
+Github signals the bot with the push event which contains commit details. Bot fetches the code from the commit and runs OWASP ZAP and Snyk. Bot collects the list of vulnerabilities and posts a comment on the commit with the new vulnerabilities found because of it.
 
      ![Robocop's comment on a commit](screenshots/robocop_comment.png)
 
@@ -90,3 +87,5 @@ For deployment milestone, we used Ansible for the provisioning of the bot. We de
 ### Limitations and Future Work
 
 We have structured the bot so that it is scalable and can be used by big corporations as well as small. However, one of the limitations of our work is that we only used OWASP ZAP and SNYK to find vulnerabilities. In future, we would like to include more tools like Fortify, which could do static code analysis, dynamic fuzzers to look for vulnerabilities like buffer overflow etc. One research topic could be on how to use the output of one tool to empower the second tool, so that results are more accurate and fast.
+
+Another future work is to publish the actual bot on github. To do this, we will have to come up with a payment system, and also address concerns on whether these vulnerabilities should be displayed on github. We can have an option of privately emailing the committer or the manager.
